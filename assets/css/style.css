@@ -2922,6 +2922,7 @@ website:   	http://www.themepunch.com
 
 .product .product-image-container {
   margin-bottom: 23px;
+  min-height: 200px;
   position: relative;
   background-color: #f0f0f0;
 }
@@ -6394,7 +6395,7 @@ website:   	http://www.themepunch.com
 }
 
 /* CUSTOM STYLING */
-/* ----------- 1. Login -----------
+/* ----------- LOGIN -----------
 --------------------------------------*/
 .login-main, .login-side {
   height: 100vh;
@@ -6422,5 +6423,11 @@ website:   	http://www.themepunch.com
 }
 .btn.btn-primary:hover, .btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary.active, .btn.btn-primary:active:focus, .btn.btn-primary:active:hover, .btn.btn-primary.active:focus, .btn.btn-primary.active:hover, .open > .btn.btn-primary.dropdown-toggle, .open > .btn.btn-primary.dropdown-toggle:focus, .open > .btn.btn-primary.dropdown-toggle:hover {
   background-color: #dc9831;
-  /* border: none; */
+}
+
+/* ----------- LOADER -----------
+--------------------------------------*/
+.loader-container {
+  height: 100vh;
+  padding-top: 30vh;
 }

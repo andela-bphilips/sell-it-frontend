@@ -34,7 +34,7 @@ class SideNav extends Component {
                         <Link to="/user/orders">My Orders</Link>
                       </li>
                     <li>
-                    <Link to="/product/create">Sell A Product</Link>
+                    <Link to="/products/create">Sell A Product</Link>
                       </li>
                     <li>
                         <Link to="#" onClick={this.logout.bind(this)} >Logout</Link>

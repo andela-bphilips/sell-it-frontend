@@ -73,7 +73,7 @@ const Header = () => (
       </div>{/* End .search-form-container */}
       <ul className="top-links">
         <li>
-          <Link to="/product/create">Sell A Product</Link>
+          <Link to="/products/create">Sell A Product</Link>
         </li>
         {/* <li><a href="cart.html">Cart</a></li> */}
       </ul>

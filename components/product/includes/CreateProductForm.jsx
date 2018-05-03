@@ -10,7 +10,7 @@ const CreateProductForm = ({
     </div>
 
     <div className="row">
-      <form className="col-lg-10 col-lg-push-1">
+      <form className="col-lg-10 col-lg-push-1" onSubmit={createNewProduct}>
         <div className="form-group">
           <label>Product Name *</label>
           <input
@@ -168,7 +168,6 @@ const CreateProductForm = ({
         <div className="form-group clearfix form-action">
           <button
             type="submit"
-            onClick={createNewProduct}
             className="btn btn-primary pull-left min-width"
             disabled={disabled}
           >

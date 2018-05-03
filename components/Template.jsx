@@ -6,7 +6,7 @@ import SideNav from './includes/SideNav.jsx';
 import CategoryNav from './includes/CategoryNav.jsx';
 import Footer from './includes/Footer.jsx';
 import ProductPage from './product/ProductPage.jsx';
-import AllProductPage from './product/AllProductPage.jsx';
+import AllProduct from './product/AllProductPage.jsx';
 import MyProductPage from './product/MyProductPage.jsx';
 import MyOrdersPage from './user/MyOrdersPage.jsx';
 import MyProfile from './user/MyProfile.jsx';
@@ -23,12 +23,13 @@ const Template = () => (
             <SideNav />
             <Switch>
               <Route exact="exact" path="/" component={Home} />
-              <Route exact="exact" path="/product" component={ProductPage} />
-              <Route exact="exact" path="/product/create" component={CreateProduct} />
+              {/* <Route exact="exact" path="/product" component={ProductPage} /> */}
+              <Route exact="exact" path="/products/create" component={CreateProduct} />
+              <Route exact="exact" path="/product/:product" component={ProductPage} />
               <Route
                 exact="exact"
                 path="/products"
-                component={AllProductPage}
+                component={AllProduct}
               />
               <Route exact="exact" path="/user/products" component={MyProductPage} />
               <Route exact="exact" path="/user/orders" component={MyOrdersPage} />
