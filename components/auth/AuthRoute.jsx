@@ -7,6 +7,8 @@ import { PacmanLoader } from 'react-spinners';
 import { Link } from 'react-router-dom';
 import { userLoginRequest, resendVerificationMail } from '../../actions/auth';
 
+import Loader from '../includes/Loader.jsx';
+
 
 class AuthRoute extends Component {
   componentWillMount() {
@@ -29,13 +31,7 @@ class AuthRoute extends Component {
     }
   }
   render() {
-    return (
-      <div style={{ marginTop: '15%' }} >
-        <center>
-          <PacmanLoader size="150" margin="150px" color="#3359DF" />
-        </center>
-      </div>
-    );
+    return <Loader />;
   }
 }
 

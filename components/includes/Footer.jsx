@@ -64,7 +64,7 @@ export default class Footer extends Component {
                       <a href="#">My Orders</a>
                     </li>
                     <li>
-                      <Link to="/product/create">Sell a product</Link>
+                      <Link to="/products/create">Sell a product</Link>
                     </li>
                     {/* <li><a href="#">My cart</a></li>
                                     <li><a href="#">Wishlist</a></li>

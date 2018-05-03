@@ -35,7 +35,7 @@ class CreateProduct extends Component {
 
     images.map(image => urlList.push(image.secure_url));
 
-    product.images = urlList;
+    product.product_images = urlList;
     this.setState({ product });
   }
 
@@ -45,6 +45,7 @@ class CreateProduct extends Component {
     cloudinary.openUploadWidget(
       { cloud_name: 'zoewox-technologies', upload_preset: 'sell-it' },
       (error, result) => {
+        
         const images = [...new Set([...this.state.images, ...result])];
         this.onUpload(images);
         console.log(result, 'dasdsa', images);

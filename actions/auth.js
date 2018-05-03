@@ -2,7 +2,7 @@ import axios from 'axios';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { SET_CURRENT_USER, } from './types';
 
-const apiBaseUrl = 'https://sell-it-api.herokuapp.com/api/v1';
+const { apiBaseUrl } = process.env;
 
 /**
  *
