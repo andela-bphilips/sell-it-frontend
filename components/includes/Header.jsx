@@ -14,6 +14,21 @@ const Header = () => (
         />
         <span className="sr-only">Andela Sell It</span>
       </Link>
+      <div className="header-dropdowns">
+  <div className="dropdown header-dropdown">
+    <a className="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">
+      LAGOS
+      <i className="fa fa-caret-down" />
+    </a>
+    <ul className="dropdown-menu">
+      <li><a href="#" title="Spanish">LAGOS</a></li>
+      <li><a href="#" title="Spanish">NAIROBI</a></li>
+      <li><a href="#" title="Turkish">KAMPALA</a></li>
+      <li><a href="#" title="German">NEW YORK</a></li>
+    </ul>
+  </div>{/* End .dropddown */}
+</div>
+
       <div className="search-form-container">
         <a href="#" className="search-form-toggle" title="Toggle Search">
           <i className="fa fa-search" />
