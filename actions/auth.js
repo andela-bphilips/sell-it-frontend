@@ -46,13 +46,13 @@ export function userLoginRequest(userData) {
  * @export
  * @returns
  */
-// export function getCurrentUser() {
-//   return (dispatch) => axios.get(`${apiBaseUrl}/user`)
-//       .then((res) => {
-//         const userDetails = res.data.user;
-//         dispatch(setCurrentUser(userDetails));
-//       });
-// }
+export function getCurrentUser() {
+  return dispatch => axios.get(`${apiBaseUrl}/user`)
+    .then((res) => {
+      const userDetails = res.data.data.user;
+      dispatch(setCurrentUser(userDetails));
+    });
+}
 
 /**
  *
@@ -68,3 +68,15 @@ export function logout() {
   };
 }
 
+/**
+ * user updates password. It sends a new password request
+ * @param {object} details - new password object
+ * @returns {object} - updated user profile
+ */
+export function updateUser(details) {
+  return dispatch => axios.put(`${apiBaseUrl}/user`, details)
+    .then((res) => {
+      const userDetails = res.data.data.user;
+      dispatch(setCurrentUser(userDetails));
+    });
+}

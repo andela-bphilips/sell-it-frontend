@@ -1,52 +1,54 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { updateUser } from '../../actions/auth';
+import MyProfileForm from './MyProfileForm.jsx';
 
-
-export default class MyProfile extends Component {
+class MyProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
   render() {
+    const { user, updateUser } = this.props;
+    if (user.imageUrl) {
+      user.imageUrl = user.imageUrl.replace('sz=50', 'sz=176');
+    }
+    console.log("user", this.props.user)
     return (
       <div className="col-md-9 col-md-push-3">
-          <div className="page-header text-center">
+        <div className="page-header text-center">
           <h1>My Profile</h1>
           {/* <p>Your profile</p> */}
         </div>{/* End .page-header */}
-          <div className="mb5" />{/* margin */}
-          <div className="row">
+        <div className="mb5" />{/* margin */}
+        <div className="row">
           <div className="col-md-10 col-md-offset-1">
             <div className="row">
               <div className="col-sm-12">
                 <div className="team-member scroll-anim" data-anim="fadeInUp" data-anim-delay="0.1s">
-                  <figure>
-                    <img src="/assets/images/team/member2.jpg" alt="Member" />
+                    <figure>
+                    <img src={user.imageUrl} width="176" height="176" alt="Member" />
                   </figure>
-                  <h3>Philips Blessing</h3>
-                  <p>Lagos</p>
-                </div>{/* End .team-member */}
+                    <h3>{user.fullname}</h3>
+                    <p>{user.email}</p>
+                  </div>{/* End .team-member */}
               </div>{/* End .col-sm-4 */}
             </div>{/* End .row */}
-            <form action="#" className="contact-form">
-  <div className="row">
-    <div className="signin-form">
-      <div className="form-group">
-        <label>Phone number*</label>
-        <input type="text" placeholder="e.g +2348012345691" className="form-control" required />
-      </div>{/* End .form-group */}
-      <div className="form-group">
-        <label>Slack Handle*</label>
-        <input type="text" placeholder="e.g @seunkoko" className="form-control" required />
-      </div>{/* End .form-group */}
-    </div>{/* End .col-sm-6 */}
-  </div>{/* End .row */}
-  <div className="clearfix text-center">
-    <input type="submit" className="btn btn-primary min-width" defaultValue="Update Profile" />
-  </div>{/* End .clearfix */}
-</form>
+            { user.email && <MyProfileForm mobileNumber={user.mobileNumber} slackHandle={user.slackHandle} updateUser={updateUser} />}
 
           </div>{/* End .col-md-10 */}
         </div>{/* End .row */}
-          <div className="mb50" />{/* margin */}
-        </div>
+        <div className="mb50" />{/* margin */}
+      </div>
 
     );
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.auth.user
+});
+
+export default connect(mapStateToProps, { updateUser })(MyProfile);
