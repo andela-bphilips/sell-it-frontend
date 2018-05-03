@@ -1,6 +1,6 @@
 import initialState from './initialState.js';
 
-import { GET_PRODUCTS_SUCCESS } from '../actions/types.js';
+import { GET_PRODUCTS_SUCCESS, GET_PRODUCT_SUCCESS } from '../actions/types.js';
 
 export const products = (state = initialState.products, action = {}) => {
   switch (action.type) {
@@ -22,4 +22,11 @@ export const products = (state = initialState.products, action = {}) => {
   }
 };
 
-export const product = () => {};
+export const product = (state = initialState.product, action = {}) => {
+  switch (action.type) {
+    case GET_PRODUCT_SUCCESS:
+      return action.product;
+    default:
+      return state;
+  }
+};

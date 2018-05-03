@@ -1,13 +1,17 @@
 /* eslint-disable max-len */
 import axios from 'axios';
 
-import { GET_PRODUCTS_SUCCESS, SUCCESS_MESSAGE, ERROR_MESSAGE } from './types';
+import { GET_PRODUCTS_SUCCESS, GET_PRODUCT_SUCCESS, SUCCESS_MESSAGE, ERROR_MESSAGE } from './types';
 
 const { apiBaseUrl } = process.env;
 
 export const getProductsSuccess = products => ({
   type: GET_PRODUCTS_SUCCESS,
   products
+});
+export const getOneProductSuccess = product => ({
+  type: GET_PRODUCT_SUCCESS,
+  product
 });
 export const passSuccessMessage = message => ({
   type: SUCCESS_MESSAGE,
@@ -30,6 +34,15 @@ export const createProduct = product => dispatch => axios.post(`${apiBaseUrl}/pr
 export const getProducts = () => dispatch => axios.get(`${apiBaseUrl}/products`)
   .then((response) => {
     dispatch(getProductsSuccess(response.data.data));
+  })
+  .catch((error) => {
+    console.log(error);
+    throw dispatch(passErrorMessage('An error occured.'));
+  });
+
+export const getProduct = slug => dispatch => axios.get(`${apiBaseUrl}/product?slug=${slug}`)
+  .then((response) => {
+    dispatch(getOneProductSuccess(response.data.data.product));
   })
   .catch((error) => {
     console.log(error);

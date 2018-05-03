@@ -4,6 +4,6 @@ import message from './message.js';
 import { product, products } from './product.js';
 
 const rootReducer = combineReducers({
-  auth, message, products
+  auth, message, product, products
 });
 export default rootReducer;
