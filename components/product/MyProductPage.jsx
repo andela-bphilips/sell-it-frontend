@@ -69,7 +69,7 @@ export default class MyProductPage extends Component {
           </div>{/* End .page-header */}
         <ul className="portfolio-filter text-right">
             <li className="active"><a href="#" data-filter="*">Show All</a></li>
-            <li><a href="#" data-filter=".brand">Availiable</a></li>
+            <li><a href="#" data-filter=".brand">Published</a></li>
             <li><a href="#" data-filter=".website">Draft</a></li>
             <li><a href="#" data-filter=".logo">Trash</a></li>
           </ul>

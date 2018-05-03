@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import Routes from './Routes.jsx';
 import '../assets/sass/style.scss';
+import { getCurrentUser } from '../actions/auth';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
+import setUserLocation from '../utils/setUserLocation';
 import ConfigureStore from '../store/configureStore';
 
 /* eslint-disable no-undef */
@@ -14,9 +16,10 @@ const store = ConfigureStore();
 
 if (localStorage.jwtToken) {
   setAuthorizationToken(localStorage.jwtToken);
-  // store.dispatch(getCurrentUser());
+  store.dispatch(getCurrentUser());
 }
 
+setUserLocation();
 
 const app = document.getElementById('app');
 
