@@ -15,7 +15,8 @@ window.jQuery = window.$ = jQuery;
 const store = ConfigureStore();
 
 if (localStorage.jwtToken) {
-  setAuthorizationToken(localStorage.jwtToken);
+  const location = localStorage.getItem('userLocation');
+  setAuthorizationToken(localStorage.jwtToken, location);
   store.dispatch(getCurrentUser());
 }
 
