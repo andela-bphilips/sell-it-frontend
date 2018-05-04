@@ -1,26 +1,50 @@
+/* eslint-disable react/prop-types */
+import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
+import { getCategories } from '../../actions/category.js';
 
-export default class SearchBar extends Component {
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      categories: [],
+      category: '',
       search: ''
     };
+
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  componentDidMount() {
+    this.props.getCategories('categories')
+      .then(() => {
+        this.setState({ categories: this.props.categories });
+      })
+      .catch(() => console.log(this.props.message));
+  }
+
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+  handleCategorySelect(category) {
+    this.setState({ category });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    this.context.router.history.push(`/products?search=${this.state.search}`);
+    const { category, search } = this.state;
+    this.context.router.history.push(
+      `/products?search=${search}&category=${category}`);
   }
+
   render() {
+    const { categories, category, search } = this.state;
+
     return (
       <div className="search-form-container">
         <a href="#" className="search-form-toggle" title="Toggle Search">
@@ -35,32 +59,32 @@ export default class SearchBar extends Component {
               role="button"
               aria-expanded="false"
             >
-              All Category
+              {category === '' ? 'All categories' : category }
               <i className="fa fa-caret-down" />
             </a>
             <ul className="dropdown-menu">
-              <li>
-                  <a href="#">Fashion</a>
-                </li>
-              <li>
-                  <a href="#">Electronics</a>
-                </li>
-              <li>
-                  <a href="#">Furniture</a>
-                </li>
-              <li>
-                  <a href="#">Equipments</a>
-                </li>
+              {
+                categories.map(categ =>
+                  (
+                    <li key={categ.id}>
+                      <a
+                        onClick={() =>
+                          this.handleCategorySelect(categ.category_title)}
+                      >
+                        {categ.category_title}
+                      </a>
+                    </li>
+                  ))
+              }
             </ul>
           </div>{/* End .dropddown */}
           <input
             type="search"
             name="search"
             className="form-control"
-            value={this.state.search}
+            value={search}
             onChange={this.onChange}
             placeholder="Search"
-            required="required"
           />
           <button type="submit" title="Search" className="btn">
             <i className="fa fa-search" />
@@ -74,3 +98,9 @@ export default class SearchBar extends Component {
 SearchBar.contextTypes = {
   router: PropTypes.object.isRequired
 };
+
+const mapStateToProps = ({ categories, message }) => ({
+  categories, message
+});
+
+export default connect(mapStateToProps, { getCategories })(SearchBar);

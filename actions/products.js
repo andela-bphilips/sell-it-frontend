@@ -37,14 +37,15 @@ export const createProduct = product => dispatch => axios.post(`${apiBaseUrl}/pr
     throw dispatch(passErrorMessage('An error occured. Please check the form and try again.'));
   });
 
-export const getProducts = (search) => dispatch => axios.get(`${apiBaseUrl}/products?search=${search}&`)
-  .then((response) => {
-    dispatch(getProductsSuccess(response.data.data));
-  })
-  .catch((error) => {
-    console.log(error);
-    throw dispatch(passErrorMessage('An error occured.'));
-  });
+export const getProducts = (search = '', category = '', limit = 20, page = 1, sort = 'created_at', order = 'desc') => dispatch =>
+  axios.get(`${apiBaseUrl}/products?search=${search}&category=${category}&limit=${limit}&sort=${sort}&page=${page}&order=${order}`)
+    .then((response) => {
+      dispatch(getProductsSuccess(response.data.data));
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      throw dispatch(passErrorMessage('An error occured.'));
+    });
 
 export const getProduct = slug => dispatch => axios.get(`${apiBaseUrl}/product?slug=${slug}`)
   .then((response) => {
