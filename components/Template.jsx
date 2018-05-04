@@ -8,7 +8,7 @@ import Footer from './includes/Footer.jsx';
 import ProductPage from './product/ProductPage.jsx';
 import AllProduct from './product/AllProductPage.jsx';
 import MyProductPage from './product/MyProductPage.jsx';
-import MyOrdersPage from './user/MyOrdersPage.jsx';
+import MyOrders from './user/MyOrders.jsx';
 import MyProfile from './user/MyProfile.jsx';
 import CreateProduct from './product/CreateProduct.jsx';
 
@@ -23,7 +23,6 @@ const Template = () => (
             <SideNav />
             <Switch>
               <Route exact="exact" path="/" component={Home} />
-              {/* <Route exact="exact" path="/product" component={ProductPage} /> */}
               <Route exact="exact" path="/products/create" component={CreateProduct} />
               <Route exact="exact" path="/product/:product" component={ProductPage} />
               <Route
@@ -32,7 +31,7 @@ const Template = () => (
                 component={AllProduct}
               />
               <Route exact="exact" path="/user/products" component={MyProductPage} />
-              <Route exact="exact" path="/user/orders" component={MyOrdersPage} />
+              <Route exact="exact" path="/user/orders" component={MyOrders} />
               <Route exact="exact" path="/user/profile" component={MyProfile} />
             </Switch>
             <CategoryNav />
