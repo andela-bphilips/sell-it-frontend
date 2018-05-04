@@ -7,9 +7,11 @@ import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 
 import { getProducts } from '../../actions/products.js';
+import { placeOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
+import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
 class AllProducts extends Component {
   constructor(props, context) {
@@ -18,16 +20,41 @@ class AllProducts extends Component {
     this.state = {
       limit: 20,
       order: 'desc',
+      open: false,
       page: 1,
+      product: {},
+      productOrder: {},
+      saving: false,
       searchQuery: '',
-      sort: 'created_at'
+      sort: 'created_at',
+      updateComponent: false
     };
 
     this.getProductsApiCall = this.getProductsApiCall.bind(this);
+    this.placeOrder = this.placeOrder.bind(this);
+    this.onOpenModal = this.onOpenModal.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+    this.handleMakeOrderFormChange = this.handleMakeOrderFormChange.bind(this);
+    this.showOrderModal = this.showOrderModal.bind(this);
   }
 
   componentDidMount() {
     this.getProductsApiCall();
+  }
+
+  componentDidUpdate() {
+    const { updateComponent } = this.state;
+    if (updateComponent) {
+      this.getProductsApiCall();
+    }
+  }
+
+  onOpenModal() {
+    this.setState({ open: true });
+  }
+
+  onCloseModal() {
+    this.setState({ open: false });
   }
 
   getProductsApiCall() {
@@ -37,7 +64,8 @@ class AllProducts extends Component {
     this.props.getProducts(searchQuery, limit, page, sort, order)
       .then(() => {
         this.setState({
-          searchQuery: ''
+          searchQuery: '',
+          updateComponent: false
         });
       })
       .catch(() => {
@@ -45,8 +73,49 @@ class AllProducts extends Component {
       });
   }
 
+  handleMakeOrderFormChange(event) {
+    const field = event.target.name;
+    const { productOrder } = this.state;
+
+    productOrder[field] = parseInt(event.target.value, 10);
+    return this.setState({ productOrder });
+  }
+
+  showOrderModal(product) {
+    this.setState({ product }, () => {
+      this.onOpenModal();
+    });
+  }
+
+  placeOrder(event) {
+    event.preventDefault();
+    const { product, productOrder } = this.state;
+
+    this.setState({ saving: true });
+    productOrder.product_id = product.id;
+
+    if (!productOrder.negotiated_price) {
+      productOrder.negotiated_price = product.productPrice;
+    }
+
+    this.props.placeOrder(productOrder)
+      .then(() => {
+        this.setState({ saving: false, updateComponent: true });
+        this.onCloseModal();
+        this.forceUpdate();
+        toastr.success(this.props.message);
+      })
+      .catch(() => {
+        this.setState({ saving: false });
+        toastr.error(this.props.message);
+      });
+  }
+
   render() {
-    const { products } = this.props;
+    const { auth, products } = this.props;
+    const {
+      open, product, saving
+    } = this.state;
 
     if (_.isEmpty(products)) {
       return <Loader />;
@@ -109,21 +178,21 @@ class AllProducts extends Component {
                       </Link>
                       <a href="#" className="btn-quick-view">Quick View</a>
                       <div className="product-action">
-                        <a
-                          href="#"
-                          className="btn-product btn-wishlist"
-                          title="Add to Wishlist"
-                        >
-                          <i className="icon-product icon-heart" />
-                        </a>
-                        <a
-                          href="#"
-                          className="btn-product btn-add-cart"
-                          title="Add to Bag"
-                        >
-                          <i className="icon-product icon-bag" />
-                          <span>Add to Bag</span>
-                        </a>
+                        { auth && auth.user.id !== product.userId ?
+                          <div>
+                            <a
+                              href="#"
+                              className="btn-product btn-wishlist"
+                              title="Add to Wishlist"
+                            >
+                              <i className="icon-product icon-heart" />
+                            </a>
+                            <a onClick={() => this.showOrderModal(product)} className="btn-product btn-add-cart">
+                              <i className="icon-product icon-bag" />
+                              <span>Place Order</span>
+                            </a>
+                          </div> : ''
+                        }
                         {/* <a
                           href="#"
                           className="btn-product btn-compare"
@@ -141,23 +210,35 @@ class AllProducts extends Component {
                         {/* eslint-disable max-len */}
                         {product.currency} {numberWithCommas(product.productPrice)}
                       </span>
-                    </div>{/* Endd .product-price-container */}
-                  </div>{/* End .product */}
+                    </div>
+                  </div>
                 </div>
               ))}
 
-          </div>{/* End .shop-container */}
-        </div>{/* End .shop-row */}
+          </div>
+        </div>
+
         <nav aria-label="Page Navigation">
           {products.pagination.totalPages > 1 ? pagination : null}
         </nav>
+
+        { open
+          ? <MakeOrderModal
+            product={product}
+            placeOrder={this.placeOrder}
+            saving={saving}
+            open={open}
+            handleFormChange={this.handleMakeOrderFormChange}
+            onCloseModal={this.onCloseModal}
+          />
+          : '' }
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ products }) => ({
-  products
+const mapStateToProps = ({ auth, message, products }) => ({
+  auth, message, products
 });
 
-export default connect(mapStateToProps, { getProducts })(AllProducts);
+export default connect(mapStateToProps, { getProducts, placeOrder })(AllProducts);
