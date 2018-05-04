@@ -19,6 +19,7 @@ class AllProducts extends Component {
     super(props, context);
 
     this.state = {
+      category: '',
       limit: 20,
       order: 'desc',
       open: false,
@@ -26,7 +27,7 @@ class AllProducts extends Component {
       product: {},
       productOrder: {},
       saving: false,
-      searchQuery: '',
+      search: '',
       sort: 'created_at',
       updateComponent: false
     };
@@ -40,32 +41,39 @@ class AllProducts extends Component {
   }
 
   componentDidMount() {
-    const urldata = queryString.parse(this.props.location.search);
-    const search = urldata.search;
-    this.getProductsApiCall();
-    if (search) {
-      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
-    }
+    /* eslint-disable react/no-did-mount-set-state */
+    const urlData = queryString.parse(this.props.location.search);
+    const { search, category } = urlData;
+
+    this.setState({ category, search }, () => {
+      this.getProductsApiCall();
+    });
   }
 
-  componentDidUpdate() {
-    const { updateComponent } = this.state;
-    if (updateComponent) {
-      const urldata = queryString.parse(this.props.location.search);
-      const search = urldata.search;
-      if (search) {
-        this.setState({ searchQuery: search }, () => this.getProductsApiCall());
-      }
-    }
-  }
-
+    // componentDidUpdate() {
+    //   const { updateComponent } = this.state;
+    //   if (updateComponent) {
+    //     const urldata = queryString.parse(this.props.location.search);
+    //     const search = urldata.search;
+    //     if (search) {
+    //       this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+    //     }
   componentWillReceiveProps(nextProps) {
-    if (this.props.location.search != nextProps.location.search) {
-      const urldata = queryString.parse(nextProps.location.search);
-      const search = urldata.search;
-      if (search) {
-        this.setState({ searchQuery: search }, () => this.getProductsApiCall());
-      }
+    if (this.props.location.search !== nextProps.location.search) {
+      const urlData = queryString.parse(nextProps.location.search);
+      const { search, category } = urlData;
+
+      this.setState({
+        category,
+        search,
+        updateComponent: true
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.updateComponent !== this.state.updateComponent) {
+      this.getProductsApiCall();
     }
   }
 
@@ -79,12 +87,11 @@ class AllProducts extends Component {
 
   getProductsApiCall() {
     const {
-      page, limit, searchQuery, order, sort
+      category, page, limit, search, order, sort
     } = this.state;
-    this.props.getProducts(searchQuery, limit, page, sort, order)
+    this.props.getProducts(search, category, limit, page, sort, order)
       .then(() => {
         this.setState({
-          // searchQuery: '',
           updateComponent: false
         });
       })
@@ -146,7 +153,7 @@ class AllProducts extends Component {
       breakLabel={<a href="">...</a>}
       breakClassName="break-me"
       pageCount={products.pagination.totalPages
-        ? products.pagination.totalPages : null}
+        ? products.pagination.totalPages : 1}
       marginPagesDisplayed={3}
       pageRangeDisplayed={products.pagination.totalProducts > 9 ? 10
         : products.pagination.totalPages}

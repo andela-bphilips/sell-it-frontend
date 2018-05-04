@@ -1,18 +1,71 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
+import { getCategories } from '../../actions/category.js';
 
-export default class CategoryNav extends Component {
+class CategoryNav extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      categories: []
+    };
+
+    // this.onChange = this.onChange.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCategorySelect = this.handleCategorySelect.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getCategories('categories')
+      .then(() => {
+        this.setState({ categories: this.props.categories });
+      })
+      .catch(() => console.log(this.props.message));
+  }
+
+  handleCategorySelect(category) {
+    this.setState({ category }, () => {
+      this.context.router.history.push(
+        `/products?search=&category=${category}`);
+    });
+  }
+
+  // handleSubmit(event) {
+  //   event.preventDefault();
+  //   const { category, search } = this.state;
+  // }
+
   render() {
+    const { categories } = this.state;
+
     return (
       <aside className="col-md-3 col-md-pull-9 sidebar sidebar-shop">
         <div className="widget widget-box widget-shop-category active">
           <h3 className="widget-title">
-            Category
-              {/* <a href="#" class="btn-filter" role="button">Filter<i class="fa fa-caret-down"></i></a> */}
-            </h3>
+            Categories
+            <a href="#" className="btn-filter" role="button">
+              Filter
+              <i className="fa fa-caret-down" />
+            </a>
+          </h3>
           <ul className="shop-category-list accordion">
-              <li>
+            {
+              categories.map(category =>
+                  (
+                    <li key={category.id}>
+                      <a
+                        onClick={() =>
+                          this.handleCategorySelect(category.category_title)}
+                      >
+                        {category.category_title}
+                      </a>
+                    </li>
+                  ))
+            }
+            {/* <li>
               <a href="category.html">Fashion</a>
               <button
                 className="accordion-btn collapsed"
@@ -45,142 +98,12 @@ export default class CategoryNav extends Component {
                   </a>
                 </li>
               </ul>
-            </li>
-              <li>
-              <a href="category.html">Electronics </a>
-              <button
-                className="accordion-btn collapsed"
-                type="button"
-                data-toggle="collapse"
-                data-target="#accordion-ul-2"
-                aria-expanded="false"
-                aria-controls="accordion-ul-2"
-              >
-                <span className="accordion-icon" />
-              </button>
-              <ul
-                className="collapse"
-                id="accordion-ul-2"
-                aria-expanded="false"
-              >
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Computers
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Mobile Phones
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Tablets
-                  </a>
-                </li>
-              </ul>
-            </li>
-              <li>
-              <a href="category.html">Home &amp; Garden</a>
-              <button
-                className="accordion-btn collapsed"
-                type="button"
-                data-toggle="collapse"
-                data-target="#accordion-ul-3"
-                aria-expanded="false"
-                aria-controls="accordion-ul-3"
-              >
-                <span className="accordion-icon" />
-              </button>
-              <ul
-                className="collapse"
-                id="accordion-ul-3"
-                aria-expanded="false"
-              >
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Bedding
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Furniture
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Home Decor
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Kitchen, Dining
-                    &amp; Bar
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Gardening
-                    Supplies
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />Outdoor
-                    Lightning
-                  </a>
-                </li>
-              </ul>
-            </li>
-              <li>
-              <a href="category.html">Music Instruments</a>
-              <button
-                className="accordion-btn collapsed"
-                type="button"
-                data-toggle="collapse"
-                data-target="#accordion-ul-4"
-                aria-expanded="false"
-                aria-controls="accordion-ul-4"
-              >
-                <span className="accordion-icon" />
-              </button>
-              <ul
-                className="collapse"
-                id="accordion-ul-4"
-                aria-expanded="false"
-              >
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />SubCategory
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />SubCategory
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />SubCategory
-                  </a>
-                </li>
-                <li>
-                  <a href="category.html">
-                    <i className="fa fa-caret-right" />SubCategory
-                  </a>
-                </li>
-              </ul>
-            </li>
-              <li>
-              <a href="category.html">Real Estate</a>
-            </li>
-              <li>
-              <a href="category.html">Vehicles</a>
-            </li>
-              <li>
+            </li> */}
+            
+            <li>
               <a href="category.html">Health and Beauty</a>
             </li>
-            </ul>
+          </ul>
         </div>
         {/* End .widget */}
         <div className="widget widget-box widget-shop-filter">
@@ -311,3 +234,13 @@ export default class CategoryNav extends Component {
     );
   }
 }
+
+CategoryNav.contextTypes = {
+  router: PropTypes.object.isRequired
+};
+
+const mapStateToProps = ({ categories, message }) => ({
+  categories, message
+});
+
+export default connect(mapStateToProps, { getCategories })(CategoryNav);

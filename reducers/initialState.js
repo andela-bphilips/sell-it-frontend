@@ -1,4 +1,5 @@
 export default {
+  categories: [],
   isAuthenticated: false,
   orders: {},
   message: '',

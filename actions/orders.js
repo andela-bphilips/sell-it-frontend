@@ -33,7 +33,7 @@ export const placeOrder = orderData => dispatch => axios.post(`${apiBaseUrl}/ord
     throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
-export const getMyOrders = orderData => dispatch => axios.get(`${apiBaseUrl}/all_orders`, orderData)
+export const getMyOrders = () => dispatch => axios.get(`${apiBaseUrl}/all_orders`)
   .then((response) => {
     dispatch(getMyOrdersSuccess(response.data.data));
     dispatch(passSuccessMessage(response.data.data.message));
