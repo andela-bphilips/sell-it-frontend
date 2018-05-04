@@ -5,18 +5,31 @@ import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 
 import { getProduct } from '../../actions/products.js';
+import { placeOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
+import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
 class ProductPage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
       product: {},
-      slug: ''
+      productOrder: {},
+      open: false,
+      saving: false,
+      slug: '',
+      updateComponent: false
     };
+
+    this.placeOrder = this.placeOrder.bind(this);
+    this.onOpenModal = this.onOpenModal.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+    this.handleMakeOrderFormChange = this.handleMakeOrderFormChange.bind(this);
+    this.showOrderModal = this.showOrderModal.bind(this);
   }
+
   componentDidMount() {
     /* eslint-disable react/no-did-mount-set-state */
     this.setState({ slug: this.props.match.params.product }, () => {
@@ -30,8 +43,73 @@ class ProductPage extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { updateComponent } = this.state;
+    if (prevProps.match.params.product !== this.props.match.params.product || updateComponent) {
+      /* eslint-disable react/no-did-mount-set-state */
+      this.props.getProduct(this.props.match.params.product)
+        .then(() => {
+          this.setState({
+            product: this.props.product,
+            updateComponent: false
+          });
+        })
+        .catch(() => {
+          toastr.error(this.props.message);
+        });
+    }
+  }
+
+  onOpenModal() {
+    this.setState({ open: true });
+  }
+
+  onCloseModal() {
+    this.setState({ open: false });
+  }
+
+  handleMakeOrderFormChange(event) {
+    const field = event.target.name;
+    const { productOrder } = this.state;
+
+    productOrder[field] = parseInt(event.target.value, 10);
+    return this.setState({ productOrder });
+  }
+
+  showOrderModal(product) {
+    this.setState({ product }, () => {
+      this.onOpenModal();
+    });
+  }
+
+  placeOrder(event) {
+    event.preventDefault();
+    const { product, productOrder } = this.state;
+
+    this.setState({ saving: true });
+    productOrder.product_id = product.id;
+
+    if (!productOrder.negotiated_price) {
+      productOrder.negotiated_price = product.productPrice;
+    }
+
+    this.props.placeOrder(productOrder)
+      .then(() => {
+        this.setState({ saving: false, updateComponent: true });
+        this.onCloseModal();
+        // this.forceUpdate();
+        toastr.success(this.props.message);
+      })
+      .catch(() => {
+        this.setState({ saving: false });
+        toastr.error(this.props.message);
+      });
+  }
+
   render() {
-    const { product } = this.state;
+    const {
+      open, product, saving
+    } = this.state;
 
     if (_.isEmpty(product)) {
       return <Loader />;
@@ -119,7 +197,11 @@ class ProductPage extends Component {
             </ul>
             { product.creator ? '' :
             <div className="product-action">
-              <a href="#" className="btn btn-accent btn-addtobag">Buy Now</a>
+              {/* <a href="#" className="btn btn-accent btn-addtobag">Buy Now</a> */}
+              <a onClick={() => this.showOrderModal(product)} className="btn btn-accent btn-addtobag">
+                <i className="icon-product icon-bag" />
+                <span>Place Order</span>
+              </a>
             </div>
             }
           </div>
@@ -171,6 +253,17 @@ class ProductPage extends Component {
 
           </div>
         </div>
+
+        { open
+          ? <MakeOrderModal
+            product={product}
+            placeOrder={this.placeOrder}
+            saving={saving}
+            open={open}
+            handleFormChange={this.handleMakeOrderFormChange}
+            onCloseModal={this.onCloseModal}
+          />
+          : '' }
         <div className="mb50" />
       </div>
     );
@@ -181,4 +274,4 @@ const mapStateToProps = ({ message, product }) => ({
   message, product
 });
 
-export default connect(mapStateToProps, { getProduct })(ProductPage);
+export default connect(mapStateToProps, { getProduct, placeOrder })(ProductPage);
