@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import _ from 'lodash';
+import queryString from 'query-string';
 import React, { Component } from 'react';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
@@ -39,13 +40,25 @@ class AllProducts extends Component {
   }
 
   componentDidMount() {
-    this.getProductsApiCall();
+    const urldata = queryString.parse(this.props.location.search);
+    const search = urldata.search;
+    this.setState({ searchQuery: search }, () => this.getProductsApiCall());
   }
 
   componentDidUpdate() {
     const { updateComponent } = this.state;
     if (updateComponent) {
-      this.getProductsApiCall();
+      const search = urldata.search;
+      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.search != nextProps.location.search) {
+      const urldata = queryString.parse(nextProps.location.search);
+      const search = urldata.search;
+      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+    // console.log(nextProps);
     }
   }
 
@@ -64,7 +77,7 @@ class AllProducts extends Component {
     this.props.getProducts(searchQuery, limit, page, sort, order)
       .then(() => {
         this.setState({
-          searchQuery: '',
+          // searchQuery: '',
           updateComponent: false
         });
       })
@@ -116,7 +129,6 @@ class AllProducts extends Component {
     const {
       open, product, saving
     } = this.state;
-
     if (_.isEmpty(products)) {
       return <Loader />;
     }
@@ -147,20 +159,19 @@ class AllProducts extends Component {
         <div className="banner banner-top">
           <img src="/assets/images/banners/banner-top.jpg" alt="Banner" />
           <div className="banner-content">
-            <h2>SAve big on<br />Home Decor</h2>
-            <a href="#" className="action-link">Shop now</a>
+            <h2>Epic<br />Marketplace</h2>
+            {/* <a href="#" className="action-link">Shop now</a> */}
           </div>
         </div>{/* End .banner */}
         <div className="category-header">
-          <h1>Home Decor</h1>
-          <ol className="breadcrumb">
+          <h1>Products</h1>
+          {/* <ol className="breadcrumb">
             <li><a href="#">Home &amp; Garden</a></li>
             <li className="active">Home Decor</li>
-          </ol>
+          </ol> */}
         </div>
         <div className="shop-row">
           <div className="shop-container max-col-4" data-layout="fitRows">
-
             {products.products.map(product =>
               (
                 <div key={product.slug} className="product-item">
@@ -172,22 +183,23 @@ class AllProducts extends Component {
                         className="product-image-link"
                       >
                         <img
+                          height="200px"
                           src={product.productImages ? product.productImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
                           alt={product.productName}
                         />
                       </Link>
-                      <a href="#" className="btn-quick-view">Quick View</a>
+                      {/* <a href="#" className="btn-quick-view">Quick View</a> */}
                       <div className="product-action">
                         { auth && auth.user.id !== product.userId ?
                           <div>
-                            <a
+                            {/* <a
                               href="#"
                               className="btn-product btn-wishlist"
                               title="Add to Wishlist"
                             >
                               <i className="icon-product icon-heart" />
-                            </a>
-                            <a onClick={() => this.showOrderModal(product)} className="btn-product btn-add-cart">
+                            </a> */}
+                            <a style={{ cursor: 'pointer' }} onClick={() => this.showOrderModal(product)} className="btn-product btn-add-cart">
                               <i className="icon-product icon-bag" />
                               <span>Place Order</span>
                             </a>
@@ -217,6 +229,7 @@ class AllProducts extends Component {
 
           </div>
         </div>
+        {products.products.length == 0 && <h2>No Product Found</h2>}
 
         <nav aria-label="Page Navigation">
           {products.pagination.totalPages > 1 ? pagination : null}

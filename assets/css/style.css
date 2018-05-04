@@ -2955,7 +2955,7 @@ website:   	http://www.themepunch.com
 .product .product-image-container img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 200;
 }
 
 .product .product-label {
@@ -3116,6 +3116,7 @@ website:   	http://www.themepunch.com
 
 .product .product-action .btn-product.btn-add-cart span {
   margin-left: 3px;
+  padding: 8px;
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
@@ -4894,7 +4895,7 @@ website:   	http://www.themepunch.com
 .portfolio-item figure img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 20em;
 }
 
 .portfolio-item figure:before {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SearchBar from './SearchBar.jsx';
 
 
 const Header = () => (
@@ -29,48 +30,8 @@ const Header = () => (
   </div>{/* End .dropddown */}
 </div>
 
-      <div className="search-form-container">
-        <a href="#" className="search-form-toggle" title="Toggle Search">
-          <i className="fa fa-search" />
-        </a>
-        <form action="#">
-          <div className="dropdown search-dropdown">
-            <a
-              className="dropdown-toggle"
-              href="#"
-              data-toggle="dropdown"
-              role="button"
-              aria-expanded="false"
-            >
-              All Category
-              <i className="fa fa-caret-down"/>
-            </a>
-            <ul className="dropdown-menu">
-              <li>
-                <a href="#">Fashion</a>
-              </li>
-              <li>
-                <a href="#">Electronics</a>
-              </li>
-              <li>
-                <a href="#">Furniture</a>
-              </li>
-              <li>
-                <a href="#">Equipments</a>
-              </li>
-            </ul>
-          </div>{/* End .dropddown */}
-          <input
-            type="search"
-            className="form-control"
-            placeholder="Search"
-            required="required"
-          />
-          <button type="submit" title="Search" className="btn">
-            <i className="fa fa-search" />
-          </button>
-        </form>
-      </div>{/* End .search-form-container */}
+      <SearchBar />
+      {/* End .search-form-container */}
       <ul className="top-links">
         <li>
           <Link to="/products/create">Sell A Product</Link>

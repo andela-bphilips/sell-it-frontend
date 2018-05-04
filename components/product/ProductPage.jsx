@@ -110,6 +110,7 @@ class ProductPage extends Component {
     const {
       open, product, saving
     } = this.state;
+    console.log(product.productImages )
 
     if (_.isEmpty(product)) {
       return <Loader />;

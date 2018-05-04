@@ -109,7 +109,7 @@ export default class Home extends Component {
                           >
                             Andela Marketplace<br /> for Epic products
                           </div>
-                          <a
+                          <Link
                             className="tp-caption tp-resizeme rs-parallaxlevel-0"
                             data-x="['left','left','left','left']"
                             data-hoffset="['68','50','45','30']"
@@ -130,10 +130,10 @@ export default class Home extends Component {
                               textTransform: 'uppercase',
                               textDecoration: 'underline'
                             }}
-                            href="#"
+                            to="/products"
                           >
                             Shop Now
-                          </a>
+                          </Link>
                           <div
                             className="tp-caption tp-resizeme"
                             data-frames="[{&quot;delay&quot;:600,&quot;speed&quot;:1000,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;x:right;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power3.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:600,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;auto:auto;&quot;,&quot;ease&quot;:&quot;Power3.easeInOut&quot;}]"
@@ -189,7 +189,7 @@ export default class Home extends Component {
                           >
                             Best place to buy<br /> Epic Product
                           </div>
-                          <a
+                          <Link
                             className="tp-caption tp-resizeme rs-parallaxlevel-0"
                             data-x="['left','left','left','left']"
                             data-hoffset="['68','50','45','30']"
@@ -210,10 +210,10 @@ export default class Home extends Component {
                               textTransform: 'uppercase',
                               textDecoration: 'underline'
                             }}
-                            href="#"
+                            to="/products"
                           >
                             Shop Now
-                          </a>
+                          </Link>
                           <div
                             className="tp-caption tp-resizeme"
                             data-frames="[{&quot;delay&quot;:600,&quot;speed&quot;:1000,&quot;frame&quot;:&quot;0&quot;,&quot;from&quot;:&quot;x:right;&quot;,&quot;to&quot;:&quot;o:1;&quot;,&quot;ease&quot;:&quot;Power3.easeInOut&quot;},{&quot;delay&quot;:&quot;wait&quot;,&quot;speed&quot;:600,&quot;frame&quot;:&quot;999&quot;,&quot;to&quot;:&quot;auto:auto;&quot;,&quot;ease&quot;:&quot;Power3.easeInOut&quot;}]"
