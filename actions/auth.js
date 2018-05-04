@@ -34,7 +34,8 @@ export function userLoginRequest(userData) {
       const token = `Bearer ${res.data.token}`;
       const userDetails = res.data.user;
       localStorage.setItem('jwtToken', token);
-      setAuthorizationToken(token);
+      const location = localStorage.getItem('userLocation');
+      setAuthorizationToken(token, location);
       dispatch(setCurrentUser(userDetails));
       window.location = '/';
     });
