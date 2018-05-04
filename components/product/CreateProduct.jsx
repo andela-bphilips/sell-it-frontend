@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 import { createProduct } from '../../actions/products.js';
+import { getAllCategory } from '../../actions/category';
+
 
 import CreateProductForm from './includes/CreateProductForm.jsx';
 
@@ -22,11 +24,15 @@ class CreateProduct extends Component {
       product: {
         meta: {}
       },
+      categories: [],
       saving: false
-    }
+    };
   }
   componentDidMount() {
     console.log('cdm');
+    this.props.getAllCategory().then(() => {
+      this.setState({ categories: this.props.category });
+    });
   }
 
   onUpload(images) {
@@ -45,7 +51,6 @@ class CreateProduct extends Component {
     cloudinary.openUploadWidget(
       { cloud_name: 'zoewox-technologies', upload_preset: 'sell-it' },
       (error, result) => {
-        
         const images = [...new Set([...this.state.images, ...result])];
         this.onUpload(images);
         console.log(result, 'dasdsa', images);
@@ -88,7 +93,9 @@ class CreateProduct extends Component {
   }
 
   render() {
-    const { disabled, product, saving } = this.state;
+    const {
+ disabled, product, saving, categories 
+} = this.state;
     return (
       <CreateProductForm
         handleFormChange={this.handleFormChange}
@@ -97,14 +104,16 @@ class CreateProduct extends Component {
         disabled={disabled}
         product={product}
         saving={saving}
+        categories={categories}
         uploadImages={this.uploadImages}
       />
     );
   }
 }
 
-const mapStateToProps = ({ message }) => ({
-  message
+const mapStateToProps = (state) => ({
+    message: state.message,
+    category: state.category.categories
 });
 
-export default connect(mapStateToProps, { createProduct })(CreateProduct);
+export default connect(mapStateToProps, { createProduct, getAllCategory })(CreateProduct);

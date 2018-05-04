@@ -2,7 +2,7 @@
 import React from 'react';
 
 const CreateProductForm = ({
-  createNewProduct, disabled, handleFormChange, handleFormMetaChange, product, uploadImages, saving
+  createNewProduct, disabled, handleFormChange, handleFormMetaChange, product, uploadImages, saving, categories
 }) => (
   <div className="col-md-9 col-md-push-3">
     <div className="page-header text-center">
@@ -75,7 +75,7 @@ const CreateProductForm = ({
                 onChange={handleFormChange}
               >
                 <option>-</option>
-                <option value="naira">N</option>
+                <option value="naira">₦</option>
                 <option value="dollars">$</option>
                 <option value="ksh">KSh</option>
                 <option value="ush">USh</option>
@@ -130,14 +130,17 @@ const CreateProductForm = ({
             <div className="col-sm-12 col-lg-5">
               <label>Category *</label>
               <div>
-                <input
-                  type="text"
-                  name="category"
+                <select
                   className="form-control"
+                  name="category"
                   value={product.category}
                   onChange={handleFormChange}
-                  required
-                />
+                >
+                  <option>-</option>
+                  {categories.length > 0 && categories.map((category) => {
+                    return (<option value={category.category_title ? category.category_title : category.sub_category_title}>{category.category_title ? category.category_title.toUpperCase() : category.sub_category_title.toUpperCase() }</option>);
+                })}
+                </select>
               </div>
             </div>
           </div>

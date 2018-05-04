@@ -4,6 +4,7 @@ export default {
   message: '',
   product: {},
   products: {},
-  user: {}
+  user: {},
+  category: {}
 };
 
