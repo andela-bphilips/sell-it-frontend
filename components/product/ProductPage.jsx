@@ -110,6 +110,7 @@ class ProductPage extends Component {
     const {
       open, product, saving
     } = this.state;
+    console.log(product.productImages )
 
     if (_.isEmpty(product)) {
       return <Loader />;
@@ -123,7 +124,7 @@ class ProductPage extends Component {
                 <img
                   className="xzoom"
                   id="product-zoom"
-                  src={product.productImages ? product.producImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
+                  src={product.productImages ? product.productImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
                   alt={product.productName}
                 />
               </div>{/* End .product-zoom-container */}
