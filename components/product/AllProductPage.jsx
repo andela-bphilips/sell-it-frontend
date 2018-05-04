@@ -42,14 +42,19 @@ class AllProducts extends Component {
   componentDidMount() {
     const urldata = queryString.parse(this.props.location.search);
     const search = urldata.search;
-    this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+    this.getProductsApiCall();
+    if (search) {
+      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+    }
   }
 
   componentDidUpdate() {
     const { updateComponent } = this.state;
     if (updateComponent) {
       const search = urldata.search;
-      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+      if (search) {
+        this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+      }
     }
   }
 
@@ -57,8 +62,9 @@ class AllProducts extends Component {
     if (this.props.location.search != nextProps.location.search) {
       const urldata = queryString.parse(nextProps.location.search);
       const search = urldata.search;
-      this.setState({ searchQuery: search }, () => this.getProductsApiCall());
-    // console.log(nextProps);
+      if (search) {
+        this.setState({ searchQuery: search }, () => this.getProductsApiCall());
+      }
     }
   }
 
