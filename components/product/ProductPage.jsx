@@ -45,7 +45,7 @@ class ProductPage extends Component {
                 <img
                   className="xzoom"
                   id="product-zoom"
-                  src={product.productImages[0]}
+                  src={product.productImages ? product.producImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
                   alt={product.productName}
                 />
               </div>{/* End .product-zoom-container */}
@@ -61,7 +61,7 @@ class ProductPage extends Component {
                   &quot;992&quot;: {&quot;items&quot;: 3},
                   &quot;1200&quot;: {&quot;items&quot;: 4} }"
               >
-                {product.productImages.map(image =>
+                {product.productImages && product.productImages.map(image =>
                   (
                     <a
                       key={image}
@@ -101,7 +101,7 @@ class ProductPage extends Component {
                 </li> : ''
               }
               <li>
-                <label>Sold By:  </label>
+                <label>Seller:  </label>
                 <span className="product-stock">  {product.ownerName}</span>
               </li>
               <li>

@@ -103,7 +103,7 @@ class AllProducts extends Component {
                         className="product-image-link"
                       >
                         <img
-                          src={product.productImages[0]}
+                          src={product.productImages ? product.producImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
                           alt={product.productName}
                         />
                       </Link>
