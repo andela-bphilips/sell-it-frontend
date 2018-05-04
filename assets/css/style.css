@@ -6432,3 +6432,7 @@ website:   	http://www.themepunch.com
   height: 100vh;
   padding-top: 30vh;
 }
+
+a {
+  cursor: pointer;
+}

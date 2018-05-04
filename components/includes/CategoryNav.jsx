@@ -46,10 +46,10 @@ class CategoryNav extends Component {
         <div className="widget widget-box widget-shop-category active">
           <h3 className="widget-title">
             Categories
-            <a href="#" className="btn-filter" role="button">
+            {/* <a href="#" className="btn-filter" role="button">
               Filter
               <i className="fa fa-caret-down" />
-            </a>
+            </a> */}
           </h3>
           <ul className="shop-category-list accordion">
             {
@@ -100,9 +100,9 @@ class CategoryNav extends Component {
               </ul>
             </li> */}
             
-            <li>
+            {/* <li>
               <a href="category.html">Health and Beauty</a>
-            </li>
+            </li> */}
           </ul>
         </div>
         {/* End .widget */}
@@ -113,7 +113,7 @@ class CategoryNav extends Component {
               Categories<i className="fa fa-caret-down" />
             </a>
             </h3>
-          <div className="filter-box">
+            <div className="filter-box">
               <h5 className="filter-label">Sort By</h5>
               <ul className="shop-filter-list">
               <li>
