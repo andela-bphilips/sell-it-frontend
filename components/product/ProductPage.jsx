@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import toastr from 'toastr';
+import Clipboard from 'react-clipboard.js';
 
 import { getProduct } from '../../actions/products.js';
 import { placeOrder } from '../../actions/orders.js';
@@ -10,6 +11,8 @@ import { placeOrder } from '../../actions/orders.js';
 import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
+
+const baseUrl = process.env.baseUrl;
 
 class ProductPage extends Component {
   constructor(props, context) {
@@ -110,7 +113,7 @@ class ProductPage extends Component {
     const {
       open, product, saving
     } = this.state;
-    console.log(product.productImages )
+    console.log(product.productImages);
 
     if (_.isEmpty(product)) {
       return <Loader />;
@@ -196,6 +199,9 @@ class ProductPage extends Component {
                 <span className="product-stock">  {product.views}</span>
               </li>
             </ul>
+            <Clipboard component="button" className="btn btn-primary" button-href="#" data-clipboard-text={`${baseUrl}/product/${product.slug}`} button-title="Copy Link">
+        Copy Share Link
+            </Clipboard>
             { product.creator ? '' :
             <div className="product-action">
               {/* <a href="#" className="btn btn-accent btn-addtobag">Buy Now</a> */}

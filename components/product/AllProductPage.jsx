@@ -51,6 +51,7 @@ class AllProducts extends Component {
   componentDidUpdate() {
     const { updateComponent } = this.state;
     if (updateComponent) {
+      const urldata = queryString.parse(this.props.location.search);
       const search = urldata.search;
       if (search) {
         this.setState({ searchQuery: search }, () => this.getProductsApiCall());

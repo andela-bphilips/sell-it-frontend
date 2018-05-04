@@ -1,6 +1,6 @@
 import initialState from './initialState.js';
 
-import { GET_MY_ORDERS_SUCCESS } from '../actions/types.js';
+import { GET_MY_ORDERS_SUCCESS, CANCEL_ORDER_SUCCESS } from '../actions/types.js';
 
 const orders = (state = initialState.orders, action = {}) => {
   switch (action.type) {
@@ -16,6 +16,18 @@ const orders = (state = initialState.orders, action = {}) => {
           totalPages: action.payload.total_pages
         }
       };
+    case CANCEL_ORDER_SUCCESS: {
+      const updatedOrder = state.orders.map((order) => {
+        if (order.id === action.order.id) {
+          return order.buyerOrderStatus = 'cancelled';
+        }
+        return order;
+      });
+      return {
+        ...state,
+        orders: updatedOrder,
+      };
+    }
 
     default:
       return state;

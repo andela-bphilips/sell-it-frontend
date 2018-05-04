@@ -9,6 +9,7 @@ import ProductPage from './product/ProductPage.jsx';
 import AllProduct from './product/AllProductPage.jsx';
 import MyProductPage from './product/MyProductPage.jsx';
 import MyOrders from './user/MyOrders.jsx';
+import ReceivedOrders from './user/ReceivedOrders.jsx';
 import MyProfile from './user/MyProfile.jsx';
 import CreateProduct from './product/CreateProduct.jsx';
 
@@ -32,6 +33,7 @@ const Template = () => (
               />
               <Route exact="exact" path="/user/products" component={MyProductPage} />
               <Route exact="exact" path="/user/orders" component={MyOrders} />
+              <Route exact="exact" path="/orders" component={ReceivedOrders} />
               <Route exact="exact" path="/user/profile" component={MyProfile} />
             </Switch>
             <CategoryNav />
