@@ -24,7 +24,7 @@ class MyOrders extends Component {
   componentDidMount() {
     this.props.getMyOrders()
       .then(() => {
-        this.setState({ orders: this.props.orders,  loading: false });
+        this.setState({ orders: this.props.orders, loading: false });
       })
       .catch(() => {
         toastr.error(this.props.message);
@@ -61,8 +61,8 @@ class MyOrders extends Component {
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
-          <h1>My Orders</h1>
-          <p>This is the list of your orders and the status</p>
+          <h1>Received Orders</h1>
+          <p>This is the list of orders you receive from intrested buyers </p>
         </div>
         {!loading && orders.orders.length == 0 &&
         <h2>You have no orders yet</h2>
@@ -73,9 +73,11 @@ class MyOrders extends Component {
             <thead>
               <tr>
                 <th>Product Name</th>
-                <th>Price</th>
+                <th>Price(Negotiation)</th>
                 <th>Status</th>
+                <th>Quantity</th>
                 <th>Date</th>
+                <th>Buyer Name</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -102,7 +104,19 @@ class MyOrders extends Component {
                       {order.sellerOrderStatus === 'completed' ? 'Completed' : ''}
                     </td>
                     <td className="total-col">{moment(order.createdAt).fromNow()}</td>
-                    <td>{order.buyerOrderStatus=='in_progress' && <button className="btn btn-primary" onClick={()=>{ this.props.cancelOrder(order)}}>Cancel</button>}</td>
+                    <td className="price-col">aaa</td>
+                    <td>Philips Blessing</td>
+                    <td><div className="btn-group">
+                      <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Action <span className="caret" />
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li><a href="#">Accept</a></li>
+                        <li role="separator" className="divider" />                        
+                        <li><a href="#">Reject</a></li>
+                      </ul>
+                        </div>
+                    </td>
                   </tr>
                 ))
               }
@@ -120,6 +134,6 @@ class MyOrders extends Component {
 
 const mapStateToProps = ({ message, orders }) => ({
   message, orders
-})
+});
 
 export default connect(mapStateToProps, { getMyOrders, cancelOrder })(MyOrders);

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 export default class Footer extends Component {
   render() {
     return (
-        <footer className="footer">
-        <div className="footer-inner">
+      <footer className="footer">
+          <div className="footer-inner">
           <div className="container">
             <div className="row">
               <div className="col-sm-6 col-md-3">
@@ -16,6 +16,7 @@ export default class Footer extends Component {
                     <span>Philips Blessing</span>
                     <span>Oluwaseun Owonikoko</span>
                     <span>Maranatha Ilesanmi</span>
+                    <span>Johnbosco Ohia</span>
                     <a href="mailto:sellitteam@gmail.com">
                       sell.it.helpdesk@gmail.com
                     </a>
@@ -24,32 +25,6 @@ export default class Footer extends Component {
                 {/* End .widget */}
               </div>
               {/* End .col-md-3 */}
-              <div className="col-sm-6 col-md-3">
-                <div className="widget">
-                  <h4 className="widget-title">Collection</h4>
-                  <ul className="links">
-                    <li>
-                      <a href="#">Fashion</a>
-                    </li>
-                    <li>
-                      <a href="#">Electronics</a>
-                    </li>
-                    <li>
-                      <a href="#">Home &amp; Garden</a>
-                    </li>
-                    <li>
-                      <a href="#">Music</a>
-                    </li>
-                    <li>
-                      <a href="#">Sports</a>
-                    </li>
-                    <li>
-                      <a href="#">Motors</a>
-                    </li>
-                  </ul>
-                </div>
-                {/* End .widget */}
-              </div>
               {/* End .col-md-3 */}
               <div className="clearfix visible-sm" />
               {/* clearfix */}
@@ -58,13 +33,19 @@ export default class Footer extends Component {
                   <h4 className="widget-title">My Account</h4>
                   <ul className="links">
                     <li>
-                      <a href="#">My Products</a>
+                    <Link to="/user/profile">My Profile</Link>
+                  </li>
+                    <li>
+                      <Link to="/user/products">My Products</Link>
                     </li>
                     <li>
-                      <a href="#">My Orders</a>
+                        <Link to="/orders">Received Orders</Link>
+                      </li>
+                    <li>
+                      <Link to="/user/orders">My Orders</Link>
                     </li>
                     <li>
-                      <Link to="/products/create">Sell a product</Link>
+                      <Link to="/products/create">Sell A Product</Link>
                     </li>
                     {/* <li><a href="#">My cart</a></li>
                                     <li><a href="#">Wishlist</a></li>
@@ -79,16 +60,16 @@ export default class Footer extends Component {
           </div>
           {/* End .container */}
         </div>
-        {/* End .footer-inner */}
-        <div className="footer-bottom">
+          {/* End .footer-inner */}
+          <div className="footer-bottom">
           <div className="container">
             <p className="copyright">Sell It © 2018. All Rights Reserved</p>
             {/* <img src="/assets/images/cards.png" alt="Payment Methods" class="img-cards"> */}
           </div>
           {/* End .container */}
         </div>
-        {/* End .footer-bottom */}
-      </footer>
+          {/* End .footer-bottom */}
+        </footer>
     );
   }
 }

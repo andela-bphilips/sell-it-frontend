@@ -30,7 +30,7 @@ class Login extends Component {
                 <div className="pt-3 mt-4">
                   <a
                     className="btn btn-primary btn-lg"
-                    href={`${loginGateway}/login?redirect_url=${baseUrl}`}
+                    href={`${loginGateway}/login?redirect_url=${baseUrl}/auth`}
                   >
                     LOGIN WITH GOOGLE
                   </a>

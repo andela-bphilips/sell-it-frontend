@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 
 export default class Home extends Component {
   componentDidMount() {
-    
     jQuery(document).ready(() => {
-      'use strict';
+      
 
       let revapi;
       if ($('#rev_slider').revolution == undefined) {
@@ -70,11 +69,11 @@ export default class Home extends Component {
             className="slider-container rev_slider_wrapper fullwidthbanner-container"
           >
             <div
-                      id="rev_slider"
-                      className="rev_slider fullwidthabanner"
-                      style={{ display: 'none' }}
-                    >
-                      <ul>
+              id="rev_slider"
+              className="rev_slider fullwidthabanner"
+              style={{ display: 'none' }}
+            >
+              <ul>
                         {/* SLIDE  */}
                         <li data-transition="fade">
                           {/* Background Image */}
@@ -236,7 +235,7 @@ export default class Home extends Component {
                           </div>
                         </li>
                       </ul>
-                      <div
+              <div
                         className="tp-bannertimer tp-bottom"
                         style={{
                           display: 'none',
@@ -244,7 +243,7 @@ export default class Home extends Component {
                           backgroundColor: 'rgba(0, 0, 0, 0.2)'
                         }}
                       />
-                    </div>
+            </div>
             {/* End #rev_slider */}
           </div>
           {/* END REVOLUTION SLIDER */}
@@ -255,7 +254,7 @@ export default class Home extends Component {
             data-owl-responsive="{ &quot;480&quot;: {&quot;items&quot;: 2}, &quot;768&quot;: {&quot;items&quot;: 3}, &quot;992&quot;: {&quot;items&quot;: 3}, &quot;1200&quot;: {&quot;items&quot;: 4} }"
           >
             <div className="product">
-                      <figure className="product-image-container">
+              <figure className="product-image-container">
                         <a
                           href="product.html"
                           title="Product Name"
@@ -290,17 +289,17 @@ export default class Home extends Component {
                         </div>
                         {/* End .product-action */}
                       </figure>
-                      <h3 className="product-title">
+              <h3 className="product-title">
                         <a href="product.html">Chandelier bulb</a>
                       </h3>
-                      <div className="product-price-container">
+              <div className="product-price-container">
                         <span className="product-price">₦250.00</span>
                       </div>
-                      {/* Endd .product-price-container */}
-                    </div>
+              {/* Endd .product-price-container */}
+            </div>
             {/* End .product */}
             <div className="product">
-                      <figure className="product-image-container">
+              <figure className="product-image-container">
                         <a
                           href="product.html"
                           title="Product Name"
@@ -334,17 +333,17 @@ export default class Home extends Component {
                         </div>
                         {/* End .product-action */}
                       </figure>
-                      <h3 className="product-title">
+              <h3 className="product-title">
                         <a href="product.html">Dining chair</a>
                       </h3>
-                      <div className="product-price-container">
+              <div className="product-price-container">
                         <span className="product-price">₦130.00</span>
                       </div>
-                      {/* Endd .product-price-container */}
-                    </div>
+              {/* Endd .product-price-container */}
+            </div>
             {/* End .product */}
             <div className="product">
-                      <figure className="product-image-container">
+              <figure className="product-image-container">
                         <a
                           href="product.html"
                           title="Product Name"
@@ -378,17 +377,17 @@ export default class Home extends Component {
                         </div>
                         {/* End .product-action */}
                       </figure>
-                      <h3 className="product-title">
+              <h3 className="product-title">
                         <a href="product.html">Woolen scarf</a>
                       </h3>
-                      <div className="product-price-container">
+              <div className="product-price-container">
                         <span className="product-price">₦95.00</span>
                       </div>
-                      {/* Endd .product-price-container */}
-                    </div>
+              {/* Endd .product-price-container */}
+            </div>
             {/* End .product */}
             <div className="product">
-                      <figure className="product-image-container">
+              <figure className="product-image-container">
                         <a
                           href="product.html"
                           title="Product Name"
@@ -422,17 +421,17 @@ export default class Home extends Component {
                         </div>
                         {/* End .product-action */}
                       </figure>
-                      <h3 className="product-title">
+              <h3 className="product-title">
                         <a href="product.html">Tripod lampshade</a>
                       </h3>
-                      <div className="product-price-container">
+              <div className="product-price-container">
                         <span className="product-price">₦180.00</span>
                       </div>
-                      {/* Endd .product-price-container */}
-                    </div>
+              {/* Endd .product-price-container */}
+            </div>
             {/* End .product */}
             <div className="product">
-                      <figure className="product-image-container">
+              <figure className="product-image-container">
                         <a
                           href="product.html"
                           title="Product Name"
@@ -466,14 +465,14 @@ export default class Home extends Component {
                         </div>
                         {/* End .product-action */}
                       </figure>
-                      <h3 className="product-title">
+              <h3 className="product-title">
                         <a href="product.html">Ceiling lights</a>
                       </h3>
-                      <div className="product-price-container">
+              <div className="product-price-container">
                         <span className="product-price">₦140.00</span>
                       </div>
-                      {/* Endd .product-price-container */}
-                    </div>
+              {/* Endd .product-price-container */}
+            </div>
             {/* End .product */}
           </div>
           {/* End .owl-data-carousel */}
@@ -481,30 +480,30 @@ export default class Home extends Component {
           {/* margin */}
           <div className="banner banner-fullwidth">
             <div className="banner-content-wrapper">
-                      <h3>Do you Want to Sell?</h3>
-                      <p>Start selling</p>
-                      <div className="banner-price">By clicking</div>
-                      <a href="#">Sell Now</a>
-                    </div>
+              <h3>Do you Want to Sell?</h3>
+              <p>Start selling</p>
+              <div className="banner-price">By clicking</div>
+              <Link to="/products/create">Sell Now</Link>
+            </div>
             {/* End .banner-content-wrapper */}
             <div className="banner-image-wrapper">
-                      <a href="#">
+              <a href="#">
                         <img
                           src="assets/images/banners/banner-full.jpg"
                           alt="Banner"
                         />
                       </a>
-                    </div>
+            </div>
             {/* End .banner-image-wrapper */}
           </div>
           {/* end .banner */}
           <div className="row">
             <div className="col-sm-4">
-                      <h3 className="carousel-title">TOP PRODUCTS</h3>
-                      <ul className="products-list">
+              <h3 className="carousel-title">TOP PRODUCTS</h3>
+              <ul className="products-list">
                         <li className="product">
                           <figure className="product-image-container">
-                            <a href="product.html">
+                            <a href="#">
                               <img
                                 src="assets/images/products/small/product1.jpg"
                                 alt="Product"
@@ -518,7 +517,7 @@ export default class Home extends Component {
                                                     </div>
                                                 </div> */}
                             <h4 className="product-title">
-                              <a href="product.html">Leather belt</a>
+                              <a href="#">Leather belt</a>
                             </h4>
                             <div className="product-price-container">
                               <span className="product-price">₦85.00</span>
@@ -528,7 +527,7 @@ export default class Home extends Component {
                         </li>
                         <li className="product">
                           <figure className="product-image-container">
-                            <a href="product.html">
+                            <a href="#">
                               <img
                                 src="assets/images/products/small/product2.jpg"
                                 alt="Product"
@@ -542,7 +541,7 @@ export default class Home extends Component {
                                                     </div>
                                                 </div> */}
                             <h4 className="product-title">
-                              <a href="product.html">Sunglasses</a>
+                              <a href="#">Sunglasses</a>
                             </h4>
                             <div className="product-price-container">
                               <span className="product-price">₦110.00</span>
@@ -551,14 +550,14 @@ export default class Home extends Component {
                           </div>
                         </li>
                       </ul>
-                    </div>
+            </div>
             {/* End .col-sm-4 */}
             <div className="col-sm-4">
-                      <h3 className="carousel-title">SALE</h3>
-                      <ul className="products-list">
+              <h3 className="carousel-title">SALE</h3>
+              <ul className="products-list">
                         <li className="product">
                           <figure className="product-image-container">
-                            <a href="product.html">
+                            <a href="#">
                               <img
                                 src="assets/images/products/small/product3.jpg"
                                 alt="Product"
@@ -572,7 +571,7 @@ export default class Home extends Component {
                                                     </div>
                                                 </div> */}
                             <h4 className="product-title">
-                              <a href="product.html">T-shirts</a>
+                              <a href="#">T-shirts</a>
                             </h4>
                             <div className="product-price-container">
                               <span className="product-price">₦99.00</span>
@@ -581,7 +580,7 @@ export default class Home extends Component {
                         </li>
                         <li className="product">
                           <figure className="product-image-container">
-                            <a href="product.html">
+                            <a href="#">
                               <img
                                 src="assets/images/products/small/product4.jpg"
                                 alt="Product"
@@ -595,7 +594,7 @@ export default class Home extends Component {
                                                     </div>
                                                 </div> */}
                             <h4 className="product-title">
-                              <a href="product.html">Chandelier bulb</a>
+                              <a href="#">Chandelier bulb</a>
                             </h4>
                             <div className="product-price-container">
                               <span className="product-price">₦250.00</span>
@@ -604,7 +603,7 @@ export default class Home extends Component {
                           </div>
                         </li>
                       </ul>
-                    </div>
+            </div>
           </div>
           <div className="mb50 visible-sm visible-xs" />
           {/* margin */}
