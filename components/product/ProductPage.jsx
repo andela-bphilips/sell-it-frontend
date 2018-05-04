@@ -172,7 +172,7 @@ class ProductPage extends Component {
               </div>
             </div>
             <div className="product-content">
-              <p>{product.category ? product.category : product.subCategory}</p>
+              <p>{product.category ? product.category.toUpperCase() : product.subCategory.toUpperCase()}</p>
             </div>
             <ul className="product-meta-list">
               {/* eslint-disable jsx-a11y/label-has-for */}
