@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import toastr from 'toastr';
 import moment from 'moment';
 
-import { getMyOrders, cancelOrder } from '../../actions/orders.js';
+import { getReceivedOrders, orderAction } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
@@ -16,14 +16,14 @@ class MyOrders extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      orders: {},
+      orders: [],
       loading: true
     };
   }
-
   componentDidMount() {
-    this.props.getMyOrders()
+    this.props.getReceivedOrders()
       .then(() => {
+        console.log(this.props.orders);
         this.setState({ orders: this.props.orders, loading: false });
       })
       .catch(() => {
@@ -34,40 +34,40 @@ class MyOrders extends Component {
   render() {
     const { orders, loading } = this.state;
 
-    if (_.isEmpty(orders)) {
-      return <Loader />;
-    }
-    const pagination = (<ReactPaginate
-      previousLabel={<i className="fas fa-chevron-circle-left" />}
-      nextLabel={<i className="fas fa-chevron-circle-right" />}
-      breakLabel={<a href="">...</a>}
-      breakClassName="break-me"
-      pageCount={orders.pagination.totalPages
-        ? orders.pagination.totalPages : null}
-      marginPagesDisplayed={3}
-      pageRangeDisplayed={orders.pagination.totalOrders > 9 ? 10
-        : orders.pagination.totalPages}
-      onPageChange={this.handlePageClick}
-      containerClassName="pagination justify-content-center"
-      pageClassName="page-item"
-      pageLinkClassName="page-link"
-      nextClassName="page-item next-button"
-      previousClassName="page-item"
-      previousLinkClassName="page-link"
-      nextLinkClassName="page-link"
-      disabledClassName="disabled"
-      activeClassName="active"
-    />);
+    // if (_.isEmpty(orders)) {
+    //   return <Loader />;
+    // }
+    // const pagination = (<ReactPaginate
+    //   previousLabel={<i className="fas fa-chevron-circle-left" />}
+    //   nextLabel={<i className="fas fa-chevron-circle-right" />}
+    //   breakLabel={<a href="">...</a>}
+    //   breakClassName="break-me"
+    //   pageCount={orders.pagination.totalPages
+    //     ? orders.pagination.totalPages : null}
+    //   marginPagesDisplayed={3}
+    //   pageRangeDisplayed={orders.pagination.totalOrders > 9 ? 10
+    //     : orders.pagination.totalPages}
+    //   onPageChange={this.handlePageClick}
+    //   containerClassName="pagination justify-content-center"
+    //   pageClassName="page-item"
+    //   pageLinkClassName="page-link"
+    //   nextClassName="page-item next-button"
+    //   previousClassName="page-item"
+    //   previousLinkClassName="page-link"
+    //   nextLinkClassName="page-link"
+    //   disabledClassName="disabled"
+    //   activeClassName="active"
+    // />);
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
           <h1>Received Orders</h1>
           <p>This is the list of orders you receive from intrested buyers </p>
         </div>
-        {!loading && orders.orders.length == 0 &&
+        {!loading && !orders.orders  &&
         <h2>You have no orders yet</h2>
         }
-        {!loading && orders.orders.length > 0 &&
+        {!loading && orders.orders && orders.orders.length > 0 &&
         <div className="table-responsive">
           <table className="table">
             <thead>
@@ -125,7 +125,7 @@ class MyOrders extends Component {
         </div>
         }
         <nav aria-label="Page Navigation">
-          {orders.pagination.totalPages > 1 ? pagination : null}
+          {/* {orders.pagination.totalPages > 1 ? pagination : null} */}
         </nav>
       </div>
     );
@@ -136,4 +136,4 @@ const mapStateToProps = ({ message, orders }) => ({
   message, orders
 });
 
-export default connect(mapStateToProps, { getMyOrders, cancelOrder })(MyOrders);
+export default connect(mapStateToProps, { getReceivedOrders, orderAction })(MyOrders);
