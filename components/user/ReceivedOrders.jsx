@@ -1,29 +1,30 @@
 /* eslint-disable react/prop-types */
-import _ from 'lodash';
-import React, { Component } from 'react';
-import ReactPaginate from 'react-paginate';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import _ from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/lodash';
+import React, { Component } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import ReactPaginate from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-paginate';
+import { Link } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-router-dom';
+import { connect } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-redux';
 import toastr from 'toastr';
 import moment from 'moment';
 
-import { getMyOrders, cancelOrder } from '../../actions/orders.js';
+import { getReceivedOrders, orderAction } from '../../actions/orders.js';
 
-import Loader from '../includes/Loader.jsx';
+import Loader from '../includes/Loader.js';
 import numberWithCommas from '../../utils/helper.js';
 
 class MyOrders extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      orders: {},
+      orders: [],
       loading: true
     };
   }
 
   componentDidMount() {
-    this.props.getMyOrders()
+    this.props.getReceivedOrders()
       .then(() => {
+        console.log(this.props.orders);
         this.setState({ orders: this.props.orders, loading: false });
       })
       .catch(() => {
@@ -33,41 +34,42 @@ class MyOrders extends Component {
 
   render() {
     const { orders, loading } = this.state;
+    console.log(orders, 'sdbfdh', loading);
 
-    if (_.isEmpty(orders)) {
-      return <Loader />;
-    }
-    const pagination = (<ReactPaginate
-      previousLabel={<i className="fas fa-chevron-circle-left" />}
-      nextLabel={<i className="fas fa-chevron-circle-right" />}
-      breakLabel={<a href="">...</a>}
-      breakClassName="break-me"
-      pageCount={orders.pagination.totalPages
-        ? orders.pagination.totalPages : null}
-      marginPagesDisplayed={3}
-      pageRangeDisplayed={orders.pagination.totalOrders > 9 ? 10
-        : orders.pagination.totalPages}
-      onPageChange={this.handlePageClick}
-      containerClassName="pagination justify-content-center"
-      pageClassName="page-item"
-      pageLinkClassName="page-link"
-      nextClassName="page-item next-button"
-      previousClassName="page-item"
-      previousLinkClassName="page-link"
-      nextLinkClassName="page-link"
-      disabledClassName="disabled"
-      activeClassName="active"
-    />);
+    // if (_.isEmpty(orders)) {
+    //   return <Loader />;
+    // }
+    // const pagination = (<ReactPaginate
+    //   previousLabel={<i className="fas fa-chevron-circle-left" />}
+    //   nextLabel={<i className="fas fa-chevron-circle-right" />}
+    //   breakLabel={<a href="">...</a>}
+    //   breakClassName="break-me"
+    //   pageCount={orders.pagination.totalPages
+    //     ? orders.pagination.totalPages : null}
+    //   marginPagesDisplayed={3}
+    //   pageRangeDisplayed={orders.pagination.totalOrders > 9 ? 10
+    //     : orders.pagination.totalPages}
+    //   onPageChange={this.handlePageClick}
+    //   containerClassName="pagination justify-content-center"
+    //   pageClassName="page-item"
+    //   pageLinkClassName="page-link"
+    //   nextClassName="page-item next-button"
+    //   previousClassName="page-item"
+    //   previousLinkClassName="page-link"
+    //   nextLinkClassName="page-link"
+    //   disabledClassName="disabled"
+    //   activeClassName="active"
+    // />);
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
-          <h1>Received Orders</h1>
+          <h1>Receivedss Orders</h1>
           <p>This is the list of orders you receive from intrested buyers </p>
         </div>
-        {!loading && orders.orders.length == 0 &&
+        {!loading && !orders.orders &&
         <h2>You have no orders yet</h2>
         }
-        {!loading && orders.orders.length > 0 &&
+        {!loading && orders.orders && orders.orders.length > 0 &&
         <div className="table-responsive">
           <table className="table">
             <thead>
@@ -106,16 +108,17 @@ class MyOrders extends Component {
                     <td className="total-col">{moment(order.createdAt).fromNow()}</td>
                     <td className="price-col">aaa</td>
                     <td>Philips Blessing</td>
-                    <td><div className="btn-group">
-                      <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action <span className="caret" />
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li><a href="#">Accept</a></li>
-                        <li role="separator" className="divider" />                        
-                        <li><a href="#">Reject</a></li>
-                      </ul>
-                        </div>
+                    <td>
+                      <div className="btn-group">
+                        <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Action <span className="caret" />
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li><a href="#">Accept</a></li>
+                          <li role="separator" className="divider" />
+                          <li><a href="#">Reject</a></li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -125,7 +128,7 @@ class MyOrders extends Component {
         </div>
         }
         <nav aria-label="Page Navigation">
-          {orders.pagination.totalPages > 1 ? pagination : null}
+          {/* {orders.pagination.totalPages > 1 ? pagination : null} */}
         </nav>
       </div>
     );
@@ -136,4 +139,6 @@ const mapStateToProps = ({ message, orders }) => ({
   message, orders
 });
 
-export default connect(mapStateToProps, { getMyOrders, cancelOrder })(MyOrders);
+export default connect(mapStateToProps, {
+  getReceivedOrders, orderAction
+})(MyOrders);
