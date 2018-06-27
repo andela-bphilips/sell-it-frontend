@@ -29,7 +29,6 @@ class CreateProduct extends Component {
     };
   }
   componentDidMount() {
-    console.log('cdm');
     this.props.getAllCategory().then(() => {
       this.setState({ categories: this.props.category });
     });
@@ -94,8 +93,8 @@ class CreateProduct extends Component {
 
   render() {
     const {
- disabled, product, saving, categories 
-} = this.state;
+      disabled, product, saving, categories
+    } = this.state;
     return (
       <CreateProductForm
         handleFormChange={this.handleFormChange}
@@ -111,9 +110,11 @@ class CreateProduct extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-    message: state.message,
-    category: state.category.categories
+const mapStateToProps = state => ({
+  message: state.message,
+  category: state.category.categories
 });
 
-export default connect(mapStateToProps, { createProduct, getAllCategory })(CreateProduct);
+export default connect(mapStateToProps, {
+  createProduct, getAllCategory
+})(CreateProduct);

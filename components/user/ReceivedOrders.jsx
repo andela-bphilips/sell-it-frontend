@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
-import _ from 'lodash';
-import React, { Component } from 'react';
-import ReactPaginate from 'react-paginate';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import _ from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/lodash';
+import React, { Component } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react';
+import ReactPaginate from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-paginate';
+import { Link } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-router-dom';
+import { connect } from '../../../../../Library/Caches/typescript/2.9/node_modules/@types/react-redux';
 import toastr from 'toastr';
 import moment from 'moment';
 
 import { getReceivedOrders, orderAction } from '../../actions/orders.js';
 
-import Loader from '../includes/Loader.jsx';
+import Loader from '../includes/Loader.js';
 import numberWithCommas from '../../utils/helper.js';
 
 class MyOrders extends Component {
@@ -20,6 +20,7 @@ class MyOrders extends Component {
       loading: true
     };
   }
+
   componentDidMount() {
     this.props.getReceivedOrders()
       .then(() => {
@@ -33,6 +34,7 @@ class MyOrders extends Component {
 
   render() {
     const { orders, loading } = this.state;
+    console.log(orders, 'sdbfdh', loading);
 
     // if (_.isEmpty(orders)) {
     //   return <Loader />;
@@ -61,10 +63,10 @@ class MyOrders extends Component {
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
-          <h1>Received Orders</h1>
+          <h1>Receivedss Orders</h1>
           <p>This is the list of orders you receive from intrested buyers </p>
         </div>
-        {!loading && !orders.orders  &&
+        {!loading && !orders.orders &&
         <h2>You have no orders yet</h2>
         }
         {!loading && orders.orders && orders.orders.length > 0 &&
@@ -106,16 +108,17 @@ class MyOrders extends Component {
                     <td className="total-col">{moment(order.createdAt).fromNow()}</td>
                     <td className="price-col">aaa</td>
                     <td>Philips Blessing</td>
-                    <td><div className="btn-group">
-                      <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action <span className="caret" />
-                      </button>
-                      <ul className="dropdown-menu">
-                        <li><a href="#">Accept</a></li>
-                        <li role="separator" className="divider" />                        
-                        <li><a href="#">Reject</a></li>
-                      </ul>
-                        </div>
+                    <td>
+                      <div className="btn-group">
+                        <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Action <span className="caret" />
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li><a href="#">Accept</a></li>
+                          <li role="separator" className="divider" />
+                          <li><a href="#">Reject</a></li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -136,4 +139,6 @@ const mapStateToProps = ({ message, orders }) => ({
   message, orders
 });
 
-export default connect(mapStateToProps, { getReceivedOrders, orderAction })(MyOrders);
+export default connect(mapStateToProps, {
+  getReceivedOrders, orderAction
+})(MyOrders);
