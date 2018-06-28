@@ -65,7 +65,7 @@ class CategoryNav extends Component {
                     </li>
                   ))
             }
-            {/* <li>
+            <li>
               <a href="category.html">Fashion</a>
               <button
                 className="accordion-btn collapsed"
@@ -98,11 +98,11 @@ class CategoryNav extends Component {
                   </a>
                 </li>
               </ul>
-            </li> */}
+            </li>
             
-            {/* <li>
+            <li>
               <a href="category.html">Health and Beauty</a>
-            </li> */}
+            </li>
           </ul>
         </div>
         {/* End .widget */}
