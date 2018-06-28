@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-for  */
+/* eslint-disable react/prop-types */
 import React from 'react';
 
 const CreateProductForm = ({
-  createNewProduct, disabled, handleFormChange, handleFormMetaChange, product, uploadImages, saving, categories
+  createNewProduct, disabled, handleFormChange, handleFormMetaChange,
+  product, uploadImages, saving, categories
 }) => (
   <div className="col-md-9 col-md-push-3">
     <div className="page-header text-center">
@@ -137,9 +139,23 @@ const CreateProductForm = ({
                   onChange={handleFormChange}
                 >
                   <option>-</option>
-                  {categories.length > 0 && categories.map((category) => {
-                    return (<option value={category.category_title ? category.category_title : category.sub_category_title}>{category.category_title ? category.category_title.toUpperCase() : category.sub_category_title.toUpperCase() }</option>);
-                })}
+                  {categories.length > 0 && categories.map(category =>
+                  (
+                    category.category_title !== 'yard sale' &&
+                    <option
+                      value={
+                        category.category_title
+                        ? category.category_title
+                        : category.sub_category_title
+                      }
+                    >
+                      {
+                        category.category_title
+                        ? category.category_title.toUpperCase()
+                        : category.sub_category_title.toUpperCase()
+                      }
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

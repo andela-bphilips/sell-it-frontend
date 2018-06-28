@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 
 import { getCategories } from '../../actions/category.js';
 
@@ -17,6 +17,7 @@ class SearchBar extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCategorySelect = this.handleCategorySelect.bind(this);
   }
 
   componentDidMount() {
@@ -24,22 +25,29 @@ class SearchBar extends Component {
       .then(() => {
         this.setState({ categories: this.props.categories });
       })
-      .catch(() => console.log(this.props.message));
+      .catch(() => toastr.error(this.props.message));
   }
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleCategorySelect(category) {
-    this.setState({ category });
+  handleCategorySelect(category = '') {
+    this.setState({ category }, () => {
+      if (category === '') {
+        this.context.router.history.push('/products');
+      } else {
+        const newUrl = `/products?search=&category=${this.state.category}`;
+        this.context.router.history.push(newUrl);
+      }
+    });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const { category, search } = this.state;
-    this.context.router.history.push(
-      `/products?search=${search}&category=${category}`);
+    const newUrl = `/products?search=${search}&category=${category}`;
+    this.context.router.history.push(newUrl);
   }
 
   render() {
@@ -63,6 +71,11 @@ class SearchBar extends Component {
               <i className="fa fa-caret-down" />
             </a>
             <ul className="dropdown-menu">
+              <li>
+                <a onClick={() => this.handleCategorySelect()}>
+                  All Categories
+                </a>
+              </li>
               {
                 categories.map(categ =>
                   (
@@ -77,7 +90,8 @@ class SearchBar extends Component {
                   ))
               }
             </ul>
-          </div>{/* End .dropddown */}
+          </div>
+          {/* End .dropddown */}
           <input
             type="search"
             name="search"

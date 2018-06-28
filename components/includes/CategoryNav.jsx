@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
-// import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 
@@ -16,37 +14,27 @@ class CategoryNav extends Component {
       categories: []
     };
 
-    // this.onChange = this.onChange.bind(this);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCategorySelect = this.handleCategorySelect.bind(this);
   }
 
   componentDidMount() {
     this.props.getCategories('categories')
       .then(() => {
-        console.log(this.props.categories, 'categories');
         this.setState({ categories: this.props.categories });
       })
       .catch(() => toastr.error(this.props.message));
   }
 
   handleCategorySelect(category = '') {
-    if (category === '') {
-      this.setState({ category: '' }, () => {
+    this.setState({ category }, () => {
+      if (category === '') {
         this.context.router.history.push('/products');
-      });
-    } else {
-      this.setState({ category }, () => {
+      } else {
         const newUrl = `/products?search=&category=${this.state.category}`;
         this.context.router.history.push(newUrl);
-      });
-    }
+      }
+    });
   }
-
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   const { category, search } = this.state;
-  // }
 
   render() {
     const { categories } = this.state;
@@ -93,8 +81,9 @@ class CategoryNav extends Component {
                             category.sub_categories.map(subCategory =>
                             (
                               <li key={subCategory.id}>
+                                {/* eslint-disable max-len */}
                                 <a onClick={() =>
-                                  this.handleCategorySelect(subCategory.sub_category_title)}
+                                  this.handleCategorySelect(subCategory.subCategoryTitle)}
                                 >
                                   <i className="fa fa-caret-right" />
                                   {subCategory.sub_category_title}
