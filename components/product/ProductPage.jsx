@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable max-len */
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 import Clipboard from 'react-clipboard.js';
 
@@ -12,7 +14,7 @@ import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
-const baseUrl = process.env.baseUrl;
+const { baseUrl } = process.env;
 
 class ProductPage extends Component {
   constructor(props, context) {
@@ -48,7 +50,8 @@ class ProductPage extends Component {
 
   componentDidUpdate(prevProps) {
     const { updateComponent } = this.state;
-    if (prevProps.match.params.product !== this.props.match.params.product || updateComponent) {
+    if (prevProps.match.params.product !== this.props.match.params.product
+      || updateComponent) {
       /* eslint-disable react/no-did-mount-set-state */
       this.props.getProduct(this.props.match.params.product)
         .then(() => {
@@ -100,7 +103,6 @@ class ProductPage extends Component {
       .then(() => {
         this.setState({ saving: false, updateComponent: true });
         this.onCloseModal();
-        // this.forceUpdate();
         toastr.success(this.props.message);
       })
       .catch(() => {
@@ -113,7 +115,6 @@ class ProductPage extends Component {
     const {
       open, product, saving
     } = this.state;
-    console.log(product.productImages);
 
     if (_.isEmpty(product)) {
       return <Loader />;

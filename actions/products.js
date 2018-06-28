@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+/* eslint-disable no-console */
 import axios from 'axios';
 
 import { GET_PRODUCTS_SUCCESS, GET_PRODUCT_SUCCESS, GET_MY_PRODUCTS_SUCCESS, SUCCESS_MESSAGE, ERROR_MESSAGE } from './types';
@@ -56,7 +57,7 @@ export const getProduct = slug => dispatch => axios.get(`${apiBaseUrl}/product?s
     throw dispatch(passErrorMessage('An error occured.'));
   });
 
-export const getMyProducts = (status='') => dispatch => axios.get(`${apiBaseUrl}/my_products?status=${status}`)
+export const getMyProducts = (status = '') => dispatch => axios.get(`${apiBaseUrl}/my_products?status=${status}`)
   .then((response) => {
     dispatch(getProductsSuccess(response.data.data));
   })

@@ -21,10 +21,10 @@ class MyOrders extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getMyOrders()
       .then(() => {
-        this.setState({ orders: this.props.orders,  loading: false });
+        this.setState({ orders: this.props.orders, loading: false });
       })
       .catch(() => {
         toastr.error(this.props.message);
@@ -43,7 +43,7 @@ class MyOrders extends Component {
       breakLabel={<a href="">...</a>}
       breakClassName="break-me"
       pageCount={orders.pagination.totalPages
-        ? orders.pagination.totalPages : null}
+        ? orders.pagination.totalPages : 0}
       marginPagesDisplayed={3}
       pageRangeDisplayed={orders.pagination.totalOrders > 9 ? 10
         : orders.pagination.totalPages}
@@ -64,7 +64,7 @@ class MyOrders extends Component {
           <h1>My Orders</h1>
           <p>This is the list of your orders and the status</p>
         </div>
-        {!loading && orders.orders.length == 0 &&
+        {!loading && orders.orders.length === 0 &&
         <h2>You have no orders yet</h2>
         }
         {!loading && orders.orders.length > 0 &&
@@ -82,27 +82,49 @@ class MyOrders extends Component {
             <tbody>
               { orders.orders.map(order =>
                 (
-                  <tr>
+                  <tr key={order.id}>
                     <td className="product-col">
                       <div className="product">
                         <Link to="#">
-                          <img src={order.productImage} width="100" alt="Product" />
+                          <img
+                            src={order.productImage}
+                            width="100"
+                            alt="Product"
+                          />
                         </Link>
                         <h3 className="product-title">
                           <Link to="#">{order.productName}</Link>
                         </h3>
                       </div>
                     </td>
-                    <td className="price-col">{order.currency} {numberWithCommas(order.productPrice)}</td>
-                    <td className="quantity-col">
-                      {order.buyerOrderStatus === 'in_progress' ? 'Pending' : ''}
-                      {order.buyerOrderStatus === 'cancelled' ? 'Cancelled' : ''}
-                      {order.sellerOrderStatus === 'approved' ? 'Approved' : ''}
-                      {order.sellerOrderStatus === 'Rejected' ? 'Rejected' : ''}
-                      {order.sellerOrderStatus === 'completed' ? 'Completed' : ''}
+                    <td className="price-col">
+                      {order.currency} {numberWithCommas(order.productPrice)}
                     </td>
-                    <td className="total-col">{moment(order.createdAt).fromNow()}</td>
-                    <td>{order.buyerOrderStatus=='in_progress' && <button className="btn btn-primary" onClick={()=>{ this.props.cancelOrder(order)}}>Cancel</button>}</td>
+                    <td className="quantity-col">
+                      {order.buyerOrderStatus === 'in_progress'
+                        ? 'Pending' : ''}
+                      {order.buyerOrderStatus === 'cancelled'
+                        ? 'Cancelled' : ''}
+                      {order.sellerOrderStatus === 'approved'
+                        ? 'Approved' : ''}
+                      {order.sellerOrderStatus === 'Rejected'
+                        ? 'Rejected' : ''}
+                      {order.sellerOrderStatus === 'completed'
+                        ? 'Completed' : ''}
+                    </td>
+                    <td className="total-col">
+                      {moment(order.createdAt).fromNow()}
+                    </td>
+                    <td>
+                      {order.buyerOrderStatus === 'in_progress' &&
+                        <button
+                          className="btn btn-primary"
+                          onClick={() => this.props.cancelOrder(order)}
+                        >
+                          Cancel
+                        </button>
+                      }
+                    </td>
                   </tr>
                 ))
               }
@@ -120,6 +142,6 @@ class MyOrders extends Component {
 
 const mapStateToProps = ({ message, orders }) => ({
   message, orders
-})
+});
 
 export default connect(mapStateToProps, { getMyOrders, cancelOrder })(MyOrders);
