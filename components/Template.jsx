@@ -24,14 +24,26 @@ const Template = () => (
             <SideNav />
             <Switch>
               <Route exact="exact" path="/" component={Home} />
-              <Route exact="exact" path="/products/create" component={CreateProduct} />
-              <Route exact="exact" path="/product/:product" component={ProductPage} />
+              <Route
+                exact="exact"
+                path="/products/create"
+                component={CreateProduct}
+              />
+              <Route
+                exact="exact"
+                path="/product/:product"
+                component={ProductPage}
+              />
               <Route
                 exact="exact"
                 path="/products"
                 component={AllProduct}
               />
-              <Route exact="exact" path="/user/products" component={MyProductPage} />
+              <Route
+                exact="exact"
+                path="/user/products"
+                component={MyProductPage}
+              />
               <Route exact="exact" path="/user/orders" component={MyOrders} />
               <Route exact="exact" path="/orders" component={ReceivedOrders} />
               <Route exact="exact" path="/user/profile" component={MyProfile} />

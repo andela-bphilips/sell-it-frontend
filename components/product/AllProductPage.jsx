@@ -14,6 +14,8 @@ import Loader from '../includes/Loader.jsx';
 import numberWithCommas from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
+const { DEFAULTNOIMAGE } = process.env;
+
 class AllProducts extends Component {
   constructor(props, context) {
     super(props, context);
@@ -50,14 +52,6 @@ class AllProducts extends Component {
     });
   }
 
-    // componentDidUpdate() {
-    //   const { updateComponent } = this.state;
-    //   if (updateComponent) {
-    //     const urldata = queryString.parse(this.props.location.search);
-    //     const search = urldata.search;
-    //     if (search) {
-    //       this.setState({ searchQuery: search }, () => this.getProductsApiCall());
-    //     }
   componentWillReceiveProps(nextProps) {
     if (this.props.location.search !== nextProps.location.search) {
       const urlData = queryString.parse(nextProps.location.search);
@@ -174,80 +168,74 @@ class AllProducts extends Component {
           <img src="/assets/images/banners/banner-top.jpg" alt="Banner" />
           <div className="banner-content">
             <h2>Epic<br />Marketplace</h2>
-            {/* <a href="#" className="action-link">Shop now</a> */}
           </div>
         </div>{/* End .banner */}
         <div className="category-header">
           <h1>Products</h1>
-          {/* <ol className="breadcrumb">
-            <li><a href="#">Home &amp; Garden</a></li>
-            <li className="active">Home Decor</li>
-          </ol> */}
         </div>
-        <div className="shop-row">
-          <div className="shop-container max-col-4" data-layout="fitRows">
-            {products.products.map(product =>
-              (
-                <div key={product.slug} className="product-item">
-                  <div className="product">
-                    <figure className="product-image-container">
-                      <Link
-                        to={`/product/${product.slug}`}
-                        title="Product Name"
-                        className="product-image-link"
-                      >
-                        <img
-                          height="200px"
-                          src={product.productImages ? product.productImages[0] : 'http://res.cloudinary.com/zoewox-technologies/image/upload/v1525369665/No-image-available_jw7wqc.jpg'}
-                          alt={product.productName}
-                        />
-                      </Link>
-                      {/* <a href="#" className="btn-quick-view">Quick View</a> */}
-                      <div className="product-action">
-                        { auth && auth.user.id !== product.userId ?
-                          <div>
-                            {/* <a
-                              href="#"
-                              className="btn-product btn-wishlist"
-                              title="Add to Wishlist"
-                            >
-                              <i className="icon-product icon-heart" />
-                            </a> */}
-                            <a style={{ cursor: 'pointer' }} onClick={() => this.showOrderModal(product)} className="btn-product btn-add-cart">
-                              <i className="icon-product icon-bag" />
-                              <span>Place Order</span>
-                            </a>
-                          </div> : ''
-                        }
-                        {/* <a
-                          href="#"
-                          className="btn-product btn-compare"
-                          title="Add to Compare"
+        {products.products.length === 0
+        ? <h2>No Product Found</h2>
+        :
+        <div>
+          <div className="shop-row">
+            <div className="shop-container max-col-4" data-layout="fitRows">
+              {products.products.map(productRendered =>
+                (
+                  <div key={productRendered.slug} className="product-item">
+                    <div className="product">
+                      <figure className="product-image-container">
+                        <Link
+                          to={`/product/${productRendered.slug}`}
+                          title="Product Name"
+                          className="product-image-link"
                         >
-                          <i className="icon-product icon-bar" />
-                        </a> */}
-                      </div>{/* End .product-action */}
-                    </figure>
-                    <h3 className="product-title">
-                      <a href="product.html">{product.productName}</a>
-                    </h3>
-                    <div className="product-price-container">
-                      <span className="product-price">
-                        {/* eslint-disable max-len */}
-                        {product.currency} {numberWithCommas(product.productPrice)}
-                      </span>
+                          <img
+                            height="200px"
+                            src={productRendered.productImages
+                              ? productRendered.productImages[0]
+                              : DEFAULTNOIMAGE}
+                            alt={productRendered.productName}
+                          />
+                        </Link>
+                        <div className="product-action">
+                          { auth && auth.user.id !== productRendered.userId ?
+                            <div>
+                              <a
+                                style={{ cursor: 'pointer' }}
+                                onClick={() =>
+                                  this.showOrderModal(productRendered)}
+                                className="btn-product btn-add-cart"
+                              >
+                                <i className="icon-product icon-bag" />
+                                <span>Place Order</span>
+                              </a>
+                            </div> : ''
+                          }
+                        </div>
+                        {/* End .product-action */}
+
+                      </figure>
+                      <h3 className="product-title">
+                        <a href="product.html">{productRendered.productName}</a>
+                      </h3>
+                      <div className="product-price-container">
+                        <span className="product-price">
+                          {productRendered.currency}
+                          {numberWithCommas(productRendered.productPrice)}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
+            </div>
           </div>
-        </div>
-        {products.products.length == 0 && <h2>No Product Found</h2>}
 
-        <nav aria-label="Page Navigation">
-          {products.pagination.totalPages > 1 ? pagination : null}
-        </nav>
+          <nav aria-label="Page Navigation">
+            {products.pagination.totalPages > 1 ? pagination : null}
+          </nav>
+        </div>
+        }
 
         { open
           ? <MakeOrderModal
@@ -268,4 +256,6 @@ const mapStateToProps = ({ auth, message, products }) => ({
   auth, message, products
 });
 
-export default connect(mapStateToProps, { getProducts, placeOrder })(AllProducts);
+export default connect(mapStateToProps, {
+  getProducts, placeOrder
+})(AllProducts);

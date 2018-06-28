@@ -59,6 +59,7 @@ const orders = (state = initialState.orders, action = {}) => {
               === 'SellerOrderStatus.completed_type') {
             order.sellerOrderStatus = 'completed';
           }
+          order.buyerOrderStatus = action.order.buyerOrderStatus;
           order.modifiedAt = action.order.modifiedAt;
         }
         return order;

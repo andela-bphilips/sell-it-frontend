@@ -4,3 +4,4 @@ node_modules/
 build/
 build/app.bundle.js
 build/app.bundle.js.map
+unused.js

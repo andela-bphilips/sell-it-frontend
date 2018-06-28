@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable */
 const express = require('express');
 const path = require('path');
 
