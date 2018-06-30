@@ -11,7 +11,7 @@ import { getProduct } from '../../actions/products.js';
 import { placeOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
-import numberWithCommas from '../../utils/helper.js';
+import { numberWithCommas } from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
 const { baseUrl } = process.env;

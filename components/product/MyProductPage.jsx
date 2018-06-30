@@ -110,23 +110,25 @@ class MyProductPage extends Component {
               <h2>No Product Available</h2>
             }
             { products.products && products.products.map(product => (
-              <div className="portfolio-item website" key={product.id}>
-                <figure>
-                  <img
-                    height="270px"
-                    src={product.productImages
-                      ? product.productImages[0]
-                      : DEFAULTNOIMAGE}
-                    alt="Portfolio"
-                  />
-                  <Link
-                    to={`/product/${product.slug}`}
-                    className="btn-detail"
-                    role="button"
-                  >
-                    View Details
-                  </Link>
-                </figure>
+              <div className="portfolio-item" key={product.id}>
+                <div>
+                  <figure className="product-image-container">
+                    <img
+                      height="270px"
+                      src={product.productImages
+                        ? product.productImages[0]
+                        : DEFAULTNOIMAGE}
+                      alt="Portfolio"
+                    />
+                    <Link
+                      to={`/product/${product.slug}`}
+                      className="btn-product btn-detail"
+                      role="button"
+                    >
+                      View Details
+                    </Link>
+                  </figure>
+                </div>
                 <div className="portfolio-meta">
                   <h3 className="portfolio-title">
                     <Link
@@ -139,6 +141,9 @@ class MyProductPage extends Component {
                   <div className="portfolio-tags">
                     <p>View(s): {product.views}</p>
                   </div>{/* End .portfolio-tags */}
+                  <Link to={`/edit/product/${product.slug}`} className="btn-edit-product" role="button">
+                    Edit Product
+                  </Link>
                 </div>{/* End .portfolio-meta */}
               </div>
             ))}

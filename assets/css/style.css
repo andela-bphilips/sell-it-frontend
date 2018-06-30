@@ -3096,7 +3096,7 @@ website:   	http://www.themepunch.com
   background-position: -19px -19px;
 }
 
-.product .product-action .btn-product.btn-add-cart {
+.product .product-action .btn-product.btn-add-cart, .btn-edit-product {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   margin: 0 5px;
@@ -3109,9 +3109,13 @@ website:   	http://www.themepunch.com
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-  .product-item .product .product-action .btn-product.btn-add-cart {
+  .product-item .product .product-action .btn-product.btn-add-cart, .btn-edit-product {
     padding-right: 0;
   }
+}
+
+.btn-edit-product {
+  padding: 5px;
 }
 
 .product .product-action .btn-product.btn-add-cart span {
@@ -3125,8 +3129,12 @@ website:   	http://www.themepunch.com
   }
 }
 
-.product .product-action .btn-product.btn-add-cart:hover, .product .product-action .btn-product.btn-add-cart:focus {
+.product .product-action .btn-product.btn-add-cart:hover, .product .product-action .btn-product.btn-add-cart:focus, .btn-edit-product:hover, .btn-edit-product:focus {
   background-color: #dc9831;
+}
+
+.btn-edit-product:hover, .btn-edit-product:focus {
+  color: #000000;
 }
 
 .product:hover .product-image-container > a:before {

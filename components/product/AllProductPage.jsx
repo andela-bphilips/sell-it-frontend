@@ -11,7 +11,7 @@ import { getProducts } from '../../actions/products.js';
 import { placeOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
-import numberWithCommas from '../../utils/helper.js';
+import { numberWithCommas } from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
 const { DEFAULTNOIMAGE } = process.env;
@@ -209,6 +209,18 @@ class AllProducts extends Component {
                                 <i className="icon-product icon-bag" />
                                 <span>Place Order</span>
                               </a>
+                            </div> : ''
+                          }
+                          { auth && auth.user.id === productRendered.userId ?
+                            <div>
+                              <Link
+                                style={{ cursor: 'pointer' }}
+                                to={`/edit/product/${productRendered.slug}`}
+                                className="btn-product btn-add-cart"
+                              >
+                                <i className="" />
+                                <span>Edit Product</span>
+                              </Link>
                             </div> : ''
                           }
                         </div>
