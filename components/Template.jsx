@@ -12,6 +12,7 @@ import MyOrders from './user/MyOrders.jsx';
 import ReceivedOrders from './user/ReceivedOrders.jsx';
 import MyProfile from './user/MyProfile.jsx';
 import CreateProduct from './product/CreateProduct.jsx';
+import EditProduct from './product/EditProduct.jsx';
 
 const Template = () => (
   <div>
@@ -31,6 +32,11 @@ const Template = () => (
               />
               <Route
                 exact="exact"
+                path="/edit/product/:productId"
+                component={EditProduct}
+              />
+              <Route
+                exact="exact"
                 path="/product/:product"
                 component={ProductPage}
               />
@@ -44,9 +50,21 @@ const Template = () => (
                 path="/user/products"
                 component={MyProductPage}
               />
-              <Route exact="exact" path="/user/orders" component={MyOrders} />
-              <Route exact="exact" path="/orders" component={ReceivedOrders} />
-              <Route exact="exact" path="/user/profile" component={MyProfile} />
+              <Route
+                exact="exact"
+                path="/user/orders"
+                component={MyOrders}
+              />
+              <Route
+                exact="exact"
+                path="/orders"
+                component={ReceivedOrders}
+              />
+              <Route
+                exact="exact"
+                path="/user/profile"
+                component={MyProfile}
+              />
             </Switch>
             <CategoryNav />
           </div>

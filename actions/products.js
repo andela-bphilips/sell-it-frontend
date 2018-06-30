@@ -53,8 +53,17 @@ export const getProduct = slug => dispatch => axios.get(`${apiBaseUrl}/product?s
     dispatch(getOneProductSuccess(response.data.data.product));
   })
   .catch((error) => {
-    console.log(error);
-    throw dispatch(passErrorMessage('An error occured.'));
+    console.log(error.response.data);
+    throw dispatch(passErrorMessage(error.response.data.data.message));
+  });
+
+export const editProduct = (slug, productData) => dispatch => axios.put(`${apiBaseUrl}/product?slug=${slug}`, productData)
+  .then((response) => {
+    dispatch(passSuccessMessage(response.data.message));
+  })
+  .catch((error) => {
+    console.log(error.response.data);
+    throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
 export const getMyProducts = (status = '') => dispatch => axios.get(`${apiBaseUrl}/my_products?status=${status}`)

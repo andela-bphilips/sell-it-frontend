@@ -1,26 +1,30 @@
 /* eslint-disable react/prop-types */
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 
-import { createProduct } from '../../actions/products.js';
+import { editProduct, getProduct } from '../../actions/products.js';
 import { getAllCategory } from '../../actions/category';
 
+import EditProductForm from './includes/EditProductForm.jsx';
+import Loader from '../includes/Loader.jsx';
 
-import CreateProductForm from './includes/CreateProductForm.jsx';
+import { camelCaseToUnderscore } from '../../utils/helper.js';
 
-class CreateProduct extends Component {
+class EditProduct extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleFormMetaChange = this.handleFormMetaChange.bind(this);
-    this.createNewProduct = this.createNewProduct.bind(this);
+    this.saveProduct = this.saveProduct.bind(this);
     this.uploadImages = this.uploadImages.bind(this);
     this.onUpload = this.onUpload.bind(this);
 
     this.state = {
       disabled: false,
+      loading: false,
       images: [],
       product: {
         meta: {}
@@ -29,7 +33,21 @@ class CreateProduct extends Component {
       saving: false
     };
   }
-  componentDidMount() {
+
+  componentWillMount() {
+    this.setState({ loading: true }, () => {
+      this.props.getProduct(this.props.match.params.productId)
+        .then(() => {
+          this.setState({
+            loading: false,
+            product: this.props.product
+          });
+        })
+        .catch(() => {
+          this.setState({ loading: false });
+          toastr.error(this.props.message);
+        });
+    });
     this.props.getAllCategory().then(() => {
       this.setState({ categories: this.props.category });
     });
@@ -67,11 +85,23 @@ class CreateProduct extends Component {
     return this.setState({ product });
   }
 
-  createNewProduct(event) {
+  saveProduct(event) {
     event.preventDefault();
     const { product } = this.state;
+    const editedProduct = {};
+    const keysToDelete = [
+      'createdAt', 'creator', 'id', 'negotiable', 'slug', 'subCategory',
+      'views', 'modifiedAt', 'ownerName', 'ownerSlackHandle', 'userId',
+      'meta', 'category'
+    ];
+    Object.keys(product).forEach((key) => {
+      if (keysToDelete.indexOf(key) < 0) {
+        editedProduct[camelCaseToUnderscore(key)] = product[key];
+      }
+    });
+
     this.setState({ disabled: true, saving: true });
-    this.props.createProduct(product)
+    this.props.editProduct(product.slug, editedProduct)
       .then(() => {
         this.setState({ disabled: false, saving: false });
         toastr.success(this.props.message);
@@ -88,18 +118,24 @@ class CreateProduct extends Component {
     const { product } = this.state;
 
     product[field] = event.target.value;
-    return this.setState({ product });
+    this.setState({ product });
   }
 
   render() {
     const {
-      disabled, product, saving, categories
+      categories, disabled, loading, product, saving
     } = this.state;
+
+    if (loading) {
+      return <Loader />;
+    } else if (!loading && _.isEmpty(this.props.product)) {
+      return <h3>Product Not Found</h3>;
+    }
     return (
-      <CreateProductForm
+      <EditProductForm
         handleFormChange={this.handleFormChange}
         handleFormMetaChange={this.handleFormMetaChange}
-        createNewProduct={this.createNewProduct}
+        saveProduct={this.saveProduct}
         disabled={disabled}
         product={product}
         saving={saving}
@@ -112,9 +148,10 @@ class CreateProduct extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  category: state.category.categories
+  category: state.category.categories,
+  product: state.product
 });
 
 export default connect(mapStateToProps, {
-  createProduct, getAllCategory
-})(CreateProduct);
+  editProduct, getProduct, getAllCategory
+})(EditProduct);

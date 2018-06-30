@@ -27,7 +27,6 @@ export const getCategories = (categoryType = '') => dispatch =>
   axios.get(`${apiBaseUrl}/all_categories?category_type=${categoryType}`)
     .then((response) => {
       dispatch(getCategoriesSuccess(response.data.data.categories));
-      dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
       console.log(error.response.data.data.message);
