@@ -10,7 +10,7 @@ import moment from 'moment';
 import { getMyOrders, cancelOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
-import numberWithCommas from '../../utils/helper.js';
+import { numberWithCommas } from '../../utils/helper.js';
 
 class MyOrders extends Component {
   constructor(props, context) {

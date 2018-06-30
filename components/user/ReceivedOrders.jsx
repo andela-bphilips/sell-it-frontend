@@ -12,7 +12,7 @@ import {
 } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
-import numberWithCommas from '../../utils/helper.js';
+import { numberWithCommas } from '../../utils/helper.js';
 
 class ReceivedOrders extends Component {
   constructor(props, context) {
