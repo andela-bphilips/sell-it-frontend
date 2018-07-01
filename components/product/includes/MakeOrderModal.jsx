@@ -1,11 +1,18 @@
-/* eslint-disable max-len */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import Modal from 'react-responsive-modal';
 
 const MakeOrderModal = ({
-  isDisabled, handleFormChange, onCloseModal, open, placeOrder, product, saving
+  handleFormChange, onCloseModal, open, placeOrder, product, saving
 }) => (
-  <Modal open={open} onClose={onCloseModal} little closeOnOverlayClick={false} showCloseIcon={!saving} closeOnEsc={false}>
+  <Modal
+    open={open}
+    onClose={onCloseModal}
+    closeOnOverlayClick={false}
+    showCloseIcon={!saving}
+    closeOnEsc={false}
+    little
+  >
     <form onSubmit={placeOrder}>
       <h1 className="product-title">Place Order</h1>
       Product name: <h4>{product.productName}</h4>
@@ -55,14 +62,17 @@ const MakeOrderModal = ({
           className="btn btn-primary pull-left min-width"
           disabled={saving}
         >
-          { saving ? 'Placing Order...' : 'Place Order' }
+          { saving ? 'Placing Order...' : 'Checkout' }
         </button>
       </div>
 
     </form>
     <p>
-      * You cannot select more products than the total wuantity available for sale<br />
+      * You cannot select more products than the quantity available for sale
+      <br />
       * {product.productQuantity} item(s) of this product available for sale
+      <br />
+      * Do not refresh the page to avoid losing your order progress.
     </p>
   </Modal>);
 
