@@ -299,6 +299,16 @@ class ProductPage extends Component {
           <ul className="nav nav-tabs" role="tablist">
             <li role="presentation" className="active">
               <a
+                href="#paymentMethods"
+                aria-controls="paymentMethods"
+                role="tab"
+                data-toggle="tab"
+              >
+                Payment Methods
+              </a>
+            </li>
+            <li role="presentation">
+              <a
                 href="#returnPolicy"
                 aria-controls="returnPolicy"
                 role="tab"
@@ -309,22 +319,25 @@ class ProductPage extends Component {
             </li>
             <li role="presentation">
               <a
-                href="#disclaimer"
-                aria-controls="disclaimer"
+                href="#pickupPolicy"
+                aria-controls="pickupPolicy"
                 role="tab"
                 data-toggle="tab"
               >
-                Disclaimer
+                Pickup/Delivery Policy
               </a>
             </li>
           </ul>
           {/* Tab panes */}
           <div className="tab-content">
+            <div role="tabpanel" className="tab-pane active" id="paymentMethods">
+              <p>Payment methods here</p>
+            </div>{/* End .tab-pane */}
             <div role="tabpanel" className="tab-pane active" id="returnPolicy">
               <p>Return policy here</p>
             </div>{/* End .tab-pane */}
-            <div role="tabpanel" className="tab-pane" id="disclaimer">
-              <p>Disclaimer here</p>
+            <div role="tabpanel" className="tab-pane" id="pickupPolicy">
+              <p>Pickup Policy here</p>
             </div>
 
           </div>

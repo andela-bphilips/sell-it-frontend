@@ -30,11 +30,7 @@ class AllProducts extends Component {
     };
 
     this.getProductsApiCall = this.getProductsApiCall.bind(this);
-    this.placeOrder = this.placeOrder.bind(this);
-    this.onOpenModal = this.onOpenModal.bind(this);
-    this.onCloseModal = this.onCloseModal.bind(this);
     this.handleMakeOrderFormChange = this.handleMakeOrderFormChange.bind(this);
-    this.showOrderModal = this.showOrderModal.bind(this);
   }
 
   componentDidMount() {
