@@ -1,18 +1,29 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+
+// ORDERS
+import MyOrders from './user/MyOrders.jsx';
+import ReceivedOrders from './user/ReceivedOrders.jsx';
+
+// PRODUCTS
+import ProductPage from './product/ProductPage.jsx';
+import AllProduct from './product/AllProductPage.jsx';
+import MyProductPage from './product/MyProductPage.jsx';
+import CreateProduct from './product/CreateProduct.jsx';
+import EditProduct from './product/EditProduct.jsx';
+
+// USERS
+import MyProfile from './user/MyProfile.jsx';
+
+// YARDSALE
+import ViewYardsale from './yardsale/ViewYardsale.jsx';
+
+// OTHERS
 import Home from './home/Home.jsx';
 import Header from './includes/Header.jsx';
 import SideNav from './includes/SideNav.jsx';
 import CategoryNav from './includes/CategoryNav.jsx';
 import Footer from './includes/Footer.jsx';
-import ProductPage from './product/ProductPage.jsx';
-import AllProduct from './product/AllProductPage.jsx';
-import MyProductPage from './product/MyProductPage.jsx';
-import MyOrders from './user/MyOrders.jsx';
-import ReceivedOrders from './user/ReceivedOrders.jsx';
-import MyProfile from './user/MyProfile.jsx';
-import CreateProduct from './product/CreateProduct.jsx';
-import EditProduct from './product/EditProduct.jsx';
 
 const Template = () => (
   <div>
@@ -64,6 +75,11 @@ const Template = () => (
                 exact="exact"
                 path="/user/profile"
                 component={MyProfile}
+              />
+              <Route
+                exact="exact"
+                path="/yardsale/:name"
+                component={ViewYardsale}
               />
             </Switch>
             <CategoryNav />
