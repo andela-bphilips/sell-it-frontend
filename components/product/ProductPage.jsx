@@ -299,8 +299,8 @@ class ProductPage extends Component {
           <ul className="nav nav-tabs" role="tablist">
             <li role="presentation" className="active">
               <a
-                href="#paymentMethods"
-                aria-controls="paymentMethods"
+                href="#paymentMethod"
+                aria-controls="paymentMethod"
                 role="tab"
                 data-toggle="tab"
               >
@@ -330,7 +330,7 @@ class ProductPage extends Component {
           </ul>
           {/* Tab panes */}
           <div className="tab-content">
-            <div role="tabpanel" className="tab-pane active" id="paymentMethods">
+            <div role="tabpanel" className="tab-pane active" id="paymentMethod">
               <p>Payment methods here</p>
             </div>{/* End .tab-pane */}
             <div role="tabpanel" className="tab-pane active" id="returnPolicy">
