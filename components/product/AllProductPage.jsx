@@ -8,11 +8,9 @@ import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 
 import { getProducts } from '../../actions/products.js';
-import { placeOrder } from '../../actions/orders.js';
 
 import Loader from '../includes/Loader.jsx';
 import { numberWithCommas } from '../../utils/helper.js';
-import MakeOrderModal from './includes/MakeOrderModal.jsx';
 
 const { DEFAULTNOIMAGE } = process.env;
 
@@ -24,11 +22,8 @@ class AllProducts extends Component {
       category: '',
       limit: 20,
       order: 'desc',
-      open: false,
       page: 1,
-      product: {},
       productOrder: {},
-      saving: false,
       search: '',
       sort: 'created_at',
       updateComponent: false
@@ -65,18 +60,10 @@ class AllProducts extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevState) {
     if (prevState.updateComponent !== this.state.updateComponent) {
       this.getProductsApiCall();
     }
-  }
-
-  onOpenModal() {
-    this.setState({ open: true });
-  }
-
-  onCloseModal() {
-    this.setState({ open: false });
   }
 
   getProductsApiCall() {
@@ -102,41 +89,8 @@ class AllProducts extends Component {
     return this.setState({ productOrder });
   }
 
-  showOrderModal(product) {
-    this.setState({ product }, () => {
-      this.onOpenModal();
-    });
-  }
-
-  placeOrder(event) {
-    event.preventDefault();
-    const { product, productOrder } = this.state;
-
-    this.setState({ saving: true });
-    productOrder.product_id = product.id;
-
-    if (!productOrder.negotiated_price) {
-      productOrder.negotiated_price = product.productPrice;
-    }
-
-    this.props.placeOrder(productOrder)
-      .then(() => {
-        this.setState({ saving: false, updateComponent: true });
-        this.onCloseModal();
-        this.forceUpdate();
-        toastr.success(this.props.message);
-      })
-      .catch(() => {
-        this.setState({ saving: false });
-        toastr.error(this.props.message);
-      });
-  }
-
   render() {
     const { auth, products } = this.props;
-    const {
-      open, product, saving
-    } = this.state;
     if (_.isEmpty(products)) {
       return <Loader />;
     }
@@ -198,19 +152,6 @@ class AllProducts extends Component {
                           />
                         </Link>
                         <div className="product-action">
-                          { auth && auth.user.id !== productRendered.userId ?
-                            <div>
-                              <a
-                                style={{ cursor: 'pointer' }}
-                                onClick={() =>
-                                  this.showOrderModal(productRendered)}
-                                className="btn-product btn-add-cart"
-                              >
-                                <i className="icon-product icon-bag" />
-                                <span>Place Order</span>
-                              </a>
-                            </div> : ''
-                          }
                           { auth && auth.user.id === productRendered.userId ?
                             <div>
                               <Link
@@ -248,17 +189,6 @@ class AllProducts extends Component {
           </nav>
         </div>
         }
-
-        { open
-          ? <MakeOrderModal
-            product={product}
-            placeOrder={this.placeOrder}
-            saving={saving}
-            open={open}
-            handleFormChange={this.handleMakeOrderFormChange}
-            onCloseModal={this.onCloseModal}
-          />
-          : '' }
       </div>
     );
   }
@@ -269,5 +199,5 @@ const mapStateToProps = ({ auth, message, products }) => ({
 });
 
 export default connect(mapStateToProps, {
-  getProducts, placeOrder
+  getProducts
 })(AllProducts);

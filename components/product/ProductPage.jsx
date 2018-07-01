@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 import Clipboard from 'react-clipboard.js';
 
@@ -12,7 +13,6 @@ import ConfirmOrder from './includes/ConfirmOrder.jsx';
 import Loader from '../includes/Loader.jsx';
 import { jsUcFirst, numberWithCommas } from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
-import OrderConfirmed from './includes/OrderConfirmed.jsx';
 
 const { baseUrl } = process.env;
 
@@ -82,8 +82,8 @@ class ProductPage extends Component {
     this.setState({
       saving: true
     });
-    const { product, productOrder } = this.state;
-  
+    const { productOrder } = this.state;
+
     this.props.placeOrder(productOrder)
       .then(() => {
         this.setState({
@@ -149,7 +149,15 @@ class ProductPage extends Component {
         setConfirmOrder={this.setConfirmOrder}
       />);
     } else if (orderConfirmed) {
-      return <OrderConfirmed />;
+      return (
+        <div className="col-md-9 col-md-push-3">
+          <div className="row">
+            <h1>Order Confirmed!</h1>
+            Your order has been confirmed and is being processed.
+            Click <Link to="/user/orders">here</Link> to view your orders.
+          </div>
+        </div>
+      );
     }
     return (
       <div className="col-md-9 col-md-push-3">
