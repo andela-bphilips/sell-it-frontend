@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 
-class CreateYardsale extends Component {
+class EditYardsale extends Component {
   constructor(props, context) {
     super(props, context);
 
@@ -10,14 +10,14 @@ class CreateYardsale extends Component {
   }
 
   componentWillMount() {
-    console.log('CWM');
+    // console.log('CWM');
   }
 
   render() {
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
-          <h1>Create yardsale</h1>
+          <h1>Edit yardsale</h1>
         </div>
         <div>
           <form className="col-lg-10 col-lg-push-1">
@@ -121,7 +121,7 @@ class CreateYardsale extends Component {
                 type="submit"
                 className="btn btn-primary pull-left min-width"
               >
-                Create Yardsale
+                Save Yardsale
               </button>
             </div>
           </form>
@@ -131,4 +131,4 @@ class CreateYardsale extends Component {
   }
 }
 
-export default CreateYardsale;
+export default EditYardsale;
