@@ -8,9 +8,11 @@ import Clipboard from 'react-clipboard.js';
 import { getProduct } from '../../actions/products.js';
 import { placeOrder } from '../../actions/orders.js';
 
+import ConfirmOrder from './includes/ConfirmOrder.jsx';
 import Loader from '../includes/Loader.jsx';
 import { jsUcFirst, numberWithCommas } from '../../utils/helper.js';
 import MakeOrderModal from './includes/MakeOrderModal.jsx';
+import OrderConfirmed from './includes/OrderConfirmed.jsx';
 
 const { baseUrl } = process.env;
 
@@ -18,9 +20,11 @@ class ProductPage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      confirmOrder: false,
       product: {},
       productOrder: {},
       open: false,
+      orderConfirmed: false,
       saving: false,
       slug: '',
       updateComponent: false
@@ -30,6 +34,7 @@ class ProductPage extends Component {
     this.onOpenModal = this.onOpenModal.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
     this.handleMakeOrderFormChange = this.handleMakeOrderFormChange.bind(this);
+    this.setConfirmOrder = this.setConfirmOrder.bind(this);
     this.showOrderModal = this.showOrderModal.bind(this);
   }
 
@@ -72,11 +77,53 @@ class ProductPage extends Component {
     this.setState({ open: false });
   }
 
+  setConfirmOrder(event) {
+    event.preventDefault();
+    this.setState({
+      saving: true
+    });
+    const { product, productOrder } = this.state;
+  
+    this.props.placeOrder(productOrder)
+      .then(() => {
+        this.setState({
+          confirmOrder: false,
+          saving: false,
+          orderConfirmed: true
+        });
+        toastr.success(this.props.message);
+      })
+      .catch(() => {
+        this.setState({ saving: false });
+        toastr.error(this.props.message);
+      });
+  }
+
+  placeOrder(event) {
+    event.preventDefault();
+    const { product, productOrder } = this.state;
+
+    this.setState({
+      confirmOrder: true
+    });
+    this.onCloseModal();
+    productOrder.product_id = product.id;
+
+    if (!productOrder.negotiated_price) {
+      productOrder.negotiated_price = product.productPrice;
+    }
+  }
+
   handleMakeOrderFormChange(event) {
     const field = event.target.name;
     const { productOrder } = this.state;
 
-    productOrder[field] = parseInt(event.target.value, 10);
+    if (event.target.type === 'number') {
+      productOrder[field] = parseInt(event.target.value, 10);
+    } else {
+      productOrder[field] = event.target.value;
+    }
+
     return this.setState({ productOrder });
   }
 
@@ -86,36 +133,23 @@ class ProductPage extends Component {
     });
   }
 
-  placeOrder(event) {
-    event.preventDefault();
-    const { product, productOrder } = this.state;
-
-    this.setState({ saving: true });
-    productOrder.product_id = product.id;
-
-    if (!productOrder.negotiated_price) {
-      productOrder.negotiated_price = product.productPrice;
-    }
-
-    this.props.placeOrder(productOrder)
-      .then(() => {
-        this.setState({ saving: false, updateComponent: true });
-        this.onCloseModal();
-        toastr.success(this.props.message);
-      })
-      .catch(() => {
-        this.setState({ saving: false });
-        toastr.error(this.props.message);
-      });
-  }
-
   render() {
     const {
-      open, product, saving
+      confirmOrder, open, orderConfirmed, product, productOrder, saving
     } = this.state;
 
     if (_.isEmpty(product)) {
       return <Loader />;
+    } else if (confirmOrder) {
+      return (<ConfirmOrder
+        handleFormChange={this.handleMakeOrderFormChange}
+        product={product}
+        productOrder={productOrder}
+        saving={saving}
+        setConfirmOrder={this.setConfirmOrder}
+      />);
+    } else if (orderConfirmed) {
+      return <OrderConfirmed />;
     }
     return (
       <div className="col-md-9 col-md-push-3">
