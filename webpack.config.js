@@ -53,8 +53,7 @@ module.exports = {
       'process.env.loginGateway': JSON.stringify(process.env.loginGateway),
       'process.env.baseUrl': JSON.stringify(process.env.baseUrl),
       'process.env.TOKEN_KEY': JSON.stringify(process.env.TOKEN_KEY),
-      'process.env.apiBaseUrl': JSON.stringify(process.env.apiBaseUrl),
-      'process.env.DEFAULTNOIMAGE': JSON.stringify(process.env.DEFAULTNOIMAGE)
+      'process.env.apiBaseUrl': JSON.stringify(process.env.apiBaseUrl)
     }),
   ],
   devtool: 'source-map'
