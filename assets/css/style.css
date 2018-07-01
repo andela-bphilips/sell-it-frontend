@@ -6444,3 +6444,15 @@ website:   	http://www.themepunch.com
 a {
   cursor: pointer;
 }
+
+/* ----------- FORM INPUTS -----------
+--------------------------------------*/
+input.col-sm-6.form-control, select.col-sm-6.form-control, input.inline.form-control, select.inline.form-control {
+  display: inline-block;
+  width: 50%;
+}
+
+.form-group>.row {
+  margin-right: 0px;
+  margin-left: 0px;
+}

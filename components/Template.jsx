@@ -16,6 +16,7 @@ import EditProduct from './product/EditProduct.jsx';
 import MyProfile from './user/MyProfile.jsx';
 
 // YARDSALE
+import CreateYardsale from './yardsale/CreateYardsale.jsx';
 import ViewYardsale from './yardsale/ViewYardsale.jsx';
 
 // OTHERS
@@ -75,6 +76,11 @@ const Template = () => (
                 exact="exact"
                 path="/user/profile"
                 component={MyProfile}
+              />
+              <Route
+                exact="exact"
+                path="/new/yardsale"
+                component={CreateYardsale}
               />
               <Route
                 exact="exact"
