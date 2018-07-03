@@ -28,6 +28,7 @@ import Header from './includes/Header.jsx';
 import SideNav from './includes/SideNav.jsx';
 import CategoryNav from './includes/CategoryNav.jsx';
 import Footer from './includes/Footer.jsx';
+import ErrorPage from './includes/ErrorPage.jsx';
 
 const Template = () => (
   <div>
@@ -40,6 +41,11 @@ const Template = () => (
             <SideNav />
             <Switch>
               <Route exact="exact" path="/" component={Home} />
+              <Route
+                exact="exact"
+                path="/404"
+                component={ErrorPage}
+              />
               <Route
                 exact="exact"
                 path="/products/create"

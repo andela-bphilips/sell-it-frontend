@@ -2,6 +2,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Select from 'react-select';
+import { Link } from 'react-router-dom';
+
 import 'react-select/dist/react-select.css';
 
 const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
@@ -11,6 +13,16 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
         <form className="col-lg-10 col-lg-push-1">
           <div className="title-group">
             <h1 className="title">{yardsale.name} yard sale</h1>
+            <div className="text-right">
+              {/* <input type="submit" className="btn btn-accent min-width" value="POST Comment" /> */}
+              <Link
+                to={`/new/yardsale/product?yardsale=${yardsale.name}`}
+                type="button"
+                className="btn btn-primary"
+              >
+                Add new product yardsale
+              </Link>
+            </div>
             <hr />
           </div>
           <div className="form-group">
