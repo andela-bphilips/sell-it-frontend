@@ -103,12 +103,14 @@ class CreateYardsale extends Component {
                       type="date"
                       name="yardsale_date"
                       className="col-md-6 inline form-control"
+                      min={new Date().toISOString().slice(0, 10)}
                       required
                     />
                     <input
                       type="time"
                       name="yardsale_time"
                       className="col-md-6 inline form-control"
+                      min={new Date()}
                       required
                     />
                   </div>

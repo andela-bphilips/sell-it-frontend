@@ -108,7 +108,6 @@ class ViewYardsale extends Component {
       countdown, countdownTo, loading, message, products,
       statusCode, userId, users, selectedUser, yardsale
     } = this.state;
-    console.log(countdown, 'jymvh', countdownTo);
 
     if (loading) {
       return <Loader />;

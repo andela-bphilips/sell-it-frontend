@@ -29,3 +29,13 @@ export const getYardsale = yardsaleType => dispatch =>
       console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
+
+export const createYardsaleProduct = (yardsaleName, yardsaleData) => dispatch =>
+  axios.post(`${apiBaseUrl}/yardsale/product?yard_sale_name=${yardsaleName}`, yardsaleData)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
