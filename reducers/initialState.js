@@ -1,11 +1,14 @@
 export default {
   categories: [],
+  category: {},
   isAuthenticated: false,
-  orders: {},
   message: '',
+  orders: {},
   product: {},
   products: {},
+  statusCode: null,
   user: {},
-  category: {}
+  users: [],
+  yardsale: {}
 };
 

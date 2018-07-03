@@ -1,4 +1,16 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import Countdown from 'react-countdown-now';
+import { connect } from 'react-redux';
+import toastr from 'toastr';
+
+import AdminViewYardsale from './AdminViewYardsale.jsx';
+import ErrorPage from '../includes/ErrorPage.jsx';
+import Loader from '../includes/Loader.jsx';
+import ViewLiveYardsale from './ViewLiveYardsale.jsx';
+
+import { getUsers } from '../../actions/users.js';
+import { getYardsale } from '../../actions/yardsale.js';
 
 class ViewYardsale extends Component {
   constructor(props, context) {
@@ -6,199 +18,148 @@ class ViewYardsale extends Component {
 
     this.state = {
       countdown: false,
-      products: ['adss'],
+      countdownTo: null,
+      loading: false,
+      message: '',
+      products: [],
+      statusCode: null,
+      userId: null,
+      users: [],
+      selectedUser: [],
+      yardsale: {}
     };
+
+    this.getYardsaleProducts = this.getYardsaleProducts.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
   }
 
   componentWillMount() {
-    console.log('CWM');
+    const yardsaleName = this.props.match.params.name;
+
+    let date1, date2, countdown;
+    this.setState({ loading: true });
+    this.props.getYardsale(yardsaleName)
+      .then(() => {
+        const { auth, yardsale } = this.props;
+        date1 = new Date();
+        date2 = new Date(`${yardsale.start_date} ${yardsale.start_time}`);
+        if (date1.getTime() >= date2.getTime()) {
+          countdown = false;
+        } else {
+          countdown = true;
+        }
+        this.props.getUsers()
+          .then(() => {
+            const { users } = this.props;
+
+            const usersData = users.map(user => ({
+              label: user.email,
+              value: user.id
+            }));
+
+            const selectedUsers = [];
+            yardsale.administrators.forEach((id) => {
+              usersData.forEach((user) => {
+                if (user.value === id) {
+                  selectedUsers.push(user);
+                }
+              });
+            });
+
+            this.setState({
+              countdown,
+              countdownTo: date2.getTime(),
+              loading: false,
+              selectedUser: selectedUsers,
+              statusCode: null,
+              userId: auth.user.id,
+              users: usersData,
+              yardsale
+            });
+          })
+          .catch(() => toastr.error(this.props.message));
+      })
+      .catch(() => {
+        if (this.props.statusCode !== 401) {
+          this.setState({
+            loading: false,
+            message: this.props.message,
+            statusCode: this.props.statusCode
+          });
+        } else {
+          this.setState({
+            loading: false
+          }, () => this.getYardsaleProducts());
+        }
+      });
+  }
+
+  getYardsaleProducts() {
+    this.setState({ products: ['asdas'] });
+  }
+
+  handleSelectChange(value) {
+    console.log('You\'ve selected:', value);
+    this.setState({ selectedUser: value });
   }
 
   render() {
-    const { countdown, products } = this.state;
+    const {
+      countdown, countdownTo, loading, message, products,
+      statusCode, userId, users, selectedUser, yardsale
+    } = this.state;
+    console.log(countdown, 'jymvh', countdownTo);
 
-    if (countdown) {
+    if (loading) {
+      return <Loader />;
+    } else if (countdown) {
+      // IF VISITOR IS CREATOR OR ADMIN, DISPLAY THE YARDSALE DETAILS
+      // ELSE SHOW THE COUNTDOWN TIMER
+      if ((userId === yardsale.user_id) ||
+        (yardsale.administrators.indexOf(userId)) >= 0) {
+        return (
+          <AdminViewYardsale
+            handleSelectChange={this.handleSelectChange}
+            users={users}
+            value={selectedUser}
+            yardsale={yardsale}
+          />
+        );
+      }
       return (
-        <div>
-          {/* SHOW COUNTDOWN TIMER IF YARDSALE ISN'T ACTIVE */}
-          Countdown timer
-        </div>
-      )
-    } else if (products.length > 0) {
-      return (
-        <div className="container">
-          {/* SHOW YARDSALE PRODUCTS IF YARDSALE IS ACTIVE */}
-          <div className="page-header text-center">
-            <h1>Yardsale</h1>
-          </div>{/* End .page-header */}
-          <div className="portfolio-row">
-            <div className="portfolio-container max-col-4">
-              <div className="portfolio-item website">
-                <figure>
-                  <img src="/assets/images/portfolio/item1.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">the writer</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">website</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item2.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">house logo</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item3.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">fly away</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">Logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item brand">
-                <figure>
-                  <img src="/assets/images/portfolio/item4.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">runner campaing</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">brand</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item website">
-                <figure>
-                  <img src="/assets/images/portfolio/item5.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">real estate</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">website</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item brand">
-                <figure>
-                  <img src="/assets/images/portfolio/item6.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">music trends</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">brand</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item website">
-                <figure>
-                  <img src="/assets/images/portfolio/item7.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">home office</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">website</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item8.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">sounds of silence</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item9.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">globe icon</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">Logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item website">
-                <figure>
-                  <img src="/assets/images/portfolio/item1.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">the writer</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">website</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item brand logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item2.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">house logo</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-              <div className="portfolio-item brand logo">
-                <figure>
-                  <img src="/assets/images/portfolio/item3.jpg" alt="Portfolio" />
-                  <a href="single-portfolio.html" className="btn-detail" role="button">View Details</a>
-                </figure>
-                <div className="portfolio-meta">
-                  <h3 className="portfolio-title"><a href="single-portfolio.html" title="Portfolio name">fly away</a></h3>
-                  <div className="portfolio-tags">
-                    <a href="#">Logo</a>
-                  </div>{/* End .portfolio-tags */}
-                </div>{/* End .portfolio-meta */}
-              </div>{/* End portfolio-item */}
-            </div>{/* End .portfolio-container */}
-          </div>{/* End .portfolio-row */}
-          <nav aria-label="Page Navigation">
-            <ul className="pagination">
-              <li><a href="#">1</a></li>
-              <li className="active"><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li className="dots"><span>...</span></li>
-              <li><a href="#">18</a></li>
-            </ul>
-          </nav>
+        <div className="hide-sidebar-display col-md-12">
+          <center className="count-down-wrapper">
+            <div className="count-down">
+              <h1>Going live in</h1>
+              <div className="time-wrapper">
+                <Countdown date={countdownTo} />
+              </div>
+            </div>
+          </center>
         </div>
       );
-    } 
-    return (
-      <div>
-        An error occured. Yard sale not displayed
-      </div>
-    ); 
+    } else if (statusCode) {
+      return <ErrorPage message={message} statusCode={statusCode} />;
+    } else if (products.length > 0) {
+      return (
+        <ViewLiveYardsale products={products} yardsale={yardsale} />
+      );
+    } else if (products.length === 0) {
+      return (
+        <div>
+          An error occured. Yard sale not displayed (Products exhausted)
+        </div>
+      );
+    }
   }
 }
 
-export default ViewYardsale;
+const mapStateToProps = ({
+  auth, message, statusCode, users, yardsale
+}) => ({
+  auth, message, statusCode, users, yardsale
+});
+
+export default connect(mapStateToProps, {
+  getUsers, getYardsale
+})(ViewYardsale);

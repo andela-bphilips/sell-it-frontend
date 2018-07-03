@@ -56,8 +56,8 @@ class AllProducts extends Component {
     }
   }
 
-  componentDidUpdate(prevState) {
-    if (prevState.updateComponent !== this.state.updateComponent) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.products !== this.props.products) {
       this.getProductsApiCall();
     }
   }
