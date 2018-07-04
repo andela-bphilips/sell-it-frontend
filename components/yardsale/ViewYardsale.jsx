@@ -81,6 +81,7 @@ class ViewYardsale extends Component {
   handleFormChange(event) {
     const field = event.target.name;
     const { updatedYardsale, yardsale } = this.state;
+    console.log(yardsale, 'sfsd');
 
     updatedYardsale[field] = event.target.value;
     yardsale[field] = event.target.value;
@@ -99,16 +100,45 @@ class ViewYardsale extends Component {
     event.preventDefault();
     const { updatedYardsale, yardsale, yardsaleName } = this.state;
     this.setState({ saving: true });
+    const timeNow = new Date();
 
-    this.props.editYardsale(yardsaleName, updatedYardsale)
-      .then(() => {
-        this.setState({ saving: false });
-        toastr.success(this.props.message);
-      })
-      .catch(() => {
-        this.setState({ saving: false });
-        toastr.error(this.props.message);
-      });
+    if (updatedYardsale.start_time) {
+      const startTime =
+        new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+
+      if (startTime.getTime() < timeNow.getTime()) {
+        toastr.error('The yard sale cannot start in the past.');
+        return this.setState({ saving: false });
+      }
+    } else if (updatedYardsale.end_time) {
+      const endTime =
+        new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+
+      if (endTime.getTime() < timeNow.getTime()) {
+        toastr.error('The yard sale cannot end in the past.');
+        return this.setState({ saving: false });
+      }
+    } else if (updatedYardsale.start_time && updatedYardsale.end_time) {
+      const startTime =
+        new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+      const endTime =
+        new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+
+      if (endTime.getTime() < startTime.getTime()) {
+        toastr.error('The yard sale cannot end before it starts.');
+        return this.setState({ saving: false });
+      }
+    } else {
+      this.props.editYardsale(yardsaleName, updatedYardsale)
+        .then(() => {
+          this.setState({ saving: false });
+          toastr.success(this.props.message);
+        })
+        .catch(() => {
+          this.setState({ saving: false });
+          toastr.error(this.props.message);
+        });
+    }
   }
 
   render() {

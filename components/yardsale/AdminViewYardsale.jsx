@@ -94,7 +94,7 @@ const AdminViewYardsale = ({
                 <div className="row">
                   <input
                     type="date"
-                    name="yardsale_date"
+                    name="start_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.start_date}
                     onChange={handleFormChange}
@@ -102,7 +102,7 @@ const AdminViewYardsale = ({
                   />
                   <input
                     type="time"
-                    name="yardsale_time"
+                    name="start_time"
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.start_time}
                     onChange={handleFormChange}
@@ -116,7 +116,7 @@ const AdminViewYardsale = ({
                 <div className="row">
                   <input
                     type="date"
-                    name="yardsale_date"
+                    name="end_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.end_date}
                     onChange={handleFormChange}
@@ -124,7 +124,7 @@ const AdminViewYardsale = ({
                   />
                   <input
                     type="time"
-                    name="yardsale_time"
+                    name="end_time"
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.end_time}
                     onChange={handleFormChange}
