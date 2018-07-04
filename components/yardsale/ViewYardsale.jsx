@@ -81,7 +81,6 @@ class ViewYardsale extends Component {
   handleFormChange(event) {
     const field = event.target.name;
     const { updatedYardsale, yardsale } = this.state;
-    console.log(yardsale, 'sfsd');
 
     updatedYardsale[field] = event.target.value;
     yardsale[field] = event.target.value;
@@ -154,7 +153,7 @@ class ViewYardsale extends Component {
     }
     return (
       <AdminViewYardsale
-        disabled={userId !== yardsale.creator}
+        disabled={userId !== yardsale.user_id}
         handleFormChange={this.handleFormChange}
         handleSelectChange={this.handleSelectChange}
         saving={saving}

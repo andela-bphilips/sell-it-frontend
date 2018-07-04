@@ -131,6 +131,7 @@ class ReceivedOrders extends Component {
             <table className="table">
               <thead>
                 <tr>
+                  <th>Order ID</th>
                   <th>Product Name</th>
                   <th>Price</th>
                   <th>Status</th>
@@ -144,6 +145,9 @@ class ReceivedOrders extends Component {
                 { orders.orders.map(order =>
                   (
                     <tr key={order.id}>
+                      <td className="id-col">
+                        {order.id}
+                      </td>
                       <td className="product-col">
                         <div className="product">
                           <Link to="#">

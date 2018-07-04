@@ -19,7 +19,6 @@ import MyProfile from './user/MyProfile.jsx';
 import CreateYardsale from './yardsale/CreateYardsale.jsx';
 import CreateYardsaleProduct from './yardsale/CreateYardsaleProduct.jsx';
 import EditYardsaleProduct from './yardsale/EditYardsaleProduct.jsx';
-import EditYardsale from './yardsale/EditYardsale.jsx';
 import ViewYardsale from './yardsale/ViewYardsale.jsx';
 
 // OTHERS
@@ -88,28 +87,23 @@ const Template = () => (
               />
               <Route
                 exact="exact"
-                path="/new/yardsale"
+                path="/yardsale/new"
                 component={CreateYardsale}
               />
               <Route
                 exact="exact"
-                path="/edit/yardsale/:yardsale_name"
-                component={EditYardsale}
+                path="/yardsale/product/new"
+                component={CreateYardsaleProduct}
+              />
+              <Route
+                exact="exact"
+                path="/yardsale/product/edit/:yardsale_name"
+                component={EditYardsaleProduct}
               />
               <Route
                 exact="exact"
                 path="/yardsale/:name"
                 component={ViewYardsale}
-              />
-              <Route
-                exact="exact"
-                path="/new/yardsale/product"
-                component={CreateYardsaleProduct}
-              />
-              <Route
-                exact="exact"
-                path="/edit/yardsale/product/:yardsale_name"
-                component={EditYardsaleProduct}
               />
             </Switch>
             <CategoryNav />

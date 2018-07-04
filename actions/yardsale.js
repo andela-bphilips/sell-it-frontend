@@ -48,6 +48,16 @@ export const createYardsaleProduct = (yardsaleName, yardsaleData) => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
+export const createYardsale = yardsaleData => dispatch =>
+  axios.post(`${apiBaseUrl}/yardsale`, yardsaleData)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
 export const editYardsale = (yardsaleName, yardsaleData) => dispatch =>
   axios.put(`${apiBaseUrl}/yardsale/${yardsaleName}`, yardsaleData)
     .then((response) => {
