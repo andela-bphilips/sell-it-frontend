@@ -29,7 +29,7 @@ const ConfirmOrder = ({ handleFormChange, product, productOrder, setConfirmOrder
                 <input
                   type="radio"
                   name="payment_method"
-                  value="salary"
+                  value="salary deduction"
                   onChange={handleFormChange}
                   required
                 />
@@ -53,7 +53,7 @@ const ConfirmOrder = ({ handleFormChange, product, productOrder, setConfirmOrder
                 <input
                   type="radio"
                   name="payment_method"
-                  value="wire-transfer"
+                  value="transfer"
                   onChange={handleFormChange}
                   required
                 />

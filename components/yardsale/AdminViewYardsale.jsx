@@ -21,7 +21,7 @@ const AdminViewYardsale = ({
             <h1 className="title">{yardsale.name} yard sale</h1>
             <div className="text-right">
               <Link
-                to={`/new/yardsale/product?yardsale=${yardsale.name}`}
+                to={`/yardsale/product/new?yardsale=${yardsale.name}`}
                 type="button"
                 className="btn btn-primary"
               >
