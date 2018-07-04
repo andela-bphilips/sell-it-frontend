@@ -1,53 +1,45 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import Countdown from 'react-countdown-now';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 
 import AdminViewYardsale from './AdminViewYardsale.jsx';
 import ErrorPage from '../includes/ErrorPage.jsx';
 import Loader from '../includes/Loader.jsx';
-import ViewLiveYardsale from './ViewLiveYardsale.jsx';
 
 import { getUsers } from '../../actions/users.js';
-import { getYardsale } from '../../actions/yardsale.js';
+import { editYardsale, getYardsale } from '../../actions/yardsale.js';
 
 class ViewYardsale extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      countdown: false,
-      countdownTo: null,
       loading: false,
       message: '',
-      products: [],
+      saving: false,
       statusCode: null,
+      updatedYardsale: {},
       userId: null,
       users: [],
       selectedUser: [],
-      yardsale: {}
+      yardsale: {},
+      yardsaleName: ''
     };
 
-    this.getYardsaleProducts = this.getYardsaleProducts.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.updateYardsale = this.updateYardsale.bind(this);
   }
 
   componentWillMount() {
     const yardsaleName = this.props.match.params.name;
 
-    let date1, date2, countdown;
-    this.setState({ loading: true });
+    this.setState({ loading: true, yardsaleName });
     this.props.getYardsale(yardsaleName)
       .then(() => {
         const { auth, yardsale } = this.props;
-        date1 = new Date();
-        date2 = new Date(`${yardsale.start_date} ${yardsale.start_time}`);
-        if (date1.getTime() >= date2.getTime()) {
-          countdown = false;
-        } else {
-          countdown = true;
-        }
+
         this.props.getUsers()
           .then(() => {
             const { users } = this.props;
@@ -67,8 +59,6 @@ class ViewYardsale extends Component {
             });
 
             this.setState({
-              countdown,
-              countdownTo: date2.getTime(),
               loading: false,
               selectedUser: selectedUsers,
               statusCode: null,
@@ -80,76 +70,100 @@ class ViewYardsale extends Component {
           .catch(() => toastr.error(this.props.message));
       })
       .catch(() => {
-        if (this.props.statusCode !== 401) {
-          this.setState({
-            loading: false,
-            message: this.props.message,
-            statusCode: this.props.statusCode
-          });
-        } else {
-          this.setState({
-            loading: false
-          }, () => this.getYardsaleProducts());
-        }
+        this.setState({
+          loading: false,
+          message: this.props.message,
+          statusCode: this.props.statusCode
+        });
       });
   }
 
-  getYardsaleProducts() {
-    this.setState({ products: ['asdas'] });
+  handleFormChange(event) {
+    const field = event.target.name;
+    const { updatedYardsale, yardsale } = this.state;
+    console.log(yardsale, 'sfsd');
+
+    updatedYardsale[field] = event.target.value;
+    yardsale[field] = event.target.value;
+    return this.setState({ updatedYardsale, yardsale });
   }
 
   handleSelectChange(value) {
-    console.log('You\'ve selected:', value);
-    this.setState({ selectedUser: value });
+    const { updatedYardsale, yardsale } = this.state;
+
+    yardsale.administrators = value.split(',').filter((val => val !== ''));
+    updatedYardsale.administrators = yardsale.administrators;
+    this.setState({ selectedUser: value, updatedYardsale, yardsale });
+  }
+
+  updateYardsale(event) {
+    event.preventDefault();
+    const { updatedYardsale, yardsale, yardsaleName } = this.state;
+    this.setState({ saving: true });
+    const timeNow = new Date();
+
+    if (updatedYardsale.start_time) {
+      const startTime =
+        new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+
+      if (startTime.getTime() < timeNow.getTime()) {
+        toastr.error('The yard sale cannot start in the past.');
+        return this.setState({ saving: false });
+      }
+    } else if (updatedYardsale.end_time) {
+      const endTime =
+        new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+
+      if (endTime.getTime() < timeNow.getTime()) {
+        toastr.error('The yard sale cannot end in the past.');
+        return this.setState({ saving: false });
+      }
+    } else if (updatedYardsale.start_time && updatedYardsale.end_time) {
+      const startTime =
+        new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+      const endTime =
+        new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+
+      if (endTime.getTime() < startTime.getTime()) {
+        toastr.error('The yard sale cannot end before it starts.');
+        return this.setState({ saving: false });
+      }
+    } else {
+      this.props.editYardsale(yardsaleName, updatedYardsale)
+        .then(() => {
+          this.setState({ saving: false });
+          toastr.success(this.props.message);
+        })
+        .catch(() => {
+          this.setState({ saving: false });
+          toastr.error(this.props.message);
+        });
+    }
   }
 
   render() {
     const {
-      countdown, countdownTo, loading, message, products,
-      statusCode, userId, users, selectedUser, yardsale
+      loading, message, statusCode, userId,
+      users, saving, selectedUser, yardsale
     } = this.state;
 
     if (loading) {
       return <Loader />;
-    } else if (countdown) {
-      // IF VISITOR IS CREATOR OR ADMIN, DISPLAY THE YARDSALE DETAILS
-      // ELSE SHOW THE COUNTDOWN TIMER
-      if ((userId === yardsale.user_id) ||
-        (yardsale.administrators.indexOf(userId)) >= 0) {
-        return (
-          <AdminViewYardsale
-            handleSelectChange={this.handleSelectChange}
-            users={users}
-            value={selectedUser}
-            yardsale={yardsale}
-          />
-        );
-      }
-      return (
-        <div className="hide-sidebar-display col-md-12">
-          <center className="count-down-wrapper">
-            <div className="count-down">
-              <h1>Going live in</h1>
-              <div className="time-wrapper">
-                <Countdown date={countdownTo} />
-              </div>
-            </div>
-          </center>
-        </div>
-      );
     } else if (statusCode) {
       return <ErrorPage message={message} statusCode={statusCode} />;
-    } else if (products.length > 0) {
-      return (
-        <ViewLiveYardsale products={products} yardsale={yardsale} />
-      );
-    } else if (products.length === 0) {
-      return (
-        <div>
-          An error occured. Yard sale not displayed (Products exhausted)
-        </div>
-      );
     }
+    return (
+      <AdminViewYardsale
+        disabled={userId !== yardsale.creator}
+        handleFormChange={this.handleFormChange}
+        handleSelectChange={this.handleSelectChange}
+        saving={saving}
+        updateYardsale={this.updateYardsale}
+        users={users}
+        value={selectedUser}
+        yardsale={yardsale}
+      />
+    );
   }
 }
 
@@ -160,5 +174,5 @@ const mapStateToProps = ({
 });
 
 export default connect(mapStateToProps, {
-  getUsers, getYardsale
+  editYardsale, getUsers, getYardsale
 })(ViewYardsale);

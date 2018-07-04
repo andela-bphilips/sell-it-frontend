@@ -1,12 +1,20 @@
 /* eslint-disable max-len */
 import axios from 'axios';
 
-import { GET_YARDSALE_SUCCESS, SUCCESS_MESSAGE, ERROR_MESSAGE } from './types.js';
+import {
+  GET_YARDSALE_SUCCESS, UPDATE_YARDSALE_SUCCESS,
+  SUCCESS_MESSAGE, ERROR_MESSAGE
+} from './types.js';
 
 const { apiBaseUrl } = process.env;
 
 export const getYardsaleSuccess = yardsale => ({
   type: GET_YARDSALE_SUCCESS,
+  yardsale
+});
+
+export const updateYardsaleSuccess = yardsale => ({
+  type: UPDATE_YARDSALE_SUCCESS,
   yardsale
 });
 
@@ -34,6 +42,17 @@ export const createYardsaleProduct = (yardsaleName, yardsaleData) => dispatch =>
   axios.post(`${apiBaseUrl}/yardsale/product?yard_sale_name=${yardsaleName}`, yardsaleData)
     .then((response) => {
       dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
+export const editYardsale = (yardsaleName, yardsaleData) => dispatch =>
+  axios.put(`${apiBaseUrl}/yardsale/${yardsaleName}`, yardsaleData)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+      dispatch(updateYardsaleSuccess(response.data.data.yardsale));
     })
     .catch((error) => {
       console.log(error.response.status);

@@ -6,15 +6,20 @@ import { Link } from 'react-router-dom';
 
 import 'react-select/dist/react-select.css';
 
-const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
+const AdminViewYardsale = ({
+  disabled, handleFormChange, handleSelectChange, saving, updateYardsale,
+  users, value, yardsale
+}) => (
   <div className="col-md-9 col-md-push-3">
     <div className="row">
       <div>
-        <form className="col-lg-10 col-lg-push-1">
+        <form
+          className="col-lg-10 col-lg-push-1"
+          onSubmit={updateYardsale}
+        >
           <div className="title-group">
             <h1 className="title">{yardsale.name} yard sale</h1>
             <div className="text-right">
-              {/* <input type="submit" className="btn btn-accent min-width" value="POST Comment" /> */}
               <Link
                 to={`/new/yardsale/product?yardsale=${yardsale.name}`}
                 type="button"
@@ -32,6 +37,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
               name="department"
               className="form-control"
               value={yardsale.name}
+              onChange={handleFormChange}
               placeholder="e.g 'operations' for Operations yardsale"
               readOnly
             />
@@ -43,6 +49,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
               name="description"
               className="form-control"
               value={yardsale.description}
+              onChange={handleFormChange}
               rows="5"
               required
             />
@@ -54,6 +61,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
               name="t_and_c"
               className="form-control"
               value={yardsale.t_and_c}
+              onChange={handleFormChange}
               rows="5"
               required
             />
@@ -65,7 +73,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
             <Select
               className="react-select-field"
               closeOnSelect={false}
-              disabled={false}
+              disabled={disabled}
               multi
               name="yardsale_admins"
               onChange={handleSelectChange}
@@ -86,16 +94,18 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
                 <div className="row">
                   <input
                     type="date"
-                    name="yardsale_date"
+                    name="start_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.start_date}
+                    onChange={handleFormChange}
                     required
                   />
                   <input
                     type="time"
-                    name="yardsale_time"
+                    name="start_time"
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.start_time}
+                    onChange={handleFormChange}
                     required
                   />
                 </div>
@@ -106,16 +116,18 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
                 <div className="row">
                   <input
                     type="date"
-                    name="yardsale_date"
+                    name="end_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.end_date}
+                    onChange={handleFormChange}
                     required
                   />
                   <input
                     type="time"
-                    name="yardsale_time"
+                    name="end_time"
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.end_time}
+                    onChange={handleFormChange}
                     required
                   />
                 </div>
@@ -134,6 +146,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
                     className="form-control"
                     name="location"
                     value={yardsale.location}
+                    onChange={handleFormChange}
                   >
                     <option>-</option>
                     <option value="lagos">Lagos</option>
@@ -155,6 +168,7 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
                     className="form-control"
                     min="1"
                     value={yardsale.buyer_limit}
+                    onChange={handleFormChange}
                     required
                   />
                 </div>
@@ -166,8 +180,9 @@ const AdminViewYardsale = ({ handleSelectChange, users, value, yardsale }) => (
             <button
               type="submit"
               className="btn btn-primary pull-left min-width"
+              disabled={saving}
             >
-              Save Yardsale
+              { saving ? 'Saving' : 'Update Yardsale' }
             </button>
           </div>
         </form>
