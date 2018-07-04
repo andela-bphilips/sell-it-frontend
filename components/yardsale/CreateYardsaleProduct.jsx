@@ -6,7 +6,6 @@ import queryString from 'query-string';
 import toastr from 'toastr';
 
 import { createYardsaleProduct } from '../../actions/yardsale.js';
-import ErrorPage from '../includes/ErrorPage.jsx';
 
 class CreateYardsale extends Component {
   constructor(props, context) {
@@ -64,7 +63,10 @@ class CreateYardsale extends Component {
           <h1>Add yardsale Product</h1>
         </div>
         <div>
-          <form className="col-lg-10 col-lg-push-1" onSubmit={this.saveYardsaleProduct}>
+          <form
+            className="col-lg-10 col-lg-push-1"
+            onSubmit={this.saveYardsaleProduct}
+          >
             <div className="form-group">
               <label>Product name</label>
               <input
