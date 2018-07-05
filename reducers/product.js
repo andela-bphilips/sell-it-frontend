@@ -1,7 +1,8 @@
 import initialState from './initialState.js';
 
 import {
-  GET_PRODUCTS_SUCCESS, GET_PRODUCT_SUCCESS, GET_MY_PRODUCTS_SUCCESS
+  GET_PRODUCTS_SUCCESS, GET_PRODUCT_SUCCESS, GET_MY_PRODUCTS_SUCCESS,
+  GET_YARDSALE_PRODUCTS_SUCCESS
 } from '../actions/types.js';
 
 export const products = (state = initialState.products, action = {}) => {
@@ -29,6 +30,28 @@ export const products = (state = initialState.products, action = {}) => {
           prevUrl: action.products.prev_url,
           totalProducts: action.products.total_products,
           totalPages: action.products.total_pages
+        }
+      };
+
+    case GET_YARDSALE_PRODUCTS_SUCCESS:
+      return {
+        products: action.data.products,
+        pagination: {
+          currentCount: action.data.current_count,
+          currentPage: action.data.current_page,
+          nextUrl: action.data.next_url,
+          prevUrl: action.data.prev_url,
+          totalProducts: action.data.total_products,
+          totalPages: action.data.total_pages
+        },
+        yardsaleInfo: {
+          admin: action.data.admin,
+          countdown: action.data.countdown,
+          buyerLimit: action.data.yardSaleInfo.buyerLimit,
+          location: action.data.yardSaleInfo.location,
+          startDate: action.data.yardSaleInfo.startDate,
+          startTime: action.data.yardSaleInfo.startTime,
+          name: action.data.yardSaleInfo.name
         }
       };
 

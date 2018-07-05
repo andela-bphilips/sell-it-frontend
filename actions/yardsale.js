@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import {
-  GET_YARDSALE_SUCCESS, UPDATE_YARDSALE_SUCCESS,
+  GET_YARDSALE_SUCCESS, GET_YARDSALE_PRODUCTS_SUCCESS, UPDATE_YARDSALE_SUCCESS,
   SUCCESS_MESSAGE, ERROR_MESSAGE
 } from './types.js';
 
@@ -11,6 +11,11 @@ const { apiBaseUrl } = process.env;
 export const getYardsaleSuccess = yardsale => ({
   type: GET_YARDSALE_SUCCESS,
   yardsale
+});
+
+export const getYardsaleProductsSuccess = yardsaleData => ({
+  type: GET_YARDSALE_PRODUCTS_SUCCESS,
+  data: yardsaleData
 });
 
 export const updateYardsaleSuccess = yardsale => ({
@@ -32,6 +37,16 @@ export const getYardsale = yardsaleType => dispatch =>
   axios.get(`${apiBaseUrl}/yardsale/${yardsaleType}`)
     .then((response) => {
       dispatch(getYardsaleSuccess(response.data.data.yard_sale));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
+export const getYardsaleProducts = name => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}`)
+    .then((response) => {
+      dispatch(getYardsaleProductsSuccess(response.data.data));
     })
     .catch((error) => {
       console.log(error.response.status);
