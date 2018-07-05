@@ -4,7 +4,7 @@ import Countdown from 'react-countdown-now';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 
-import ErrorPage from '../includes/ErrorPage';
+import ErrorPage from '../includes/ErrorPage.jsx';
 import Loader from '../includes/Loader.jsx';
 import ViewLiveYardsale from './ViewLiveYardsale.jsx';
 
