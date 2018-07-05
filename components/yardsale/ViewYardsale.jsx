@@ -35,28 +35,30 @@ class ViewYardsale extends Component {
   componentWillMount() {
     const yardsaleName = this.props.match.params.name;
 
-    this.setState({ loading: true, yardsaleName });
+    this.setState({ loading: true });
     this.props.getYardsale(yardsaleName)
       .then(() => {
         const { auth, yardsale } = this.props;
-
+        
         this.props.getUsers()
           .then(() => {
             const { users } = this.props;
-
+            
             const usersData = users.map(user => ({
               label: user.email,
               value: user.id
             }));
-
+            
             const selectedUsers = [];
-            yardsale.administrators.forEach((id) => {
-              usersData.forEach((user) => {
-                if (user.value === id) {
-                  selectedUsers.push(user);
-                }
+            if (yardsale.administrators) {
+              yardsale.administrators.forEach((id) => {
+                usersData.forEach((user) => {
+                  if (user.value === id) {
+                    selectedUsers.push(user);
+                  }
+                });
               });
-            });
+            }
 
             this.setState({
               loading: false,
@@ -64,7 +66,8 @@ class ViewYardsale extends Component {
               statusCode: null,
               userId: auth.user.id,
               users: usersData,
-              yardsale
+              yardsale,
+              yardsaleName: yardsale.yardsaleName
             });
           })
           .catch(() => toastr.error(this.props.message));
@@ -100,6 +103,10 @@ class ViewYardsale extends Component {
     const { updatedYardsale, yardsale, yardsaleName } = this.state;
     this.setState({ saving: true });
     const timeNow = new Date();
+
+    if (!updatedYardsale[0]) {
+      return toastr.error('Please update at least one field to proceed.');
+    }
 
     if (updatedYardsale.start_time) {
       const startTime =
