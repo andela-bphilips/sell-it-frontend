@@ -80,8 +80,8 @@ class CreateYardsale extends Component {
 
     this.props.createYardsale(yardsale)
       .then(() => {
-        toastr.success(this.props.message);
         this.props.history.push(`/yardsale/${yardsale.name}`);
+        toastr.success(this.props.message);
       })
       .catch(() => {
         toastr.error(this.props.message);

@@ -83,7 +83,7 @@ class CategoryNav extends Component {
                               <li key={subCategory.id}>
                                 {/* eslint-disable max-len */}
                                 <a onClick={() =>
-                                  this.handleCategorySelect(subCategory.subCategoryTitle)}
+                                  this.handleCategorySelect(subCategory.sub_category_title)}
                                 >
                                   <i className="fa fa-caret-right" />
                                   {subCategory.sub_category_title}

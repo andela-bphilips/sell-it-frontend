@@ -39,7 +39,7 @@ export const getYardsale = yardsaleType => dispatch =>
       dispatch(getYardsaleSuccess(response.data.data.yard_sale));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      console.log(error.response);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
