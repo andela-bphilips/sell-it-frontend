@@ -6665,3 +6665,13 @@ button.inline.form-control {
   display: table;
   width: 100%;
 }
+
+#sell-product {
+  color: #3359df;
+  font-size: 15px;
+}
+
+#sell-product:hover {
+  color: #dc9831;
+  font-size: 15px;
+}
