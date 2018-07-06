@@ -21,73 +21,75 @@ const ConfirmOrder = ({
         </div>
       </div>
       <hr />
-      {
-        orderType === 'yardsale' &&
-        <div className="tab-header">
-          <h2>Payment Method:</h2>
-          <form onSubmit={setConfirmOrder}>
-            <div className="radio-inline-container">
-              <img
-                src="../../../assets/images/payment-card.png"
-                alt="Card"
-                className="radio-img"
-              />
-              <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="payment_method"
-                    value="salary deduction"
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <span className="check" />
-                  <span className="circle" />
-                  <h3>Salary Deduction</h3>
-                  The total sum will be deducted from your next salary.
-                </label>
-              </div>
-              {/* End .radio */}
-              <br />
-              <br />
+      <div className="tab-header">
+        <form onSubmit={setConfirmOrder}>
+          {
+            orderType === 'yardsale' &&
+            <div>
+              <h2>Payment Method:</h2>
+              <div className="radio-inline-container">
+                <img
+                  src="../../../assets/images/payment-card.png"
+                  alt="Card"
+                  className="radio-img"
+                />
+                <div className="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="salary deduction"
+                      onChange={handleFormChange}
+                      required
+                    />
+                    <span className="check" />
+                    <span className="circle" />
+                    <h3>Salary Deduction</h3>
+                    The total sum will be deducted from your next salary.
+                  </label>
+                </div>
+                {/* End .radio */}
+                <br />
+                <br />
 
-              <img
-                src="../../../assets/images/payment-paypal.png"
-                alt="Paypal"
-                className="radio-img"
-              />
-              <div className="radio">
-                <label>
-                  <input
-                    type="radio"
-                    name="payment_method"
-                    value="transfer"
-                    onChange={handleFormChange}
-                    required
-                  />
-                  <span className="check" />
-                  <span className="circle" />
-                  <h3>Wire Transfer to Andela Account</h3>
-                  Make payment to the account details below:<br/>
-                  Andela Account<br/>
-                  Bank name<br />
-                  1234567890<br />
-                </label>
+                <img
+                  src="../../../assets/images/payment-paypal.png"
+                  alt="Paypal"
+                  className="radio-img"
+                />
+                <div className="radio">
+                  <label>
+                    <input
+                      type="radio"
+                      name="payment_method"
+                      value="transfer"
+                      onChange={handleFormChange}
+                      required
+                    />
+                    <span className="check" />
+                    <span className="circle" />
+                    <h3>Wire Transfer to Andela Account</h3>
+                    Make payment to the account details below:<br />
+                    Andela Account<br />
+                    Bank name<br />
+                    1234567890<br />
+                  </label>
+                </div>
+                {/* End .radio */}
               </div>
-              {/* End .radio */}
             </div>
-            {/* End .radio-inline-container */}
-            <br />
-            <div className="form-group clearfix form-action">
-              <button
-                type="submit"
-                className="btn btn-primary pull-left min-width"
-                disabled={saving}
-              >
-                { saving ? 'Processing...' : 'Confirm Order' }
-              </button>
-            </div>
-          </form>
+          }
+          <br />
+          <div className="form-group clearfix form-action">
+            <button
+              type="submit"
+              className="btn btn-primary pull-left min-width"
+              disabled={saving}
+            >
+              { saving ? 'Processing...' : 'Confirm Order' }
+            </button>
+          </div>
+        </form>
 
         </div>
       }
