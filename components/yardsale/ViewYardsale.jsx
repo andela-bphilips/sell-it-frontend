@@ -39,16 +39,16 @@ class ViewYardsale extends Component {
     this.props.getYardsale(yardsaleName)
       .then(() => {
         const { auth, yardsale } = this.props;
-        
+
         this.props.getUsers()
           .then(() => {
             const { users } = this.props;
-            
+
             const usersData = users.map(user => ({
               label: user.email,
               value: user.id
             }));
-            
+
             const selectedUsers = [];
             if (yardsale.administrators) {
               yardsale.administrators.forEach((id) => {

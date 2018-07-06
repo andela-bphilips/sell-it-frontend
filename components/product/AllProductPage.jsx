@@ -25,8 +25,7 @@ class AllProducts extends Component {
       page: 1,
       productOrder: {},
       search: '',
-      sort: 'created_at',
-      updateComponent: false
+      sort: 'created_at'
     };
 
     this.getProductsApiCall = this.getProductsApiCall.bind(this);
@@ -50,8 +49,7 @@ class AllProducts extends Component {
 
       this.setState({
         category,
-        search,
-        updateComponent: true
+        search
       });
     }
   }
@@ -67,14 +65,8 @@ class AllProducts extends Component {
       category, page, limit, search, order, sort
     } = this.state;
     this.props.getProducts(search, category, limit, page, sort, order)
-      .then(() => {
-        this.setState({
-          updateComponent: false
-        });
-      })
-      .catch(() => {
-        toastr.error(this.props.message);
-      });
+      .then(() => {})
+      .catch(() => toastr.error(this.props.message));
   }
 
   handleMakeOrderFormChange(event) {

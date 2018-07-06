@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-for  */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ViewLiveYardsale = ({ products, yardsaleName }) => (
   <div className="container hide-sidebar-display">
@@ -17,9 +18,13 @@ const ViewLiveYardsale = ({ products, yardsaleName }) => (
                 <img src={product.productImages[0]} alt={product.productName} />
                 {
                   product.productQuantity > 0 ?
-                    <a href="#" className="btn-detail" role="button">
+                    <Link
+                      to={`/product/${product.slug}?type=yardsale`}
+                      className="btn-detail"
+                      role="button"
+                    >
                       View Details
-                    </a> :
+                    </Link> :
                     <a className="btn-sold-out btn-danger" role="button">
                       Sold-out
                     </a>

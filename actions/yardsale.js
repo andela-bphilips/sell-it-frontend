@@ -3,26 +3,27 @@ import axios from 'axios';
 
 import {
   GET_YARDSALE_SUCCESS, GET_YARDSALE_PRODUCTS_SUCCESS, UPDATE_YARDSALE_SUCCESS,
-  SUCCESS_MESSAGE, ERROR_MESSAGE
+  SUCCESS_MESSAGE, ERROR_MESSAGE, GET_PRODUCT_SUCCESS
 } from './types.js';
 
 const { apiBaseUrl } = process.env;
 
+export const getOneProductSuccess = product => ({
+  type: GET_PRODUCT_SUCCESS,
+  product
+});
 export const getYardsaleSuccess = yardsale => ({
   type: GET_YARDSALE_SUCCESS,
   yardsale
 });
-
 export const getYardsaleProductsSuccess = yardsaleData => ({
   type: GET_YARDSALE_PRODUCTS_SUCCESS,
   data: yardsaleData
 });
-
 export const updateYardsaleSuccess = yardsale => ({
   type: UPDATE_YARDSALE_SUCCESS,
   yardsale
 });
-
 export const passSuccessMessage = message => ({
   type: SUCCESS_MESSAGE,
   message
@@ -47,6 +48,16 @@ export const getYardsaleProducts = name => dispatch =>
   axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}`)
     .then((response) => {
       dispatch(getYardsaleProductsSuccess(response.data.data));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
+export const getYardsaleProduct = slug => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale/product?slug=${slug}`)
+    .then((response) => {
+      dispatch(getOneProductSuccess(response.data.data.product));
     })
     .catch((error) => {
       console.log(error.response.status);

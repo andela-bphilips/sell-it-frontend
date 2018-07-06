@@ -50,7 +50,6 @@ class YardsaleProducts extends Component {
           products: products.products,
           yardsaleName: products.yardsaleInfo.name
         }, () => {
-          console.log(this.state);
           const { startDate, startTime } = this.state;
           date2 = new Date(`${startDate} ${startTime}`);
           this.setState({ countDownTo: date2 });
