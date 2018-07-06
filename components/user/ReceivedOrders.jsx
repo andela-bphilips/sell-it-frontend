@@ -46,7 +46,7 @@ class ReceivedOrders extends Component {
 
     orders.forEach((order) => {
       const orderData = [
-        order.id,
+        order.orderId,
         order.buyer_name,
         order.product.productName,
         order.orderQuantity,
@@ -144,9 +144,9 @@ class ReceivedOrders extends Component {
               <tbody>
                 { orders.orders.map(order =>
                   (
-                    <tr key={order.id}>
-                      <td className="id-col">
-                        {order.id}
+                    <tr key={order.orderId}>
+                      <td className="price-col">
+                        {order.orderId}
                       </td>
                       <td className="product-col">
                         <div className="product">
@@ -174,7 +174,7 @@ class ReceivedOrders extends Component {
                         {order.sellerOrderStatus === 'completed'
                           ? 'Completed' : ''}
                       </td>
-                      <td className="quantity-col">{order.orderQuantity}</td>
+                      <td className="price-col">{order.orderQuantity}</td>
                       <td className="date-col">
                         {moment(order.createdAt).fromNow()}
                       </td>
