@@ -16,8 +16,11 @@ export const message = (state = initialState.message, action = {}) => {
 export const statusCode = (state = initialState.statusCode, action = {}) => {
   switch (action.type) {
     case ERROR_MESSAGE:
-      console.log(action.type, 'sdfdas', action);
-      return action.statusCode;
+      if (action.statusCode) {
+        return action.statusCode;
+      }
+      return state;
+
     default:
       return state;
   }
