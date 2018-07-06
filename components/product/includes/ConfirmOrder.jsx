@@ -91,8 +91,7 @@ const ConfirmOrder = ({
           </div>
         </form>
 
-        </div>
-      }
+      </div>
     </div>
   </div>
 );
