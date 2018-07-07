@@ -67,7 +67,7 @@ class ViewYardsale extends Component {
               userId: auth.user.id,
               users: usersData,
               yardsale,
-              yardsaleName: yardsale.yardsaleName
+              yardsaleName: yardsale.name
             });
           })
           .catch(() => toastr.error(this.props.message));
@@ -104,10 +104,6 @@ class ViewYardsale extends Component {
     this.setState({ saving: true });
     const timeNow = new Date();
 
-    if (!updatedYardsale[0]) {
-      return toastr.error('Please update at least one field to proceed.');
-    }
-
     if (updatedYardsale.start_time) {
       const startTime =
         new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
@@ -135,6 +131,10 @@ class ViewYardsale extends Component {
         return this.setState({ saving: false });
       }
     } else {
+      if (!updatedYardsale[Object.keys(updatedYardsale)[0]]) {
+        this.setState({ saving: false });
+        return toastr.error('Please update at least one field to proceed.');
+      }
       this.props.editYardsale(yardsaleName, updatedYardsale)
         .then(() => {
           this.setState({ saving: false });
