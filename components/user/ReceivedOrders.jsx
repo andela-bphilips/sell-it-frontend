@@ -183,51 +183,53 @@ class ReceivedOrders extends Component {
                       </td>
                       {
                         order.sellerOrderStatus !== 'rejected' &&
-                        <td>
-                          <div className="btn-group">
-                            <button
-                              type="button"
-                              className="btn btn-primary dropdown-toggle"
-                              data-toggle="dropdown"
-                              aria-haspopup="true"
-                              aria-expanded="false"
-                            >
-                              Action <span className="caret" />
-                            </button>
-                            {
-                              order.buyerOrderStatus === 'in_progress' &&
-                              <ul className="dropdown-menu">
-                                <li>
-                                  <a onClick={() =>
-                                    this.handleOrder('approved', order.id)}
-                                  >
-                                    Accept
-                                  </a>
-                                </li>
-                                <li role="separator" className="divider" />
-                                <li>
-                                  <a onClick={() =>
-                                    this.handleOrder('rejected', order.id)}
-                                  >
-                                    Reject
-                                  </a>
-                                </li>
-                              </ul>
-                            }
-                            {
-                              order.sellerOrderStatus === 'approved' &&
-                              <ul className="dropdown-menu">
-                                <li>
-                                  <a onClick={() =>
-                                    this.handleOrder('completed', order.id)}
-                                  >
-                                    Complete
-                                  </a>
-                                </li>
-                              </ul>
-                            }
-                          </div>
-                        </td>
+                        order.sellerOrderStatus !== 'completed' ?
+                          <td>
+                            <div className="btn-group">
+                              <button
+                                type="button"
+                                className="btn btn-primary dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                Action <span className="caret" />
+                              </button>
+                              {
+                                order.buyerOrderStatus === 'in_progress' &&
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a onClick={() =>
+                                      this.handleOrder('approved', order.id)}
+                                    >
+                                      Accept
+                                    </a>
+                                  </li>
+                                  <li role="separator" className="divider" />
+                                  <li>
+                                    <a onClick={() =>
+                                      this.handleOrder('rejected', order.id)}
+                                    >
+                                      Reject
+                                    </a>
+                                  </li>
+                                </ul>
+                              }
+                              {
+                                order.sellerOrderStatus === 'approved' &&
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <a onClick={() =>
+                                      this.handleOrder('completed', order.id)}
+                                    >
+                                      Complete
+                                    </a>
+                                  </li>
+                                </ul>
+                              }
+                            </div>
+                          </td>
+                        : <td />
                       }
                     </tr>
                   ))
