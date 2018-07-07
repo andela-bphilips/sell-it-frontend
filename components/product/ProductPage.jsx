@@ -110,10 +110,8 @@ class ProductPage extends Component {
     this.setState({
       saving: true
     });
-    const { productOrder, type } = this.state;
-    if (type !== 'yardsale') {
-      productOrder.payment_method = 'transfer';
-    }
+    const { productOrder } = this.state;
+    productOrder.payment_method = 'transfer';
 
     this.props.placeOrder(productOrder)
       .then(() => {
@@ -171,8 +169,10 @@ class ProductPage extends Component {
   render() {
     const {
       confirmOrder, open, orderConfirmed, product, productOrder, saving,
-      pageHasError, loading, type
+      pageHasError, loading, type, yardsale
     } = this.state;
+
+    console.log(product);
 
     if (loading) {
       return <Loader />;
@@ -180,8 +180,6 @@ class ProductPage extends Component {
       return <ErrorPage message={this.props.message} />;
     } else if (confirmOrder) {
       return (<ConfirmOrder
-        handleFormChange={this.handleMakeOrderFormChange}
-        orderType={type}
         product={product}
         productOrder={productOrder}
         saving={saving}
@@ -191,9 +189,18 @@ class ProductPage extends Component {
       return (
         <div className="col-md-9 col-md-push-3">
           <div className="row">
-            <h1>Order Confirmed!</h1>
-            Your order has been confirmed and is being processed.
-            Click <Link to="/user/orders">here</Link> to view your orders.
+            <div className="checkout-confirm">
+              <img src={process.env.OKAYIMAGE} alt="Okay" />
+              <h3>Payment Complete</h3>
+              <h4>Thank you for your order</h4>
+              <p>
+                We have sent an email with all the details of your order to
+                your email address.
+              </p>
+              <p>
+                Click <Link to="/user/orders">here</Link> to view your orders.
+              </p>
+            </div>
           </div>
         </div>
       );
@@ -245,13 +252,13 @@ class ProductPage extends Component {
               </div>
             </div>
             <div>
-              <div>
+              <div style={{ fontSize: `${16}px` }}>
                 <span className="text-light">Quantity: </span>
                 <span className="">{product.productQuantity}</span>
               </div>
               {
                 type !== 'yardsale' &&
-                <div>
+                <div style={{ fontSize: `${16}px` }}>
                   <span className="text-light">Views: </span>
                   <span className="">{product.views}</span>
                 </div>
@@ -290,9 +297,11 @@ class ProductPage extends Component {
             <h2 className="product-title">{product.productName}</h2>
             {
               type !== 'yardsale' &&
-              <div>
-                <span className="product-stock"> {product.ownerName}</span>
+              <div style={{ fontSize: `${16}px` }}>
                 <span className="text-light">Seller: </span>
+                <span className="product-stock">
+                  {product.ownerName}
+                </span>
               </div>
             }
             <div className="product-price-container">

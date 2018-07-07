@@ -73,7 +73,7 @@ class CreateYardsale extends Component {
                 type="text"
                 name="product_name"
                 className="form-control"
-                placeholder="Macbook"
+                placeholder="e.g 'Macbook'"
                 value={product.product_name || ''}
                 onChange={this.handleFormChange}
                 required

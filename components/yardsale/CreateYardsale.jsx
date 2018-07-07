@@ -115,7 +115,7 @@ class CreateYardsale extends Component {
                 className="form-control"
                 value={yardsale.name || ''}
                 onChange={this.handleFormChange}
-                placeholder="e.g 'operations' for Operations yardsale"
+                placeholder="e.g 'operations/ops' for Operations yardsale"
                 required
               />
             </div>

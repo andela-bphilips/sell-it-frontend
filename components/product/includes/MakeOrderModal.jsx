@@ -33,8 +33,10 @@ const MakeOrderModal = ({
         <input
           type="number"
           name="order_quantity"
-          min="0"
-          max={product.productQuantity}
+          min="1"
+          max={
+            product.buyerLimit ? product.buyerLimit : product.productQuantity
+          }
           className="form-control"
           onChange={handleFormChange}
           required
@@ -71,6 +73,12 @@ const MakeOrderModal = ({
       * You cannot select more products than the quantity available for sale
       <br />
       * {product.productQuantity} item(s) of this product available for sale
+      {
+        product.buyerLimit &&
+        <span>
+          <br />* The max quantity you can order is {product.buyerLimit}.
+        </span>
+      }
       <br />
       * Do not refresh the page to avoid losing your order progress.
     </p>
