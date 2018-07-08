@@ -24,11 +24,16 @@ class ReceivedOrders extends Component {
     };
 
     this.exportToExcel = this.exportToExcel.bind(this);
+    this.fetchReceivedOrders = this.fetchReceivedOrders.bind(this);
     this.handleOrder = this.handleOrder.bind(this);
   }
 
   componentDidMount() {
-    this.props.getReceivedOrders()
+    this.fetchReceivedOrders();
+  }
+
+  fetchReceivedOrders(orderStatus = '') {
+    this.props.getReceivedOrders(orderStatus)
       .then(() => {
         this.setState({ orders: this.props.orders, loading: false });
       })
@@ -115,128 +120,164 @@ class ReceivedOrders extends Component {
           <h1>Received Orders</h1>
           <p>This is the list of orders you receive from intrested buyers </p>
         </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => this.exportToExcel(orders.orders)}
+        >
+          Export to Excel
+        </button>
+
+        <div className="btn-group">
+          <button
+            type="button"
+            className="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            style={{ marginLeft: `${20}px` }}
+          >
+            Filter by <span className="caret" />
+          </button>
+          <ul className="dropdown-menu">
+            <li>
+              <a onClick={() => { this.fetchReceivedOrders(''); }}>
+                All
+              </a>
+            </li>
+            <li role="separator" className="divider" />
+            <li>
+              <a onClick={() => { this.fetchReceivedOrders('approved'); }}>
+                Approved
+              </a>
+            </li>
+            <li role="separator" className="divider" />
+            <li>
+              <a onClick={() => { this.fetchReceivedOrders('rejected'); }}>
+                Rejected
+              </a>
+            </li>
+            <li role="separator" className="divider" />
+            <li>
+              <a onClick={() => { this.fetchReceivedOrders('completed'); }}>
+                Completed
+              </a>
+            </li>
+          </ul>
+        </div>
         {!loading && orders.orders.length === 0 &&
         <h2>You have no orders yet</h2>
         }
         {!loading && orders.orders.length > 0 &&
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => this.exportToExcel(orders.orders)}
-          >
-            Export to Excel
-          </button>
-          <div className="table-responsive">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Product Name</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Qty</th>
-                  <th>Date</th>
-                  <th>Buyer Name</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                { orders.orders.map(order =>
-                  (
-                    <tr key={order.orderId}>
-                      <td className="price-col">
-                        {order.orderId}
-                      </td>
-                      <td className="product-col">
-                        <div className="product">
-                          <Link to="#">
-                            {order.product.productName}
-                          </Link>
-                          <h3 className="product-title">
-                            <Link to="#">{order.productName}</Link>
-                          </h3>
-                        </div>
-                      </td>
-                      <td className="price-col">
-                        {order.currency}
-                        {numberWithCommas(order.negotiatedPrice)}
-                      </td>
-                      <td className="status-col">
-                        {order.buyerOrderStatus === 'in_progress'
-                          ? 'Pending' : ''}
-                        {order.buyerOrderStatus === 'cancelled'
-                          ? 'Cancelled' : ''}
-                        {order.sellerOrderStatus === 'approved'
-                          ? 'Approved' : ''}
-                        {order.sellerOrderStatus === 'rejected'
-                          ? 'Rejected' : ''}
-                        {order.sellerOrderStatus === 'completed'
-                          ? 'Completed' : ''}
-                      </td>
-                      <td className="price-col">{order.orderQuantity}</td>
-                      <td className="date-col">
-                        {moment(order.createdAt).fromNow()}
-                      </td>
-                      <td className="buyer-col">
-                        {order.buyer_name}
-                      </td>
-                      {
-                        order.sellerOrderStatus !== 'rejected' &&
-                        order.sellerOrderStatus !== 'completed' ?
-                          <td>
-                            <div className="btn-group">
-                              <button
-                                type="button"
-                                className="btn btn-primary dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                Action <span className="caret" />
-                              </button>
-                              {
-                                order.buyerOrderStatus === 'in_progress' &&
-                                <ul className="dropdown-menu">
-                                  <li>
-                                    <a onClick={() =>
-                                      this.handleOrder('approved', order.id)}
-                                    >
-                                      Accept
-                                    </a>
-                                  </li>
-                                  <li role="separator" className="divider" />
-                                  <li>
-                                    <a onClick={() =>
-                                      this.handleOrder('rejected', order.id)}
-                                    >
-                                      Reject
-                                    </a>
-                                  </li>
-                                </ul>
-                              }
-                              {
-                                order.sellerOrderStatus === 'approved' &&
-                                <ul className="dropdown-menu">
-                                  <li>
-                                    <a onClick={() =>
-                                      this.handleOrder('completed', order.id)}
-                                    >
-                                      Complete
-                                    </a>
-                                  </li>
-                                </ul>
-                              }
-                            </div>
-                          </td>
-                        : <td />
-                      }
-                    </tr>
-                  ))
-                }
-              </tbody>
-            </table>
-          </div>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Qty</th>
+                <th>Date</th>
+                <th>Buyer Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              { orders.orders.map(order =>
+                (
+                  <tr key={order.orderId}>
+                    <td className="price-col">
+                      {order.orderId}
+                    </td>
+                    <td className="product-col">
+                      <div className="product">
+                        <Link to="#">
+                          {order.product.productName}
+                        </Link>
+                        <h3 className="product-title">
+                          <Link to="#">{order.productName}</Link>
+                        </h3>
+                      </div>
+                    </td>
+                    <td className="price-col">
+                      {order.currency}
+                      {numberWithCommas(order.negotiatedPrice)}
+                    </td>
+                    <td className="status-col">
+                      {order.buyerOrderStatus === 'in_progress'
+                        ? 'Pending' : ''}
+                      {order.buyerOrderStatus === 'cancelled'
+                        ? 'Cancelled' : ''}
+                      {order.sellerOrderStatus === 'approved'
+                        ? 'Approved' : ''}
+                      {order.sellerOrderStatus === 'rejected'
+                        ? 'Rejected' : ''}
+                      {order.sellerOrderStatus === 'completed'
+                        ? 'Completed' : ''}
+                    </td>
+                    <td className="price-col">{order.orderQuantity}</td>
+                    <td className="date-col">
+                      {moment(order.createdAt).fromNow()}
+                    </td>
+                    <td className="buyer-col">
+                      {order.buyer_name}
+                    </td>
+                    {
+                      order.sellerOrderStatus !== 'rejected' &&
+                      order.sellerOrderStatus !== 'completed' ?
+                        <td>
+                          <div className="btn-group">
+                            <button
+                              type="button"
+                              className="btn btn-primary dropdown-toggle"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            >
+                              Action <span className="caret" />
+                            </button>
+                            {
+                              order.buyerOrderStatus === 'in_progress' &&
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <a onClick={() =>
+                                    this.handleOrder('approved', order.id)}
+                                  >
+                                    Accept
+                                  </a>
+                                </li>
+                                <li role="separator" className="divider" />
+                                <li>
+                                  <a onClick={() =>
+                                    this.handleOrder('rejected', order.id)}
+                                  >
+                                    Reject
+                                  </a>
+                                </li>
+                              </ul>
+                            }
+                            {
+                              order.sellerOrderStatus === 'approved' &&
+                              <ul className="dropdown-menu">
+                                <li>
+                                  <a onClick={() =>
+                                    this.handleOrder('completed', order.id)}
+                                  >
+                                    Complete
+                                  </a>
+                                </li>
+                              </ul>
+                            }
+                          </div>
+                        </td>
+                      : <td />
+                    }
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
         </div>
         }
         <nav aria-label="Page Navigation">
