@@ -7,18 +7,24 @@ import toastr from 'toastr';
 
 import { createYardsaleProduct } from '../../actions/yardsale.js';
 
+const { CLOUDNAME } = process.env;
+
 class CreateYardsale extends Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
+      images: [],
       product: {},
       saving: false,
+      disableUploadButton: false,
       yardsale: ''
     };
 
     this.handleFormChange = this.handleFormChange.bind(this);
     this.saveYardsaleProduct = this.saveYardsaleProduct.bind(this);
+    this.uploadImages = this.uploadImages.bind(this);
+    this.onUpload = this.onUpload.bind(this);
   }
 
   componentWillMount() {
@@ -30,12 +36,39 @@ class CreateYardsale extends Component {
     this.setState({ yardsale });
   }
 
+  onUpload(images) {
+    const { product } = this.state;
+    const urlList = [];
+
+    images.map(image => urlList.push(image.secure_url));
+
+    product.product_images = urlList;
+    this.setState({ product, disableUploadButton: false });
+  }
+
   handleFormChange(event) {
     const field = event.target.name;
     const { product } = this.state;
 
     product[field] = event.target.value;
     return this.setState({ product });
+  }
+
+  uploadImages(event) {
+    /* eslint-disable no-undef */
+    event.preventDefault();
+    this.setState({ disableUploadButton: true });
+    cloudinary.openUploadWidget(
+      { cloud_name: CLOUDNAME, upload_preset: 'sell-it' },
+      (error, result) => {
+        if (result) {
+          const images = [...new Set([...this.state.images, ...result])];
+          this.onUpload(images);
+        } else {
+          this.setState({ disableUploadButton: false });
+        }
+      }
+    );
   }
 
   saveYardsaleProduct(event) {
@@ -56,7 +89,7 @@ class CreateYardsale extends Component {
   }
 
   render() {
-    const { product, saving } = this.state;
+    const { product, saving, disableUploadButton } = this.state;
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
@@ -116,7 +149,9 @@ class CreateYardsale extends Component {
                   <label>Upload Images</label>
                   <button
                     type="button"
+                    onClick={this.uploadImages}
                     className="btn-btn-secondary inline form-control"
+                    disabled={disableUploadButton}
                   >
                     Add Images
                   </button>

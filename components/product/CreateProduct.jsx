@@ -6,8 +6,9 @@ import toastr from 'toastr';
 import { createProduct } from '../../actions/products.js';
 import { getAllCategory } from '../../actions/category';
 
-
 import CreateProductForm from './includes/CreateProductForm.jsx';
+
+const { CLOUDNAME } = process.env;
 
 class CreateProduct extends Component {
   constructor(props, context) {
@@ -49,7 +50,7 @@ class CreateProduct extends Component {
     /* eslint-disable no-undef */
     event.preventDefault();
     cloudinary.openUploadWidget(
-      { cloud_name: 'zoewox-technologies', upload_preset: 'sell-it' },
+      { cloud_name: CLOUDNAME, upload_preset: 'sell-it' },
       (error, result) => {
         const images = [...new Set([...this.state.images, ...result])];
         this.onUpload(images);

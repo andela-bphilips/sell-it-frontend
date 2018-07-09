@@ -55,7 +55,8 @@ module.exports = {
       'process.env.TOKEN_KEY': JSON.stringify(process.env.TOKEN_KEY),
       'process.env.apiBaseUrl': JSON.stringify(process.env.apiBaseUrl),
       'process.env.DEFAULTNOIMAGE': JSON.stringify(process.env.DEFAULTNOIMAGE),
-      'process.env.OKAYIMAGE': JSON.stringify(process.env.OKAYIMAGE)
+      'process.env.OKAYIMAGE': JSON.stringify(process.env.OKAYIMAGE),
+      'process.env.CLOUDNAME': JSON.stringify(process.env.CLOUDNAME)
     }),
   ],
   devtool: 'source-map'
