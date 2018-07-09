@@ -30,9 +30,10 @@ class AllProducts extends Component {
 
     this.getProductsApiCall = this.getProductsApiCall.bind(this);
     this.handleMakeOrderFormChange = this.handleMakeOrderFormChange.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     /* eslint-disable react/no-did-mount-set-state */
     const urlData = queryString.parse(this.props.location.search);
     const { search, category } = urlData;
@@ -47,16 +48,9 @@ class AllProducts extends Component {
       const urlData = queryString.parse(nextProps.location.search);
       const { search, category } = urlData;
 
-      this.setState({
-        category,
-        search
+      this.setState({ category, search }, () => {
+        this.getProductsApiCall();
       });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.products !== this.props.products) {
-      this.getProductsApiCall();
     }
   }
 
@@ -77,6 +71,14 @@ class AllProducts extends Component {
     return this.setState({ productOrder });
   }
 
+  handlePageClick(data) {
+    const { selected } = data;
+
+    this.setState({ page: Math.ceil(selected) + 1 }, () => {
+      this.getProductsApiCall();
+    });
+  }
+
   render() {
     const { auth, products } = this.props;
     if (_.isEmpty(products)) {
@@ -84,8 +86,8 @@ class AllProducts extends Component {
     }
 
     const pagination = (<ReactPaginate
-      previousLabel={<i className="fas fa-chevron-circle-left" />}
-      nextLabel={<i className="fas fa-chevron-circle-right" />}
+      previousLabel="<"
+      nextLabel=">"
       breakLabel={<a href="">...</a>}
       breakClassName="break-me"
       pageCount={products.pagination.totalPages
