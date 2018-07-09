@@ -105,8 +105,8 @@ class ReceivedOrders extends Component {
     }
     if (orders.pagination) {
       pagination = (<ReactPaginate
-        previousLabel={<i className="fas fa-chevron-circle-left" />}
-        nextLabel={<i className="fas fa-chevron-circle-right" />}
+        previousLabel="<"
+        nextLabel=">"
         breakLabel={<a href="">...</a>}
         breakClassName="break-me"
         pageCount={orders.pagination.totalPages

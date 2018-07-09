@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable max-len */
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -14,28 +13,40 @@ class MyProductPage extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      products: [],
+      current: 'showAll',
       loading: true,
-      current: 'showAll'
+      page: 1,
+      products: []
     };
+
     this.getProducts = this.getProducts.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getProducts();
   }
 
   getProducts(current = 'showAll') {
-    this.setState({ loading: true, current }, () => {
-      if (current === 'showAll') {
-        current = '';
-      }
-      this.props.getMyProducts(current).then(() => {
+    const { page } = this.state;
+    if (current === 'showAll') {
+      current = '';
+    }
+    this.props.getMyProducts(current, page)
+      .then(() => {
         this.setState({
+          current,
           products: this.props.products,
           loading: false
         });
       });
+  }
+
+  handlePageClick(data) {
+    const { selected } = data;
+
+    this.setState({ page: Math.ceil(selected) + 1 }, () => {
+      this.getProducts();
     });
   }
 
@@ -48,8 +59,8 @@ class MyProductPage extends Component {
     }
     if (products.pagination) {
       pagination = (<ReactPaginate
-        previousLabel={<i className="fas fa-chevron-circle-left" />}
-        nextLabel={<i className="fas fa-chevron-circle-right" />}
+        previousLabel="<"
+        nextLabel=">"
         breakLabel={<a href="">...</a>}
         breakClassName="break-me"
         pageCount={products.pagination.totalPages
@@ -141,7 +152,11 @@ class MyProductPage extends Component {
                   <div className="portfolio-tags">
                     <p>View(s): {product.views}</p>
                   </div>{/* End .portfolio-tags */}
-                  <Link to={`/edit/product/${product.slug}`} className="btn-edit-product" role="button">
+                  <Link
+                    to={`/edit/product/${product.slug}`}
+                    className="btn-edit-product"
+                    role="button"
+                  >
                     Edit Product
                   </Link>
                 </div>{/* End .portfolio-meta */}

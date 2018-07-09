@@ -64,11 +64,12 @@ export const editProduct = (slug, productData) => dispatch => axios.put(`${apiBa
     throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
-export const getMyProducts = (status = '') => dispatch => axios.get(`${apiBaseUrl}/my_products?status=${status}`)
-  .then((response) => {
-    dispatch(getProductsSuccess(response.data.data));
-  })
-  .catch((error) => {
-    console.log(error);
-    throw dispatch(passErrorMessage('An error occured.'));
-  });
+export const getMyProducts = (status = '', page = 1) => dispatch =>
+  axios.get(`${apiBaseUrl}/my_products?status=${status}&page=${page}&limit=2`)
+    .then((response) => {
+      dispatch(getProductsSuccess(response.data.data));
+    })
+    .catch((error) => {
+      console.log(error);
+      throw dispatch(passErrorMessage('An error occured.'));
+    });

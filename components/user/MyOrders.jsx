@@ -55,8 +55,8 @@ class MyOrders extends Component {
       return <Loader />;
     }
     const pagination = (<ReactPaginate
-      previousLabel={<i className="fas fa-chevron-circle-left" />}
-      nextLabel={<i className="fas fa-chevron-circle-right" />}
+      previousLabel="<"
+      nextLabel=">"
       breakLabel={<a href="">...</a>}
       breakClassName="break-me"
       pageCount={orders.pagination.totalPages
