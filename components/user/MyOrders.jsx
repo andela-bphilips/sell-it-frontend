@@ -16,11 +16,13 @@ class MyOrders extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      loading: true,
       orders: {},
-      loading: true
+      page: 1
     };
 
     this.fetchMyOrders = this.fetchMyOrders.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentWillMount() {
@@ -28,13 +30,22 @@ class MyOrders extends Component {
   }
 
   fetchMyOrders(orderStatus = '') {
-    this.props.getMyOrders(orderStatus)
+    const { page } = this.state;
+    this.props.getMyOrders(orderStatus, page)
       .then(() => {
         this.setState({ orders: this.props.orders, loading: false });
       })
       .catch(() => {
         toastr.error(this.props.message);
       });
+  }
+
+  handlePageClick(data) {
+    const { selected } = data;
+
+    this.setState({ page: Math.ceil(selected) + 1 }, () => {
+      this.fetchMyOrders();
+    });
   }
 
   render() {

@@ -19,13 +19,15 @@ class ReceivedOrders extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      loading: true,
       orders: [],
-      loading: true
+      page: 1
     };
 
     this.exportToExcel = this.exportToExcel.bind(this);
     this.fetchReceivedOrders = this.fetchReceivedOrders.bind(this);
     this.handleOrder = this.handleOrder.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +35,9 @@ class ReceivedOrders extends Component {
   }
 
   fetchReceivedOrders(orderStatus = '') {
-    this.props.getReceivedOrders(orderStatus)
+    const { page } = this.state;
+
+    this.props.getReceivedOrders(orderStatus, page)
       .then(() => {
         this.setState({ orders: this.props.orders, loading: false });
       })
@@ -81,6 +85,14 @@ class ReceivedOrders extends Component {
       .catch(() => {
         toastr.error(this.props.message);
       });
+  }
+
+  handlePageClick(data) {
+    const { selected } = data;
+
+    this.setState({ page: Math.ceil(selected) + 1 }, () => {
+      this.fetchReceivedOrders();
+    });
   }
 
   render() {

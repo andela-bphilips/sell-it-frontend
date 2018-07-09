@@ -45,23 +45,25 @@ export const placeOrder = orderData => dispatch => axios.post(`${apiBaseUrl}/ord
     throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
-export const getMyOrders = (orderStatus = '') => dispatch => axios.get(`${apiBaseUrl}/all_orders?status=${orderStatus}`)
-  .then((response) => {
-    dispatch(getMyOrdersSuccess(response.data.data));
-    dispatch(passSuccessMessage(response.data.data.message));
-  })
-  .catch((error) => {
-    throw dispatch(passErrorMessage(error.response.data.data.message));
-  });
+export const getMyOrders = (orderStatus = '', page = 1) => dispatch =>
+  axios.get(`${apiBaseUrl}/all_orders?status=${orderStatus}&page=${page}`)
+    .then((response) => {
+      dispatch(getMyOrdersSuccess(response.data.data));
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      throw dispatch(passErrorMessage(error.response.data.data.message));
+    });
 
-export const getReceivedOrders = (orderStatus = '') => dispatch => axios.get(`${apiBaseUrl}/received_orders?status=${orderStatus}`)
-  .then((response) => {
-    dispatch(getReceivedOrdersSuccess(response.data.data));
-    dispatch(passSuccessMessage(response.data.data.message));
-  })
-  .catch((error) => {
-    throw dispatch(passErrorMessage(error.response.data.data.message));
-  });
+export const getReceivedOrders = (orderStatus = '', page = 1) => dispatch =>
+  axios.get(`${apiBaseUrl}/received_orders?status=${orderStatus}&page=${page}`)
+    .then((response) => {
+      dispatch(getReceivedOrdersSuccess(response.data.data));
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      throw dispatch(passErrorMessage(error.response.data.data.message));
+    });
 
 export const processOrder = orderData => dispatch => axios.put(`${apiBaseUrl}/sell_it`, orderData)
   .then((response) => {
