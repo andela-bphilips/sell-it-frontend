@@ -65,7 +65,7 @@ export const editProduct = (slug, productData) => dispatch => axios.put(`${apiBa
   });
 
 export const getMyProducts = (status = '', page = 1) => dispatch =>
-  axios.get(`${apiBaseUrl}/my_products?status=${status}&page=${page}&limit=2`)
+  axios.get(`${apiBaseUrl}/my_products?status=${status}&page=${page}`)
     .then((response) => {
       dispatch(getProductsSuccess(response.data.data));
     })
