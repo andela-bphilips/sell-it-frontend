@@ -111,6 +111,7 @@ const Template = () => (
                 path="/yardsale/:name"
                 component={ViewYardsale}
               />
+              <Route component={ErrorPage} />
             </Switch>
             <CategoryNav />
           </div>
