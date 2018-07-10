@@ -6675,3 +6675,14 @@ button.inline.form-control {
   color: #dc9831;
   font-size: 15px;
 }
+
+.admin-view-button {
+  display: flex;
+  float: right;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#upload-csv-button {
+  margin-right: 15px;
+}

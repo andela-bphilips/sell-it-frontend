@@ -1,35 +1,68 @@
 /* eslint-disable jsx-a11y/label-has-for  */
 /* eslint-disable react/prop-types */
 import React from 'react';
+import ReactFileReader from 'react-file-reader';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
+import Papa from 'papaparse';
 
 import 'react-select/dist/react-select.css';
 
+const handleCsvFiles = (bulkApiCall, file) => {
+  const reader = new FileReader();
+  let uploadedProducts;
+  reader.onload = (e) => {
+    uploadedProducts = reader.result;
+
+    if (uploadedProducts) {
+      Papa.parse(uploadedProducts, {
+        header: true,
+        complete: (results) => {
+          bulkApiCall(results.data);
+        }
+      });
+    }
+  };
+  reader.readAsText(file[0]);
+};
+
 const AdminViewYardsale = ({
   disabled, handleFormChange, handleSelectChange, saving, updateYardsale,
-  users, value, yardsale
+  users, value, yardsale, bulkApiCall
 }) => (
   <div className="col-md-9 col-md-push-3">
     <div className="row">
       <div>
+        <div className="col-lg-10 col-lg-push-1 title-group">
+          <h1 className="title">{yardsale.name} yard sale</h1>
+          <div className="text-right">
+            <Link 
+              className="col-lg-10 col-lg-push-1"
+              to={`/yardsale/product/new?yardsale=${yardsale.name}`}
+              type="button"
+              className="btn btn-primary admin-view-button"
+            >
+              Add new yardsale product
+            </Link>
+            <ReactFileReader 
+              className="col-lg-10 col-lg-push-1"
+              handleFiles={handleCsvFiles.bind(null, bulkApiCall)} 
+              fileTypes=".csv"
+            >
+              <button 
+                className="btn btn-primary admin-view-button" 
+                id="upload-csv-button"
+              >
+                Bulk Add products
+              </button>
+            </ReactFileReader>
+          </div>
+          <hr />
+        </div>
         <form
           className="col-lg-10 col-lg-push-1"
           onSubmit={updateYardsale}
         >
-          <div className="title-group">
-            <h1 className="title">{yardsale.name} yard sale</h1>
-            <div className="text-right">
-              <Link
-                to={`/yardsale/product/new?yardsale=${yardsale.name}`}
-                type="button"
-                className="btn btn-primary"
-              >
-                Add new product yardsale
-              </Link>
-            </div>
-            <hr />
-          </div>
           <div className="form-group">
             <label>Yardsale Department</label>
             <input
