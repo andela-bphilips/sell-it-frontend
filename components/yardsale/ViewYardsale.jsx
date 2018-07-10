@@ -9,6 +9,7 @@ import Loader from '../includes/Loader.jsx';
 
 import { getUsers } from '../../actions/users.js';
 import { editYardsale, getYardsale } from '../../actions/yardsale.js';
+import { bulkCreateYardsaleProduct } from '../../actions/yardsale.js';
 
 class ViewYardsale extends Component {
   constructor(props, context) {
@@ -30,6 +31,7 @@ class ViewYardsale extends Component {
     this.handleFormChange = this.handleFormChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.updateYardsale = this.updateYardsale.bind(this);
+    this.bulkApiCall = this.bulkApiCall.bind(this)
   }
 
   componentWillMount() {
@@ -80,6 +82,21 @@ class ViewYardsale extends Component {
         });
       });
   }
+
+  bulkApiCall(yardsaleProducts) {
+    const request_body = {
+      products: yardsaleProducts
+    }
+    console.log(request_body)
+    this.props.bulkCreateYardsaleProduct(this.state.yardsale.name, request_body)
+      .then(() => {
+        this.props.history.push(`/yardsale/products/${this.state.yardsale.name}`);
+        toastr.success(this.props.message);
+      })
+      .catch(() => {
+        toastr.error(this.props.message);
+      });
+  };
 
   handleFormChange(event) {
     const field = event.target.name;
@@ -168,6 +185,7 @@ class ViewYardsale extends Component {
         users={users}
         value={selectedUser}
         yardsale={yardsale}
+        bulkApiCall={this.bulkApiCall}
       />
     );
   }
@@ -180,5 +198,5 @@ const mapStateToProps = ({
 });
 
 export default connect(mapStateToProps, {
-  editYardsale, getUsers, getYardsale
+  editYardsale, getUsers, getYardsale, bulkCreateYardsaleProduct
 })(ViewYardsale);
