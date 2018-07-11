@@ -44,8 +44,8 @@ export const getYardsale = yardsaleType => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
-export const getYardsaleProducts = name => dispatch =>
-  axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}`)
+export const getYardsaleProducts = (name, limit = 16, page = 1) => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}&limit=${limit}&page=${page}`)
     .then((response) => {
       dispatch(getYardsaleProductsSuccess(response.data.data));
     })
@@ -64,8 +64,8 @@ export const getYardsaleProduct = slug => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
-export const createYardsaleProduct = (yardsaleName, yardsaleData) => dispatch =>
-  axios.post(`${apiBaseUrl}/yardsale/product?yard_sale_name=${yardsaleName}`, yardsaleData)
+export const createYardsaleProduct = (yardsaleName, yardsaleProductData) => dispatch =>
+  axios.post(`${apiBaseUrl}/yardsale/product?yard_sale_name=${yardsaleName}`, yardsaleProductData)
     .then((response) => {
       dispatch(passSuccessMessage(response.data.data.message));
     })
@@ -96,11 +96,21 @@ export const editYardsale = (yardsaleName, yardsaleData) => dispatch =>
     });
 
 export const bulkCreateYardsaleProduct = (yardsaleName, yardsaleData) => dispatch =>
-axios.post(`${apiBaseUrl}/yardsale/bulk/products?yard_sale_name=${yardsaleName}`, yardsaleData)
-  .then((response) => {
-    dispatch(passSuccessMessage(response.data.data.message));
-  })
-  .catch((error) => {
-    console.log(error.response.status);
-    throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
-  });
+  axios.post(`${apiBaseUrl}/yardsale/bulk/products?yard_sale_name=${yardsaleName}`, yardsaleData)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
+export const editYardsaleProduct = (yardsaleProductName, yardsaleProductData) => dispatch =>
+  axios.put(`${apiBaseUrl}/yardsale/product?slug=${yardsaleProductName}`, yardsaleProductData)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });

@@ -169,10 +169,8 @@ class ProductPage extends Component {
   render() {
     const {
       confirmOrder, open, orderConfirmed, product, productOrder, saving,
-      pageHasError, loading, type, yardsale
+      pageHasError, loading, type
     } = this.state;
-
-    console.log(product);
 
     if (loading) {
       return <Loader />;

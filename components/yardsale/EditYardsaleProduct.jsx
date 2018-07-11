@@ -1,33 +1,157 @@
 /* eslint-disable jsx-a11y/label-has-for  */
 /* eslint-disable react/prop-types */
+import _ from 'lodash';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import toastr from 'toastr';
 
-class EditYardsale extends Component {
+import {
+  getYardsaleProduct,
+  editYardsaleProduct
+} from '../../actions/yardsale.js';
+
+import ErrorPage from '../includes/ErrorPage.jsx';
+import Loader from '../includes/Loader.jsx';
+
+import { camelCaseToUnderscore } from '../../utils/helper.js';
+
+const { CLOUDNAME } = process.env;
+
+class EditYardsaleProduct extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {};
+    this.state = {
+      disableUploadButton: false,
+      loading: false,
+      images: [],
+      product: {},
+      productToUpdate: {},
+      productSlug: null,
+      saving: false,
+      yardsaleName: null
+    };
+
+    this.fetchProductData = this.fetchProductData.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
+    this.saveYardsaleProduct = this.saveYardsaleProduct.bind(this);
+    this.uploadImages = this.uploadImages.bind(this);
+    this.onUpload = this.onUpload.bind(this);
   }
 
   componentWillMount() {
-    console.log('CWM');
+    const productName = this.props.match.params.name;
+
+    this.fetchProductData(productName);
+  }
+
+  onUpload(images) {
+    const { product, productToUpdate } = this.state;
+    const urlList = [];
+
+    images.map(image => urlList.push(image.secure_url));
+    urlList.concat(product.productImages);
+
+    product.productImages = urlList;
+    productToUpdate.productImages = urlList;
+    this.setState({ product, productToUpdate, disableUploadButton: false });
+  }
+
+  fetchProductData(productName) {
+    this.setState({ loading: true });
+    this.props.getYardsaleProduct(productName)
+      .then(() => {
+        this.setState({
+          loading: false,
+          product: this.props.product,
+          productSlug: productName,
+          yardsaleName: this.props.product.yardsaleName
+        });
+      })
+      .catch(() => {
+        this.setState({ loading: false });
+        toastr.error(this.props.message);
+      });
+  }
+
+  handleFormChange(event) {
+    const field = event.target.name;
+    const { product, productToUpdate } = this.state;
+
+    product[field] = event.target.value;
+    productToUpdate[field] = event.target.value;
+    return this.setState({ product, productToUpdate });
+  }
+
+  uploadImages(event) {
+    /* eslint-disable no-undef */
+    event.preventDefault();
+    this.setState({ disableUploadButton: true });
+    cloudinary.openUploadWidget(
+      { cloud_name: CLOUDNAME, upload_preset: 'sell-it' },
+      (error, result) => {
+        if (result) {
+          const images = [...new Set([...this.state.images, ...result])];
+          this.onUpload(images);
+        } else {
+          this.setState({ disableUploadButton: false });
+        }
+      }
+    );
+  }
+
+  saveYardsaleProduct(event) {
+    event.preventDefault();
+    const { productSlug, productToUpdate, yardsaleName } = this.state;
+    const editedProduct = {};
+    if (_.isEmpty(productToUpdate)) {
+      return toastr.error('Please select at least one field to update');
+    }
+    Object.keys(productToUpdate).forEach((key) => {
+      editedProduct[camelCaseToUnderscore(key)] = productToUpdate[key];
+    });
+
+    this.setState({ saving: true });
+    this.props.editYardsaleProduct(productSlug, editedProduct)
+      .then(() => {
+        this.props.history.push(`/yardsale/products/${yardsaleName}`);
+        toastr.success(this.props.message);
+      })
+      .catch(() => toastr.error(this.props.message));
+    this.setState({ saving: false });
   }
 
   render() {
+    const {
+      disableUploadButton, loading, product,
+      saving
+    } = this.state;
+    const errorMessage = 'Oops! You are not authorized to view this page!';
+
+    if (loading) {
+      return <Loader />;
+    } else if (!_.isEmpty(product) && !product.admin) {
+      return <ErrorPage message={errorMessage} statusCode={401} />;
+    }
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
           <h1>Edit Product</h1>
         </div>
         <div>
-          <form className="col-lg-10 col-lg-push-1">
+          <form
+            className="col-lg-10 col-lg-push-1"
+            onSubmit={this.saveYardsaleProduct}
+          >
             <div className="form-group">
-              <label>Product name</label>
+              <label>Product Name</label>
               <input
                 type="text"
-                name="product_name"
+                name="productName"
                 className="form-control"
                 placeholder="Macbook"
+                value={product.productName}
+                onChange={this.handleFormChange}
                 required
               />
             </div>
@@ -35,9 +159,11 @@ class EditYardsale extends Component {
             <div className="form-group">
               <label>Description</label>
               <textarea
-                name="description"
+                name="productDescription"
                 className="form-control"
                 rows="5"
+                value={product.productDescription}
+                onChange={this.handleFormChange}
                 required
               />
             </div>
@@ -47,8 +173,10 @@ class EditYardsale extends Component {
                 <div className="inline-fields col-sm-12 col-md-4">
                   <label>Condition</label>
                   <select
-                    name="condition"
+                    name="productCondition"
                     className="form-control"
+                    value={product.productCondition}
+                    onChange={this.handleFormChange}
                     required
                   >
                     <option>-</option>
@@ -63,7 +191,9 @@ class EditYardsale extends Component {
                   <label>Upload Images</label>
                   <button
                     type="button"
+                    onClick={this.uploadImages}
                     className="btn-btn-secondary inline form-control"
+                    disabled={disableUploadButton}
                   >
                     Add Images
                   </button>
@@ -77,8 +207,10 @@ class EditYardsale extends Component {
                   <label>Quantity</label>
                   <input
                     type="number"
-                    name="quantity"
+                    name="productQuantity"
                     className="form-control"
+                    value={product.productQuantity}
+                    onChange={this.handleFormChange}
                     min="1"
                     required
                   />
@@ -88,6 +220,8 @@ class EditYardsale extends Component {
                   <select
                     name="currency"
                     className="form-control"
+                    value={product.currency}
+                    onChange={this.handleFormChange}
                     required
                   >
                     <option>-</option>
@@ -101,8 +235,10 @@ class EditYardsale extends Component {
                   <label>Product price</label>
                   <input
                     type="number"
-                    name="product_price"
+                    name="productPrice"
                     className="form-control"
+                    value={product.productPrice}
+                    onChange={this.handleFormChange}
                     min="0"
                     required
                   />
@@ -114,8 +250,9 @@ class EditYardsale extends Component {
               <button
                 type="submit"
                 className="btn btn-primary pull-left min-width"
+                disabled={saving}
               >
-                Edit item
+                { saving ? 'Saving' : 'Update Product' }
               </button>
             </div>
           </form>
@@ -125,4 +262,12 @@ class EditYardsale extends Component {
   }
 }
 
-export default EditYardsale;
+const mapStateToProps = ({
+  auth, message, product
+}) => ({
+  auth, message, product
+});
+
+export default connect(mapStateToProps, {
+  getYardsaleProduct, editYardsaleProduct
+})(EditYardsaleProduct);

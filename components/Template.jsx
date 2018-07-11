@@ -98,7 +98,7 @@ const Template = () => (
               />
               <Route
                 exact="exact"
-                path="/yardsale/product/edit/:yardsale_name"
+                path="/yardsale/product/edit/:name"
                 component={EditYardsaleProduct}
               />
               <Route

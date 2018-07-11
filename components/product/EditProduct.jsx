@@ -12,6 +12,8 @@ import Loader from '../includes/Loader.jsx';
 
 import { camelCaseToUnderscore } from '../../utils/helper.js';
 
+const { CLOUDNAME } = process.env;
+
 class EditProduct extends Component {
   constructor(props, context) {
     super(props, context);
@@ -67,7 +69,7 @@ class EditProduct extends Component {
     /* eslint-disable no-undef */
     event.preventDefault();
     cloudinary.openUploadWidget(
-      { cloud_name: 'zoewox-technologies', upload_preset: 'sell-it' },
+      { cloud_name: CLOUDNAME, upload_preset: 'sell-it' },
       (error, result) => {
         const images = [...new Set([...this.state.images, ...result])];
         this.onUpload(images);
