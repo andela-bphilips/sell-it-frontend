@@ -120,50 +120,79 @@ class ViewYardsale extends Component {
   updateYardsale(event) {
     event.preventDefault();
     const { updatedYardsale, yardsale, yardsaleName } = this.state;
+    console.log(updatedYardsale);
     this.setState({ saving: true });
     const timeNow = new Date();
 
     if (updatedYardsale.start_time) {
-      const startTime =
-        new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+      let startTime;
+      if (updatedYardsale.start_date) {
+        const startDate = updatedYardsale.start_date;
+        startTime = new Date(`${startDate} ${updatedYardsale.start_time}`);
+      } else {
+        startTime =
+          new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+      }
 
       if (startTime.getTime() < timeNow.getTime()) {
         toastr.error('The yard sale cannot start in the past.');
         return this.setState({ saving: false });
       }
     } else if (updatedYardsale.end_time) {
-      const endTime =
-        new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+      let endTime;
+      if (updatedYardsale.start_date) {
+        const endDate = updatedYardsale.end_date;
+        endTime = new Date(`${endDate} ${updatedYardsale.end_time}`);
+      } else {
+        endTime = new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+      }
 
       if (endTime.getTime() < timeNow.getTime()) {
         toastr.error('The yard sale cannot end in the past.');
         return this.setState({ saving: false });
       }
     } else if (updatedYardsale.start_time && updatedYardsale.end_time) {
-      const startTime =
+      let startTime;
+      let endTime;
+      if (updatedYardsale.start_date) {
+        const startDate = updatedYardsale.start_date;
+        startTime = new Date(`${startDate} ${updatedYardsale.start_time}`);
+      } else {
+        startTime =
+          new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
+      }
+      if (updatedYardsale.end_date) {
+        const endDate = updatedYardsale.end_date;
+        endTime = new Date(`${endDate} ${updatedYardsale.end_time}`);
+      } else {
+        endTime =
+          new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
+      }
+
+      startTime =
         new Date(`${yardsale.start_date} ${updatedYardsale.start_time}`);
-      const endTime =
+      endTime =
         new Date(`${yardsale.end_date} ${updatedYardsale.end_time}`);
 
       if (endTime.getTime() < startTime.getTime()) {
         toastr.error('The yard sale cannot end before it starts.');
         return this.setState({ saving: false });
       }
-    } else {
-      if (!updatedYardsale[Object.keys(updatedYardsale)[0]]) {
-        this.setState({ saving: false });
-        return toastr.error('Please update at least one field to proceed.');
-      }
-      this.props.editYardsale(yardsaleName, updatedYardsale)
-        .then(() => {
-          this.setState({ saving: false });
-          toastr.success(this.props.message);
-        })
-        .catch(() => {
-          this.setState({ saving: false });
-          toastr.error(this.props.message);
-        });
     }
+    console.log('addadsds');
+    if (!updatedYardsale[Object.keys(updatedYardsale)[0]]) {
+      this.setState({ saving: false });
+      return toastr.error('Please update at least one field to proceed.');
+    }
+    this.props.editYardsale(yardsaleName, updatedYardsale)
+      .then(() => {
+        this.setState({ saving: false });
+        toastr.success(this.props.message);
+      })
+      .catch(() => {
+        this.setState({ saving: false });
+        toastr.error(this.props.message);
+      });
   }
 
   render() {
