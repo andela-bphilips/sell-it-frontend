@@ -21,7 +21,7 @@ class YardsaleProducts extends Component {
       countDown: false,
       countDownTo: null,
       // location: null,
-      limit: 12,
+      limit: 16,
       loading: false,
       startDate: null,
       startTime: null,
