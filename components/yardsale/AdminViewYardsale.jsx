@@ -130,7 +130,10 @@ const AdminViewYardsale = ({
                     name="start_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.start_date}
+                    min={new Date().toISOString().slice(0, 10)}
                     onChange={handleFormChange}
+                    disabled={yardsale.ongoing_yardsale
+                      || yardsale.past_yardsale}
                     required
                   />
                   <input
@@ -139,6 +142,8 @@ const AdminViewYardsale = ({
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.start_time}
                     onChange={handleFormChange}
+                    disabled={yardsale.ongoing_yardsale
+                      || yardsale.past_yardsale}
                     required
                   />
                 </div>
@@ -152,7 +157,9 @@ const AdminViewYardsale = ({
                     name="end_date"
                     className="col-sm-12 col-md-8 inline form-control"
                     value={yardsale.end_date}
+                    min={new Date().toISOString().slice(0, 10)}
                     onChange={handleFormChange}
+                    disabled={yardsale.past_yardsale}
                     required
                   />
                   <input
@@ -161,6 +168,7 @@ const AdminViewYardsale = ({
                     className="col-sm-12 col-md-4 inline form-control"
                     value={yardsale.end_time}
                     onChange={handleFormChange}
+                    disabled={yardsale.past_yardsale}
                     required
                   />
                 </div>
