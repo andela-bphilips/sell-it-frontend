@@ -120,7 +120,6 @@ class ViewYardsale extends Component {
   updateYardsale(event) {
     event.preventDefault();
     const { updatedYardsale, yardsale, yardsaleName } = this.state;
-    console.log(updatedYardsale);
     this.setState({ saving: true });
     const timeNow = new Date();
 
@@ -179,7 +178,6 @@ class ViewYardsale extends Component {
         return this.setState({ saving: false });
       }
     }
-    console.log('addadsds');
     if (!updatedYardsale[Object.keys(updatedYardsale)[0]]) {
       this.setState({ saving: false });
       return toastr.error('Please update at least one field to proceed.');
