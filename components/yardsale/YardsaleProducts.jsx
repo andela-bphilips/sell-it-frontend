@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import Countdown from 'react-countdown-now';
+import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
 
@@ -15,35 +16,42 @@ class YardsaleProducts extends Component {
     super(props, context);
 
     this.state = {
-      admin: false,
-      buyerLimit: 0,
+      // admin: false,
+      // buyerLimit: 0,
       countDown: false,
       countDownTo: null,
-      location: null,
+      // location: null,
+      limit: 12,
       loading: false,
       startDate: null,
       startTime: null,
+      page: 1,
       pagination: {},
       products: [],
       yardsaleName: null
     };
+
+    this.fetchYardsaleProducts = this.fetchYardsaleProducts.bind(this);
+    this.handlePageClick = this.handlePageClick.bind(this);
   }
 
   componentWillMount() {
-    const { yardsaleName } = this.props.match.params;
+    this.fetchYardsaleProducts();
+  }
 
-    this.setState({ loading: true });
-    this.props.getYardsaleProducts(yardsaleName)
+  fetchYardsaleProducts() {
+    const { yardsaleName } = this.props.match.params;
+    const { limit, page } = this.state;
+    this.props.getYardsaleProducts(yardsaleName, limit, page)
       .then(() => {
         const { products } = this.props;
         let date2;
 
         this.setState({
-          admin: products.yardsaleInfo.admin,
-          buyerLimit: products.yardsaleInfo.buyerLimit,
+          // admin: products.yardsaleInfo.admin,
+          // buyerLimit: products.yardsaleInfo.buyerLimit,
           countDown: products.yardsaleInfo.countdown,
-          location: products.yardsaleInfo.location,
-          loading: false,
+          // location: products.yardsaleInfo.location,
           startDate: products.yardsaleInfo.startDate,
           startTime: products.yardsaleInfo.startTime,
           pagination: products.pagination,
@@ -56,15 +64,22 @@ class YardsaleProducts extends Component {
         });
       })
       .catch(() => {
-        this.setState({ loading: false });
         toastr.error(this.props.message);
       });
+  }
+
+  handlePageClick(data) {
+    const { selected } = data;
+
+    this.setState({ page: Math.ceil(selected) + 1 }, () => {
+      this.fetchYardsaleProducts();
+    });
   }
 
   render() {
     const {
       countDown, countDownTo, loading,
-      products, yardsaleName
+      pagination, products, yardsaleName
     } = this.state;
     if (loading) {
       return <Loader />;
@@ -82,8 +97,34 @@ class YardsaleProducts extends Component {
         </div>
       );
     } else if (products.length > 0) {
+      const paginate = (<ReactPaginate
+        previousLabel="<"
+        nextLabel=">"
+        breakLabel={<a href="">...</a>}
+        breakClassName="break-me"
+        pageCount={pagination.totalPages
+          ? pagination.totalPages : 0}
+        marginPagesDisplayed={3}
+        pageRangeDisplayed={pagination.totalProducts > 9 ? 10
+          : pagination.totalPages}
+        onPageChange={this.handlePageClick}
+        containerClassName="pagination justify-content-center"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        nextClassName="page-item next-button"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextLinkClassName="page-link"
+        disabledClassName="disabled"
+        activeClassName="active"
+      />);
       return (
-        <ViewLiveYardsale products={products} yardsaleName={yardsaleName} />
+        <ViewLiveYardsale
+          paginate={paginate}
+          pagination={pagination}
+          products={products}
+          yardsaleName={yardsaleName}
+        />
       );
     }
     return <ErrorPage message="No products found for this yardsale." />;

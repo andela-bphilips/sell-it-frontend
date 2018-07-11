@@ -11,7 +11,7 @@ import 'react-select/dist/react-select.css';
 const handleCsvFiles = (bulkApiCall, file) => {
   const reader = new FileReader();
   let uploadedProducts;
-  reader.onload = (e) => {
+  reader.onload = () => {
     uploadedProducts = reader.result;
 
     if (uploadedProducts) {
@@ -36,21 +36,21 @@ const AdminViewYardsale = ({
         <div className="col-lg-10 col-lg-push-1 title-group">
           <h1 className="title">{yardsale.name} yard sale</h1>
           <div className="text-right">
-            <Link 
-              className="col-lg-10 col-lg-push-1"
+            {/* className="col-lg-10 col-lg-push-1" */}
+            <Link
+              className="btn btn-primary admin-view-button"
               to={`/yardsale/product/new?yardsale=${yardsale.name}`}
               type="button"
-              className="btn btn-primary admin-view-button"
             >
               Add new yardsale product
             </Link>
-            <ReactFileReader 
+            <ReactFileReader
               className="col-lg-10 col-lg-push-1"
-              handleFiles={handleCsvFiles.bind(null, bulkApiCall)} 
+              handleFiles={() => handleCsvFiles(null, bulkApiCall)}
               fileTypes=".csv"
             >
-              <button 
-                className="btn btn-primary admin-view-button" 
+              <button
+                className="btn btn-primary admin-view-button"
                 id="upload-csv-button"
               >
                 Bulk Add products

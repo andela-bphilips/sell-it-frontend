@@ -3,7 +3,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ViewLiveYardsale = ({ products, yardsaleName }) => (
+const ViewLiveYardsale = ({
+  paginate, pagination, products, yardsaleName
+}) => (
   <div className="container hide-sidebar-display">
     {/* SHOW YARDSALE PRODUCTS IF YARDSALE IS ACTIVE */}
     <div className="page-header text-center">
@@ -36,6 +38,13 @@ const ViewLiveYardsale = ({ products, yardsaleName }) => (
                     {product.productName}
                   </a>
                 </h3>
+                <Link
+                  to={`/yardsale/product/edit/${product.slug}`}
+                  className="btn-edit-product"
+                  role="button"
+                >
+                  Edit Product
+                </Link>
               </div>{/* End .portfolio-meta */}
             </div>
           ))
@@ -45,15 +54,7 @@ const ViewLiveYardsale = ({ products, yardsaleName }) => (
       </div>{/* End .portfolio-container */}
     </div>{/* End .portfolio-row */}
     <nav aria-label="Page Navigation">
-      <ul className="pagination">
-        <li><a href="#">1</a></li>
-        <li className="active"><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li className="dots"><span>...</span></li>
-        <li><a href="#">18</a></li>
-      </ul>
+      {pagination.totalPages > 1 ? paginate : null}
     </nav>
   </div>
 );
