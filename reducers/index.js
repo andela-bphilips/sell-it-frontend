@@ -5,7 +5,7 @@ import { message, statusCode } from './message.js';
 import orders from './order.js';
 import { product, products } from './product.js';
 import users from './users.js';
-import yardsale from './yardsale.js';
+import { yardsale, yardsales } from './yardsale.js';
 
 
 const rootReducer = combineReducers({
@@ -18,7 +18,8 @@ const rootReducer = combineReducers({
   products,
   statusCode,
   users,
-  yardsale
+  yardsale,
+  yardsales
 });
 
 export default rootReducer;

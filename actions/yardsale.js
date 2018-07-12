@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import {
   GET_YARDSALE_SUCCESS, GET_YARDSALE_PRODUCTS_SUCCESS, UPDATE_YARDSALE_SUCCESS,
-  SUCCESS_MESSAGE, ERROR_MESSAGE, GET_PRODUCT_SUCCESS
+  SUCCESS_MESSAGE, ERROR_MESSAGE, GET_PRODUCT_SUCCESS, GET_ALL_YARDSALES_SUCCESS
 } from './types.js';
 
 const { apiBaseUrl } = process.env;
@@ -15,6 +15,10 @@ export const getOneProductSuccess = product => ({
 export const getYardsaleSuccess = yardsale => ({
   type: GET_YARDSALE_SUCCESS,
   yardsale
+});
+export const getAllYardsalesSuccess = yardsales => ({
+  type: GET_ALL_YARDSALES_SUCCESS,
+  yardsales
 });
 export const getYardsaleProductsSuccess = yardsaleData => ({
   type: GET_YARDSALE_PRODUCTS_SUCCESS,
@@ -40,7 +44,17 @@ export const getYardsale = yardsaleType => dispatch =>
       dispatch(getYardsaleSuccess(response.data.data.yard_sale));
     })
     .catch((error) => {
-      console.log(error.response);
+      // console.log(error.response);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });
+
+export const getAllYardsales = (owner = false) => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale?owner=${owner}`)
+    .then((response) => {
+      dispatch(getAllYardsalesSuccess(response.data.data.yard_sale));
+    })
+    .catch((error) => {
+      console.log(error);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -50,7 +64,7 @@ export const getYardsaleProducts = (name, limit = 16, page = 1) => dispatch =>
       dispatch(getYardsaleProductsSuccess(response.data.data));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -60,7 +74,7 @@ export const getYardsaleProduct = slug => dispatch =>
       dispatch(getOneProductSuccess(response.data.data.product));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -70,7 +84,7 @@ export const createYardsaleProduct = (yardsaleName, yardsaleProductData) => disp
       dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -80,7 +94,7 @@ export const createYardsale = yardsaleData => dispatch =>
       dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -91,7 +105,7 @@ export const editYardsale = (yardsaleName, yardsaleData) => dispatch =>
       dispatch(updateYardsaleSuccess(response.data.data.yardsale));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -101,7 +115,7 @@ export const bulkCreateYardsaleProduct = (yardsaleName, yardsaleData) => dispatc
       dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
@@ -111,6 +125,6 @@ export const editYardsaleProduct = (yardsaleProductName, yardsaleProductData) =>
       dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });

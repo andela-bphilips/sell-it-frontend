@@ -21,6 +21,7 @@ import CreateYardsaleProduct from './yardsale/CreateYardsaleProduct.jsx';
 import YardsaleProducts from './yardsale/YardsaleProducts.jsx';
 import EditYardsaleProduct from './yardsale/EditYardsaleProduct.jsx';
 import ViewYardsale from './yardsale/ViewYardsale.jsx';
+import ViewAllYardsales from './yardsale/ViewAllYardsales.jsx';
 
 // OTHERS
 import Home from './home/Home.jsx';
@@ -85,6 +86,11 @@ const Template = () => (
                 exact="exact"
                 path="/user/profile"
                 component={MyProfile}
+              />
+              <Route
+                exact="exact"
+                path="/yardsales"
+                component={ViewAllYardsales}
               />
               <Route
                 exact="exact"

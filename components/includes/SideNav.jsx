@@ -1,8 +1,10 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
+import { logout } from '../../actions/auth';
 
 class SideNav extends Component {
   constructor(props, context) {
@@ -45,6 +47,12 @@ class SideNav extends Component {
             </li>
             <li>
               <Link to="/products/create">Sell A Product</Link>
+            </li>
+            <li>
+              <Link to="/yardsales">View All Yardsales</Link>
+            </li>
+            <li>
+              <Link to="/user/yardsales">View My Yardsales</Link>
             </li>
             <li>
               <Link to="#" onClick={this.logout} >Logout</Link>

@@ -9,6 +9,7 @@ export default {
   statusCode: null,
   user: {},
   users: [],
-  yardsale: {}
+  yardsale: {},
+  yardsales: []
 };
 

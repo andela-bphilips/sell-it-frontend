@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for  */
 /* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import ReactFileReader from 'react-file-reader';
 import Select from 'react-select';
@@ -46,7 +47,7 @@ const AdminViewYardsale = ({
             </Link>
             <ReactFileReader
               className="col-lg-10 col-lg-push-1"
-              handleFiles={() => handleCsvFiles(null, bulkApiCall)}
+              handleFiles={handleCsvFiles.bind(null, bulkApiCall)}
               fileTypes=".csv"
             >
               <button
