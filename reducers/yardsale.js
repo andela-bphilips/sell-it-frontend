@@ -1,11 +1,11 @@
 import initialState from './initialState.js';
 
 import {
-  GET_YARDSALE_SUCCESS,
+  GET_YARDSALE_SUCCESS, GET_ALL_YARDSALES_SUCCESS,
   UPDATE_YARDSALE_SUCCESS
 } from '../actions/types.js';
 
-const yardsale = (state = initialState.yardsale, action = {}) => {
+export const yardsale = (state = initialState.yardsale, action = {}) => {
   switch (action.type) {
     case GET_YARDSALE_SUCCESS:
       return action.yardsale;
@@ -18,4 +18,12 @@ const yardsale = (state = initialState.yardsale, action = {}) => {
   }
 };
 
-export default yardsale;
+export const yardsales = (state = initialState.yardsales, action = {}) => {
+  switch (action.type) {
+    case GET_ALL_YARDSALES_SUCCESS:
+      return action.yardsales;
+
+    default:
+      return state;
+  }
+};
