@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 
-// import ErrorPage from '../includes/ErrorPage.jsx';
-// import Loader from '../includes/Loader.jsx';
+import Loader from '../includes/Loader.jsx';
 
 import { getAllYardsales } from '../../actions/yardsale.js';
 
@@ -14,30 +13,63 @@ class ViewAllYardsales extends Component {
     super(props, context);
 
     this.state = {
-      // loading: false,
+      loading: false,
       yardsales: []
     };
   }
 
   componentWillMount() {
+    this.setState({ loading: true });
     this.props.getAllYardsales()
-      .then(() => this.setState({ yardsales: this.props.yardsales }))
-      .catch(() => toastr.error(this.props.message));
+      .then(() => this.setState({
+        loading: false,
+        yardsales: this.props.yardsales
+      }))
+      .catch(() => {
+        this.setState({ loading: false });
+        toastr.error(this.props.message);
+      });
   }
 
   render() {
-    const { yardsales } = this.state;
+    const { loading, yardsales } = this.state;
+
+    if (loading) {
+      return <Loader />;
+    }
     return (
       <div className="col-md-9 col-md-push-3">
-        <h1>Current and Upcoming Yardsales</h1>
+        <div className="page-header">
+          <h1>Current and Upcoming Yardsales</h1>
+          <div className="text-right">
+            <Link
+              className="btn btn-primary admin-view-button"
+              to="/yardsale/new"
+              type="button"
+            >
+              Add new yardsale product
+            </Link>
+          </div>
+        </div>
+        <hr />
         <div>
           {
             yardsales.map(yardsale => (
-              <div key={yardsale.id}>
-                <span className="float-left">{yardsale.name}</span>
-                <div className="float-right">
-                  <Link to={`/yardsale/${yardsale.name}`}>View Yardsale</Link>
-                  <Link to={`/yardsale/products/${yardsale.name}`}>View Products</Link>
+              <div
+                key={yardsale.id}
+                className="row"
+                style={{ padding: `${10}px`, margin: `${0} ${20}px` }}
+              >
+                <span
+                  className="col-md-9 product-title"
+                  style={{ fontSize: `${16}px` }}
+                >
+                  {yardsale.name.toUpperCase()}
+                </span>
+                <div className="col-md-3">
+                  <Link to={`/yardsale/products/${yardsale.name}`}>
+                    View Products
+                  </Link>
                 </div>
               </div>
             ))
