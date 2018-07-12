@@ -48,13 +48,13 @@ export const getYardsale = yardsaleType => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
-export const getAllYardsales = (owner = false) => dispatch =>
-  axios.get(`${apiBaseUrl}/yardsale?owner=${owner}`)
+export const getAllYardsales = () => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale`)
     .then((response) => {
       dispatch(getAllYardsalesSuccess(response.data.data.yard_sale));
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
