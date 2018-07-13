@@ -54,6 +54,8 @@ class ViewAllYardsales extends Component {
         <hr />
         <div>
           {
+            yardsales.length < 1 ?
+              <h2>No Yardsale Found</h2> :
             yardsales.map(yardsale => (
               <div
                 key={yardsale.id}
