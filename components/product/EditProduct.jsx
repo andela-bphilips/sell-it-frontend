@@ -94,13 +94,14 @@ class EditProduct extends Component {
     const keysToDelete = [
       'createdAt', 'creator', 'id', 'negotiable', 'slug', 'subCategory',
       'views', 'modifiedAt', 'ownerName', 'ownerSlackHandle', 'userId',
-      'meta', 'category'
+      'meta', 'category', 'condition'
     ];
     Object.keys(product).forEach((key) => {
       if (keysToDelete.indexOf(key) < 0) {
         editedProduct[camelCaseToUnderscore(key)] = product[key];
       }
     });
+    console.log(editedProduct);
 
     this.setState({ disabled: true, saving: true });
     this.props.editProduct(product.slug, editedProduct)
