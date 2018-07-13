@@ -29,7 +29,7 @@ export const getCategories = (categoryType = '') => dispatch =>
       dispatch(getCategoriesSuccess(response.data.data.categories));
     })
     .catch((error) => {
-      console.log(error.response.data.data.message);
+      // console.log(error.response.data.data.message);
       throw dispatch(passErrorMessage(error.response.data.data.message));
     });
 
@@ -40,6 +40,7 @@ export const getAllCategory = () => dispatch =>
       // dispatch(passSuccessMessage(response.data.data.message));
     })
     .catch((error) => {
-      console.log(error.response.data.data.message);
+      // console.log(error.response.data.data.message);
+      console.log('');
       // throw dispatch(passErrorMessage(error.response.data.data.message));
     });

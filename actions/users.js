@@ -26,6 +26,6 @@ export const getUsers = () => dispatch =>
       dispatch(getUsersSuccess(response.data.data.users));
     })
     .catch((error) => {
-      console.log(error.response.status);
+      // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message));
     });

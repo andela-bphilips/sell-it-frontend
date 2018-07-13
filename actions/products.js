@@ -32,7 +32,7 @@ export const createProduct = product => dispatch => axios.post(`${apiBaseUrl}/pr
     dispatch(passSuccessMessage(response.data.data.message));
   })
   .catch((error) => {
-    console.log(error.response.data.data.message);
+    // console.log(error.response.data.data.message);
     throw dispatch(passErrorMessage('An error occured. Please check the form and try again.'));
   });
 
@@ -42,7 +42,7 @@ export const getProducts = (search = '', category = '', limit = 20, page = 1, so
       dispatch(getProductsSuccess(response.data.data));
     })
     .catch((error) => {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       throw dispatch(passErrorMessage('An error occured.'));
     });
 
@@ -51,7 +51,7 @@ export const getProduct = slug => dispatch => axios.get(`${apiBaseUrl}/product?s
     dispatch(getOneProductSuccess(response.data.data.product));
   })
   .catch((error) => {
-    console.log(error.response.data.data.message);
+    // console.log(error.response.data.data.message);
     throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
@@ -60,7 +60,7 @@ export const editProduct = (slug, productData) => dispatch => axios.put(`${apiBa
     dispatch(passSuccessMessage(response.data.message));
   })
   .catch((error) => {
-    console.log(error.response.data);
+    // console.log(error.response.data);
     throw dispatch(passErrorMessage(error.response.data.data.message));
   });
 
@@ -70,6 +70,6 @@ export const getMyProducts = (status = '', page = 1) => dispatch =>
       dispatch(getProductsSuccess(response.data.data));
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       throw dispatch(passErrorMessage('An error occured.'));
     });
