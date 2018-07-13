@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ViewLiveYardsale = ({
-  paginate, pagination, products, yardsaleName
+  admin, paginate, pagination, products, yardsaleName
 }) => (
   <div className="container hide-sidebar-display">
     {/* SHOW YARDSALE PRODUCTS IF YARDSALE IS ACTIVE */}
@@ -38,13 +38,16 @@ const ViewLiveYardsale = ({
                     {product.productName}
                   </a>
                 </h3>
-                <Link
-                  to={`/yardsale/product/edit/${product.slug}`}
-                  className="btn-edit-product"
-                  role="button"
-                >
-                  Edit Product
-                </Link>
+                {
+                  admin &&
+                  <Link
+                    to={`/yardsale/product/edit/${product.slug}`}
+                    className="btn-edit-product"
+                    role="button"
+                  >
+                    Edit Product
+                  </Link>
+                }
               </div>{/* End .portfolio-meta */}
             </div>
           ))

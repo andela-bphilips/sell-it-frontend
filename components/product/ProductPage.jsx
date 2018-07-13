@@ -192,8 +192,7 @@ class ProductPage extends Component {
               <h3>Payment Complete</h3>
               <h4>Thank you for your order</h4>
               <p>
-                We have sent an email with all the details of your order to
-                your email address.
+                Your order is currently being processed.
               </p>
               <p>
                 Click <Link to="/user/orders">here</Link> to view your orders.

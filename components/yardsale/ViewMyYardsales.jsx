@@ -6,7 +6,7 @@ import toastr from 'toastr';
 
 import Loader from '../includes/Loader.jsx';
 
-import { getAllYardsales } from '../../actions/yardsale.js';
+import { getMyYardsales } from '../../actions/yardsale.js';
 
 class ViewAllYardsales extends Component {
   constructor(props, context) {
@@ -20,7 +20,7 @@ class ViewAllYardsales extends Component {
 
   componentWillMount() {
     this.setState({ loading: true });
-    this.props.getAllYardsales()
+    this.props.getMyYardsales()
       .then(() => this.setState({
         loading: false,
         yardsales: this.props.yardsales
@@ -40,7 +40,7 @@ class ViewAllYardsales extends Component {
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header">
-          <h1>Current and Upcoming Yardsales</h1>
+          <h1>My Yardsales</h1>
           <div className="text-right">
             <Link
               className="btn btn-primary admin-view-button"
@@ -61,11 +61,16 @@ class ViewAllYardsales extends Component {
                 style={{ padding: `${10}px`, margin: `${0} ${20}px` }}
               >
                 <span
-                  className="col-md-9 product-title"
+                  className="col-md-6 product-title"
                   style={{ fontSize: `${16}px` }}
                 >
                   {yardsale.name.toUpperCase()}
                 </span>
+                <div className="col-md-3">
+                  <Link to={`/yardsale/${yardsale.name}`}>
+                    View Yardsale
+                  </Link>
+                </div>
                 <div className="col-md-3">
                   <Link to={`/yardsale/products/${yardsale.name}`}>
                     View Products
@@ -86,4 +91,4 @@ const mapStateToProps = ({
   auth, message, yardsales
 });
 
-export default connect(mapStateToProps, { getAllYardsales })(ViewAllYardsales);
+export default connect(mapStateToProps, { getMyYardsales })(ViewAllYardsales);

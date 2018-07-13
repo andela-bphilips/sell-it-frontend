@@ -122,6 +122,7 @@ class MyOrders extends Component {
                   <th>Product Name</th>
                   <th>Price</th>
                   <th>Status</th>
+                  <th>Qty</th>
                   <th>Date</th>
                   <th>Action</th>
                 </tr>
@@ -159,7 +160,8 @@ class MyOrders extends Component {
                         {order.sellerOrderStatus === 'completed'
                           ? 'Completed' : ''}
                       </td>
-                      <td className="total-col">
+                      <td className="total-col">{order.orderQuantity}</td>
+                      <td className="price-col">
                         {moment(order.createdAt).fromNow()}
                       </td>
                       <td>

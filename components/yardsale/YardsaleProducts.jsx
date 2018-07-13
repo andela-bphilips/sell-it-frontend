@@ -16,7 +16,7 @@ class YardsaleProducts extends Component {
     super(props, context);
 
     this.state = {
-      // admin: false,
+      admin: false,
       // buyerLimit: 0,
       countDown: false,
       countDownTo: null,
@@ -48,7 +48,7 @@ class YardsaleProducts extends Component {
         let date2;
 
         this.setState({
-          // admin: products.yardsaleInfo.admin,
+          admin: products.yardsaleInfo.admin,
           // buyerLimit: products.yardsaleInfo.buyerLimit,
           countDown: products.yardsaleInfo.countdown,
           // location: products.yardsaleInfo.location,
@@ -78,7 +78,7 @@ class YardsaleProducts extends Component {
 
   render() {
     const {
-      countDown, countDownTo, loading,
+      admin, countDown, countDownTo, loading,
       pagination, products, yardsaleName
     } = this.state;
     if (loading) {
@@ -120,6 +120,7 @@ class YardsaleProducts extends Component {
       />);
       return (
         <ViewLiveYardsale
+          admin={admin}
           paginate={paginate}
           pagination={pagination}
           products={products}
