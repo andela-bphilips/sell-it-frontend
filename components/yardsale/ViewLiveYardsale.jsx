@@ -14,43 +14,48 @@ const ViewLiveYardsale = ({
     <div className="portfolio-row">
       <div className="portfolio-container max-col-4">
         {
-          products.map(product => (
-            <div className="portfolio-item brand logo" key={product.id}>
-              <figure>
-                <img src={product.productImages[0]} alt={product.productName} />
-                {
-                  product.productQuantity > 0 ?
+          products.length < 1 ?
+            <h2>No Yardsale Found</h2> :
+            products.map(product => (
+              <div className="portfolio-item brand logo" key={product.id}>
+                <figure>
+                  <img
+                    src={product.productImages[0]}
+                    alt={product.productName}
+                  />
+                  {
+                    product.productQuantity > 0 ?
+                      <Link
+                        to={`/product/${product.slug}?type=yardsale`}
+                        className="btn-detail"
+                        role="button"
+                      >
+                        View Details
+                      </Link> :
+                      <a className="btn-sold-out btn-danger" role="button">
+                        Sold-out
+                      </a>
+                  }
+                </figure>
+                <div className="portfolio-meta">
+                  <h3 className="portfolio-title">
+                    <a href="single-portfolio.html" title="Portfolio name">
+                      {product.productName}
+                    </a>
+                  </h3>
+                  {
+                    admin &&
                     <Link
-                      to={`/product/${product.slug}?type=yardsale`}
-                      className="btn-detail"
+                      to={`/yardsale/product/edit/${product.slug}`}
+                      className="btn-edit-product"
                       role="button"
                     >
-                      View Details
-                    </Link> :
-                    <a className="btn-sold-out btn-danger" role="button">
-                      Sold-out
-                    </a>
-                }
-              </figure>
-              <div className="portfolio-meta">
-                <h3 className="portfolio-title">
-                  <a href="single-portfolio.html" title="Portfolio name">
-                    {product.productName}
-                  </a>
-                </h3>
-                {
-                  admin &&
-                  <Link
-                    to={`/yardsale/product/edit/${product.slug}`}
-                    className="btn-edit-product"
-                    role="button"
-                  >
-                    Edit Product
-                  </Link>
-                }
-              </div>{/* End .portfolio-meta */}
-            </div>
-          ))
+                      Edit Product
+                    </Link>
+                  }
+                </div>{/* End .portfolio-meta */}
+              </div>
+            ))
         };
 
 

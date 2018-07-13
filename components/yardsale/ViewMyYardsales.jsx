@@ -54,30 +54,32 @@ class ViewAllYardsales extends Component {
         <hr />
         <div>
           {
-            yardsales.map(yardsale => (
-              <div
-                key={yardsale.id}
-                className="row"
-                style={{ padding: `${10}px`, margin: `${0} ${20}px` }}
-              >
-                <span
-                  className="col-md-6 product-title"
-                  style={{ fontSize: `${16}px` }}
+            yardsales.length < 1 ?
+              <h2>No Yardsale Found</h2> :
+              yardsales.map(yardsale => (
+                <div
+                  key={yardsale.id}
+                  className="row"
+                  style={{ padding: `${10}px`, margin: `${0} ${20}px` }}
                 >
-                  {yardsale.name.toUpperCase()}
-                </span>
-                <div className="col-md-3">
-                  <Link to={`/yardsale/${yardsale.name}`}>
-                    View Yardsale
-                  </Link>
+                  <span
+                    className="col-md-6 product-title"
+                    style={{ fontSize: `${16}px` }}
+                  >
+                    {yardsale.name.toUpperCase()}
+                  </span>
+                  <div className="col-md-3">
+                    <Link to={`/yardsale/${yardsale.name}`}>
+                      View Yardsale
+                    </Link>
+                  </div>
+                  <div className="col-md-3">
+                    <Link to={`/yardsale/products/${yardsale.name}`}>
+                      View Products
+                    </Link>
+                  </div>
                 </div>
-                <div className="col-md-3">
-                  <Link to={`/yardsale/products/${yardsale.name}`}>
-                    View Products
-                  </Link>
-                </div>
-              </div>
-            ))
+              ))
           }
         </div>
       </div>
