@@ -172,7 +172,6 @@ const EditProductForm = ({
             name="other_info"
             value={product.meta.other_info ? product.meta.other_info : 'NA'}
             onChange={handleFormMetaChange}
-            required
           />
         </div>
         <div className="form-group">
