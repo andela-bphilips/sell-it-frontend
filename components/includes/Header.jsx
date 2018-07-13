@@ -48,7 +48,7 @@ class Header extends Component {
                 <li><Link to="#" onClick={() => { this.setLocation('Lagos'); location.reload() }} title="Spanish">Lagos</Link></li>
                 <li><Link to="#" onClick={() => { this.setLocation('Nairobi'); location.reload() }} title="Spanish">Nairobi</Link></li>
                 <li><Link to="#" onClick={() => { this.setLocation('Kampala'); location.reload() }} title="Turkish">Kampala</Link></li>
-                <li><Link to="#" onClick={() => { this.setLocation('NewYork'); location.reload() }} title="German">New York</Link></li>
+                <li><Link to="#" onClick={() => { this.setLocation('New York'); location.reload() }} title="German">New York</Link></li>
               </ul>
              </div>{/* End .dropddown */}
           </div>
