@@ -101,7 +101,6 @@ class EditProduct extends Component {
         editedProduct[camelCaseToUnderscore(key)] = product[key];
       }
     });
-    console.log(editedProduct);
 
     this.setState({ disabled: true, saving: true });
     this.props.editProduct(product.slug, editedProduct)
