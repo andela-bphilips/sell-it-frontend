@@ -1421,7 +1421,7 @@ fieldset[disabled] .checkbox input[type=checkbox],
 .search-form-container {
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  margin-left: 56px;
+  margin-left: 76px;
 }
 
 @media (min-width: 1200px) {
@@ -6666,14 +6666,18 @@ button.inline.form-control {
   width: 100%;
 }
 
-#sell-product {
-  color: #3359df;
+.sell-product {
+  color: #3359df !important;
   font-size: 15px;
 }
 
-#sell-product:hover {
-  color: #dc9831;
+.sell-product:hover {
+  color: #dc9831 !important;
   font-size: 15px;
+}
+
+#yardsale-header {
+  margin: 0 !important;
 }
 
 .admin-view-button {
