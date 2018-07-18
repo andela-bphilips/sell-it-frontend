@@ -64,8 +64,14 @@ class Header extends Component {
 
           <ul className="top-links">
             <li>
-               <Link to="/products/create" id="sell-product">Sell A Product</Link>
-             </li>
+              <Link to="/products/create" className="sell-product">Sell A Product</Link>
+            </li>
+          </ul>
+
+          <ul className="top-links sell-product">
+            <li>
+              <Link to="/yardsales" className="sell-product" id="yardsale-header">Yardsales</Link>
+            </li>
           </ul>
           
         </div>{/* End .container-fluid */}
