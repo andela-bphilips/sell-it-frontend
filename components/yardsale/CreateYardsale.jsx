@@ -145,6 +145,18 @@ class CreateYardsale extends Component {
             </div>
 
             <div className="form-group">
+              <label>Payment Information</label>
+              <textarea
+                name="payment_info"
+                className="form-control"
+                value={yardsale.payment_info || ''}
+                onChange={this.handleFormChange}
+                rows="5"
+                required
+              />
+            </div>
+
+            <div className="form-group">
               <label>Yardsale Administrators</label>
               <Select
                 className="react-select-field"
