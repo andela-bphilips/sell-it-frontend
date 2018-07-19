@@ -355,9 +355,7 @@ class ProductPage extends Component {
             {Object.keys(product.meta).map(key =>
             (
               <div key={key}>
-                <span className="text-light">
-                  {jsUcFirst(key.split('_').join(' '))}:
-                </span>
+                <span className="text-light">{jsUcFirst(key.split('_').join(' '))}: </span>
                 <span className="product-stock">
                   {product.meta[key]}
                 </span>
@@ -382,22 +380,12 @@ class ProductPage extends Component {
               </li>
               <li role="presentation">
                 <a
-                  href="#returnPolicy"
-                  aria-controls="returnPolicy"
+                  href="#termsAndConditions"
+                  aria-controls="termsAndConditions"
                   role="tab"
                   data-toggle="tab"
                 >
-                  Return Policy
-                </a>
-              </li>
-              <li role="presentation">
-                <a
-                  href="#pickupPolicy"
-                  aria-controls="pickupPolicy"
-                  role="tab"
-                  data-toggle="tab"
-                >
-                  Pickup/Delivery Policy
+                  Terms And Conditions
                 </a>
               </li>
             </ul>
@@ -408,15 +396,11 @@ class ProductPage extends Component {
                 className="tab-pane active"
                 id="paymentMethod"
               >
-                <p>Payment methods here</p>
+                <pre>{ product.paymentInfo }</pre>
               </div>{/* End .tab-pane */}
-              <div role="tabpanel" className="tab-pane" id="returnPolicy">
-                <p>Return policy here</p>
+              <div role="tabpanel" className="tab-pane" id="termsAndConditions">
+                <pre>{ product.tAndC }</pre>
               </div>{/* End .tab-pane */}
-              <div role="tabpanel" className="tab-pane" id="pickupPolicy">
-                <p>Pickup Policy here</p>
-              </div>
-
             </div>
           </div>
         }
