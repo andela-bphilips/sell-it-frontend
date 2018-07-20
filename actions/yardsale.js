@@ -68,8 +68,8 @@ export const getMyYardsales = () => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
 
-export const getYardsaleProducts = (name, limit = 16, page = 1) => dispatch =>
-  axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}&limit=${limit}&page=${page}`)
+export const getYardsaleProducts = (name, limit = 16, page = 1, sort = 'created_at', search = '', order='desc') => dispatch =>
+  axios.get(`${apiBaseUrl}/yardsale/products?yard_sale_name=${name}&limit=${limit}&page=${page}&sort=${sort}&search=${search}&order=${order}`)
     .then((response) => {
       dispatch(getYardsaleProductsSuccess(response.data.data));
     })

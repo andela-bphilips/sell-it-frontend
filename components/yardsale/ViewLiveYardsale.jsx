@@ -3,19 +3,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import SearchYardsaleProducts from './SearchYardsaleProducts.jsx';
+
 const ViewLiveYardsale = ({
-  admin, paginate, pagination, products, yardsaleName
+  admin, paginate, pagination, products, yardsaleName,
+  search, fetchYardsaleProducts, handleSearch
 }) => (
   <div className="container hide-sidebar-display">
     {/* SHOW YARDSALE PRODUCTS IF YARDSALE IS ACTIVE */}
     <div className="page-header text-center">
       <h1>{yardsaleName} Yard sale</h1>
     </div>{/* End .page-header */}
+    {/* Search and Sort */}
+    <SearchYardsaleProducts 
+      search = {search}
+      fetchYardsaleProducts = {fetchYardsaleProducts}
+      handleSearch = {handleSearch}
+    />
+
     <div className="portfolio-row">
       <div className="portfolio-container max-col-4">
         {
           products.length < 1 ?
-            <h2>No Yardsale Found</h2> :
+            <div className="container no-yardsale-products">
+            No Products Found
+            </div> :
             products.map(product => (
               <div className="portfolio-item brand logo" key={product.id}>
                 <figure>
@@ -56,14 +68,21 @@ const ViewLiveYardsale = ({
                 </div>{/* End .portfolio-meta */}
               </div>
             ))
-        };
+        }
 
 
       </div>{/* End .portfolio-container */}
     </div>{/* End .portfolio-row */}
-    <nav aria-label="Page Navigation">
-      {pagination.totalPages > 1 ? paginate : null}
-    </nav>
+
+    {
+      products.length < 1 ?
+        <div className="empty-pagination">
+        </div>
+        :
+        <nav aria-label="Page Navigation">
+          {pagination.totalPages > 1 ? paginate : null}
+        </nav>
+    }
   </div>
 );
 
