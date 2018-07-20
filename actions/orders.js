@@ -55,8 +55,8 @@ export const getMyOrders = (orderStatus = '', page = 1) => dispatch =>
       throw dispatch(passErrorMessage(error.response.data.data.message));
     });
 
-export const getReceivedOrders = (orderStatus = '', page = 1) => dispatch =>
-  axios.get(`${apiBaseUrl}/received_orders?status=${orderStatus}&page=${page}`)
+export const getReceivedOrders = (orderStatus = '', page = 1, orderType = "regular") => dispatch =>
+  axios.get(`${apiBaseUrl}/received_orders?status=${orderStatus}&page=${page}&type=${orderType}`)
     .then((response) => {
       dispatch(getReceivedOrdersSuccess(response.data.data));
       dispatch(passSuccessMessage(response.data.data.message));
