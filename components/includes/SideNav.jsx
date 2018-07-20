@@ -43,6 +43,9 @@ class SideNav extends Component {
               <Link to="/orders">Received Orders</Link>
             </li>
             <li>
+              <Link to="/yardsale/orders">Received Yardsale Orders</Link>
+            </li>
+            <li>
               <Link to="/user/orders">My Orders</Link>
             </li>
             <li>

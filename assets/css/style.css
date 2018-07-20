@@ -4297,13 +4297,13 @@ website:   	http://www.themepunch.com
 --------------------------------------*/
 @media (min-width: 768px) {
   .product-col {
-    width: 370px;
+    width: 380px;
   }
 }
 
 @media (max-width: 767px) {
   .product-col {
-    min-width: 320px;
+    min-width: 330px;
   }
 }
 
