@@ -23,6 +23,7 @@ import EditYardsaleProduct from './yardsale/EditYardsaleProduct.jsx';
 import ViewYardsale from './yardsale/ViewYardsale.jsx';
 import ViewAllYardsales from './yardsale/ViewAllYardsales.jsx';
 import ViewMyYardsales from './yardsale/ViewMyYardsales.jsx';
+import ReceivedYardsaleOrders from './yardsale/ReceivedYardsaleOrders.jsx';
 
 // OTHERS
 import Home from './home/Home.jsx';
@@ -92,6 +93,11 @@ const Template = () => (
                 exact="exact"
                 path="/yardsales"
                 component={ViewAllYardsales}
+              />
+              <Route
+                exact="exact"
+                path="/yardsale/orders"
+                component={ReceivedYardsaleOrders}
               />
               <Route
                 exact="exact"

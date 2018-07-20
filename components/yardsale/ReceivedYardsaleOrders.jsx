@@ -15,7 +15,7 @@ import {
 import Loader from '../includes/Loader.jsx';
 import { numberWithCommas } from '../../utils/helper.js';
 
-class ReceivedOrders extends Component {
+class ReceivedYardsaleOrders extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -37,9 +37,10 @@ class ReceivedOrders extends Component {
   fetchReceivedOrders(orderStatus = '') {
     const { page } = this.state;
 
-    this.props.getReceivedOrders(orderStatus, page)
+    this.props.getReceivedOrders(orderStatus, page, 'yardsale')
       .then(() => {
         this.setState({ orders: this.props.orders, loading: false });
+        console.log(this.state.orders)
       })
       .catch(() => {
         toastr.error(this.props.message);
@@ -48,7 +49,7 @@ class ReceivedOrders extends Component {
 
   exportToExcel(orders) {
     const orderKeys = [
-      'Order ID', 'Buyer Name', 'Product Name', 'Order Quantity',
+      'Order ID', 'Yardsale', 'Buyer Name', 'Product Name', 'Order Quantity',
       'Price', 'Order Status'
     ];
     const data = [orderKeys];
@@ -56,6 +57,7 @@ class ReceivedOrders extends Component {
     orders.forEach((order) => {
       const orderData = [
         order.orderId,
+        order.product.yardsaleName,
         order.buyer_name,
         order.product.productName,
         order.orderQuantity,
@@ -73,7 +75,7 @@ class ReceivedOrders extends Component {
     XLSX.utils.book_append_sheet(newWorkbook, worksheet, 'SheetJS');
 
     /* output format determined by filename */
-    XLSX.writeFile(newWorkbook, 'Received Orders.xlsx');
+    XLSX.writeFile(newWorkbook, 'Received Yardsale Orders.xlsx');
   }
 
   handleOrder(action, orderId) {
@@ -129,7 +131,7 @@ class ReceivedOrders extends Component {
     return (
       <div className="col-md-9 col-md-push-3">
         <div className="page-header text-center">
-          <h1>Received Orders</h1>
+          <h1>Received Yardsale Orders</h1>
           <p>This is the list of orders you receive from intrested buyers </p>
         </div>
         <button
@@ -186,6 +188,7 @@ class ReceivedOrders extends Component {
             <thead>
               <tr>
                 <th>Order ID</th>
+                <th>Yardsale</th>
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Status</th>
@@ -201,6 +204,9 @@ class ReceivedOrders extends Component {
                   <tr key={order.orderId}>
                     <td className="price-col">
                       {order.orderId}
+                    </td>
+                    <td className="product-col">
+                      {order.product.yardsaleName}
                     </td>
                     <td className="product-col">
                       <div className="product">
@@ -306,4 +312,4 @@ const mapStateToProps = ({ message, orders }) => ({
 
 export default connect(mapStateToProps, {
   getReceivedOrders, cancelOrder, processOrder
-})(ReceivedOrders);
+})(ReceivedYardsaleOrders);
