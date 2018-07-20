@@ -8,6 +8,7 @@ import toastr from 'toastr';
 import ErrorPage from '../includes/ErrorPage.jsx';
 import Loader from '../includes/Loader.jsx';
 import ViewLiveYardsale from './ViewLiveYardsale.jsx';
+import SearchYardsaleProducts from './SearchYardsaleProducts.jsx';
 
 import { getYardsaleProducts } from '../../actions/yardsale.js';
 
@@ -23,6 +24,7 @@ class YardsaleProducts extends Component {
       // location: null,
       limit: 16,
       loading: false,
+      search: '',
       startDate: null,
       startTime: null,
       page: 1,
@@ -33,16 +35,24 @@ class YardsaleProducts extends Component {
 
     this.fetchYardsaleProducts = this.fetchYardsaleProducts.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   componentWillMount() {
     this.fetchYardsaleProducts();
   }
 
-  fetchYardsaleProducts() {
+  handleSearch(event) {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value }, () => {
+      this.fetchYardsaleProducts('created_at', this.state.search, 'desc');
+    });
+  }
+
+  fetchYardsaleProducts(sort = 'created_at', search = '', order='desc') {
     const { yardsaleName } = this.props.match.params;
     const { limit, page } = this.state;
-    this.props.getYardsaleProducts(yardsaleName, limit, page)
+    this.props.getYardsaleProducts(yardsaleName, limit, page, sort, search, order)
       .then(() => {
         const { products } = this.props;
         let date2;
@@ -78,7 +88,7 @@ class YardsaleProducts extends Component {
 
   render() {
     const {
-      admin, countDown, countDownTo, loading,
+      admin, countDown, countDownTo, loading, search,
       pagination, products, yardsaleName
     } = this.state;
     if (loading) {
@@ -125,10 +135,23 @@ class YardsaleProducts extends Component {
           pagination={pagination}
           products={products}
           yardsaleName={yardsaleName}
+          search = {search}
+          fetchYardsaleProducts={this.fetchYardsaleProducts}
+          handleSearch={this.handleSearch}
         />
       );
-    }
-    return <ErrorPage message="No products found for this yardsale." />;
+    } 
+    return (
+      <ViewLiveYardsale
+        admin={admin}
+        products={products}
+        yardsaleName={yardsaleName}
+        search = {search}
+        fetchYardsaleProducts={this.fetchYardsaleProducts}
+        handleSearch={this.handleSearch}
+      />
+    );
+    // return <ErrorPage message="No products found for this yardsale." />;
   }
 }
 
