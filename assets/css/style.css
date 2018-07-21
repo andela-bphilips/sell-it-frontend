@@ -3098,7 +3098,6 @@ website:   	http://www.themepunch.com
 
 .product .product-action .btn-product.btn-add-cart, .btn-edit-product {
   -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
   margin: 0 5px;
   font-family: "Oswald", sans-serif;
   letter-spacing: 0.025em;
@@ -3115,7 +3114,9 @@ website:   	http://www.themepunch.com
 }
 
 .btn-edit-product {
+  text-align: center;
   padding: 5px;
+  width: 30%;
 }
 
 .product .product-action .btn-product.btn-add-cart span {
@@ -6794,4 +6795,18 @@ button.inline.form-control {
 
 .empty-pagination {
   margin: 80px;
+}
+
+.manipulate-product {
+  display: flex;
+  justify-content: space-between;
+}
+
+.swal-button {
+  background-color: #3359df;
+  color: #fff;
+}
+
+.swal-button--danger {
+  background-color: #e64942 !important;
 }

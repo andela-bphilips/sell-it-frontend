@@ -7,7 +7,7 @@ import SearchYardsaleProducts from './SearchYardsaleProducts.jsx';
 
 const ViewLiveYardsale = ({
   admin, paginate, pagination, products, yardsaleName,
-  search, fetchYardsaleProducts, handleSearch
+  search, fetchYardsaleProducts, handleSearch, deleteYardsaleProduct
 }) => (
   <div className="container hide-sidebar-display">
     {/* SHOW YARDSALE PRODUCTS IF YARDSALE IS ACTIVE */}
@@ -55,16 +55,28 @@ const ViewLiveYardsale = ({
                       {product.productName}
                     </a>
                   </h3>
-                  {
-                    admin &&
-                    <Link
-                      to={`/yardsale/product/edit/${product.slug}`}
-                      className="btn-edit-product"
-                      role="button"
-                    >
-                      Edit Product
-                    </Link>
-                  }
+                  <div className="manipulate-product">
+                    {
+                      admin &&
+                      <Link
+                        to={`/yardsale/product/edit/${product.slug}`}
+                        className="btn-edit-product"
+                        role="button"
+                      >
+                        Edit
+                      </Link>
+                    }
+                    {
+                      admin &&
+                      <button
+                        type="button"
+                        onClick={() => deleteYardsaleProduct(product.slug)}
+                        className="btn-btn-secondary btn-sm btn-edit-product"
+                      >
+                        Delete
+                      </button>
+                    }
+                  </div>
                 </div>{/* End .portfolio-meta */}
               </div>
             ))
