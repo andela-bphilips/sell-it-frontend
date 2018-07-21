@@ -138,3 +138,13 @@ export const editYardsaleProduct = (yardsaleProductName, yardsaleProductData) =>
       // console.log(error.response.status);
       throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
     });
+
+export const deleteYardsaleProduct = (yardsaleProductSlug) => dispatch =>
+  axios.delete(`${apiBaseUrl}/yardsale/product?slug=${yardsaleProductSlug}`)
+    .then((response) => {
+      dispatch(passSuccessMessage(response.data.data.message));
+    })
+    .catch((error) => {
+      // console.log(error.response.status);
+      throw dispatch(passErrorMessage(error.response.data.data.message, error.response.status));
+    });

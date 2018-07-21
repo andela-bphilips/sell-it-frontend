@@ -4,13 +4,13 @@ import Countdown from 'react-countdown-now';
 import ReactPaginate from 'react-paginate';
 import { connect } from 'react-redux';
 import toastr from 'toastr';
+import swal from 'sweetalert'
 
-import ErrorPage from '../includes/ErrorPage.jsx';
 import Loader from '../includes/Loader.jsx';
 import ViewLiveYardsale from './ViewLiveYardsale.jsx';
+import { getYardsaleProducts, deleteYardsaleProduct } from '../../actions/yardsale.js';
+import ErrorPage from '../includes/ErrorPage.jsx';
 import SearchYardsaleProducts from './SearchYardsaleProducts.jsx';
-
-import { getYardsaleProducts } from '../../actions/yardsale.js';
 
 class YardsaleProducts extends Component {
   constructor(props, context) {
@@ -36,6 +36,7 @@ class YardsaleProducts extends Component {
     this.fetchYardsaleProducts = this.fetchYardsaleProducts.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.deleteYardsaleProduct = this.deleteYardsaleProduct.bind(this);
   }
 
   componentWillMount() {
@@ -49,7 +50,33 @@ class YardsaleProducts extends Component {
     });
   }
 
-  fetchYardsaleProducts(sort = 'created_at', search = '', order='desc') {
+  deleteYardsaleProduct(slug) {
+    swal({
+      title: 'Are you sure?',
+      text: 'Deleting this product cannot be reverted',
+      icon: 'warning',
+      dangerMode: true,
+      buttons: true,
+    })
+      .then((willDelete) => {
+        if (willDelete) {
+          this.props.deleteYardsaleProduct(slug)
+            .then(() => {
+              swal('Deleted!', 'Your product has been successfully deleted');
+            })
+            .then(() => {
+              this.fetchYardsaleProducts();
+            });
+        } else {
+          swal('Product was not deleted');
+        }
+      })
+      .catch(() => {
+        toastr.error(this.props.message);
+      });
+  }
+
+  fetchYardsaleProducts(sort = 'created_at', search = '', order = 'desc') {
     const { yardsaleName } = this.props.match.params;
     const { limit, page } = this.state;
     this.props.getYardsaleProducts(yardsaleName, limit, page, sort, search, order)
@@ -138,6 +165,7 @@ class YardsaleProducts extends Component {
           search = {search}
           fetchYardsaleProducts={this.fetchYardsaleProducts}
           handleSearch={this.handleSearch}
+          deleteYardsaleProduct={this.deleteYardsaleProduct}
         />
       );
     } 
@@ -162,5 +190,5 @@ const mapStateToProps = ({
 });
 
 export default connect(mapStateToProps, {
-  getYardsaleProducts
+  getYardsaleProducts, deleteYardsaleProduct
 })(YardsaleProducts);
